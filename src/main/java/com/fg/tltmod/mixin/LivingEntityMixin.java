@@ -97,6 +97,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
 
     @Shadow protected abstract void createWitherRose(@Nullable LivingEntity pEntitySource);
 
+    @Shadow public abstract void die(DamageSource pDamageSource);
+
     public LivingEntityMixin(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -188,7 +190,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
                     this.playSound(soundevent, getSoundVolume(), getVoicePitch());
                 }
 
-                tltmod$dieLogic(source);
+                die(source);
             } else {
                 playHurtSound(source);
             }
