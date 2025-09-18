@@ -6,7 +6,10 @@
   "refmap": "tltmod.refmap.json",
   "mixins": [
     "EnchantmentMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "l2.EffectUtilMixin",
+    "l2.GravityTraitMixin",
+    "l2.RagnarokMixin"
   ],
   "injectors": {
     "defaultRequire": 1

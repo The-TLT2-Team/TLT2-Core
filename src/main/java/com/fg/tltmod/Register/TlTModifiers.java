@@ -4,7 +4,7 @@ import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 import com.fg.tltmod.SomeModifiers.*;
 
-import static com.fg.tltmod.tltmod.MODID;
+import static com.fg.tltmod.TltCore.MODID;
 
 public class TlTModifiers {
 
