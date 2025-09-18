@@ -191,6 +191,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
                 }
 
                 die(source);
+                if (!dead) tltmod$dieLogic(source);
             } else {
                 playHurtSound(source);
             }
