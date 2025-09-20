@@ -11,5 +11,6 @@ public class TlTModifiers {
     public static ModifierDeferredRegister MODIFIERS = ModifierDeferredRegister.create(MODID);
 
 
-    public static StaticModifier<Stop> stopStaticModifier = MODIFIERS.register("stop", Stop::new);
+    public static final StaticModifier<Stop> stopStaticModifier = MODIFIERS.register("stop", Stop::new);
+    public static final StaticModifier<EverFlamingCore> EVER_FLAMING_CORE = MODIFIERS.register("ever_flaming_core",EverFlamingCore::new);
 }
