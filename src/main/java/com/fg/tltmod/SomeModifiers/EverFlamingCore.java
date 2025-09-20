@@ -5,6 +5,7 @@ import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.OnHoldingPreventDeathHook;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
 import com.fg.tltmod.TltCore;
+import com.fg.tltmod.content.entity.WaveSlashEntity;
 import com.fg.tltmod.util.mixin.ILivingEntityMixin;
 import com.github.alexthe666.iceandfire.misc.IafDamageRegistry;
 import mekanism.common.registries.MekanismDamageTypes;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
@@ -143,7 +145,7 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
 
     @Override
     public void modifierOnInventoryTick(IToolStackView tool, ModifierEntry modifier, Level world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
-        if (!world.isClientSide&&world.getGameTime()%10==0&&isCorrectSlot){
+        if (world.getGameTime()%10==0&&isCorrectSlot){
             holder.addEffect(new MobEffectInstance(MobEffects.LUCK,400,10*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,400,10*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST,400,10*modifier.getLevel()-1,false,false));
@@ -169,5 +171,30 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
     @Override
     public float modifyDamageTaken(IToolStackView tool, ModifierEntry modifier, EquipmentContext context, EquipmentSlot slotType, DamageSource source, float amount, boolean isDirectDamage) {
         return amount*0.25f;
+    }
+
+    @Override
+    public void onLeftClickEmpty(IToolStackView tool, ModifierEntry entry, Player player, Level level, EquipmentSlot equipmentSlot) {
+        if (!level.isClientSide&&player.getAttackStrengthScale(0)>0.9){
+            createSlash(player,tool,level);
+        }
+    }
+
+    @Override
+    public float beforeMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage, float baseKnockback, float knockback) {
+        if (!context.isExtraAttack()&&context.isFullyCharged()){
+            createSlash(context.getAttacker(),tool,context.getLevel());
+        }
+        return knockback;
+    }
+
+    public static void createSlash(LivingEntity living, IToolStackView tool, Level level){
+        WaveSlashEntity entity = new WaveSlashEntity(level);
+        entity.setPos(living.position().add(0,living.getBbHeight()/2,0));
+        Vec3 direction = living.getLookAngle();
+        entity.shoot(direction.x,direction.y,direction.z,2.5f,0);
+        entity.setOwner(living);
+        entity.tool = (slimeknights.tconstruct.library.tools.nbt.ToolStack) tool;
+        level.addFreshEntity(entity);
     }
 }

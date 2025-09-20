@@ -3,6 +3,7 @@ package com.fg.tltmod.content.entity;
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.util.AttackUtil;
 import com.c2h6s.tinkers_advanced.registery.TiAcEntities;
+import com.fg.tltmod.Register.TltCoreEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.InteractionHand;
@@ -20,14 +21,14 @@ import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import java.util.List;
 
 public class WaveSlashEntity extends Projectile {
-    protected WaveSlashEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
+    public WaveSlashEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
     public ToolStack tool = null;
     public float rotDeg=0;
     public IntOpenHashSet set = new IntOpenHashSet();
     public WaveSlashEntity(Level level){
-        this(TiAcEntities.THERMAL_SLASH.get(),level);
+        this(TltCoreEntityTypes.WAVE_SLASH.get(),level);
     }
 
     @Override
