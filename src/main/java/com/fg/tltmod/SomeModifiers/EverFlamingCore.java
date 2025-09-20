@@ -9,6 +9,7 @@ import com.fg.tltmod.content.entity.WaveSlashEntity;
 import com.fg.tltmod.util.mixin.ILivingEntityMixin;
 import com.github.alexthe666.iceandfire.misc.IafDamageRegistry;
 import mekanism.common.registries.MekanismDamageTypes;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,11 +48,14 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
     }
     public static final ResourceLocation KEY_CD = TltCore.getResource("ever_flaming_cd");
     public static final UUID EVER_FLAME_UUID = UUID.fromString("59a9cb4a-e5f2-f7fe-e41f-1b87368dfa29");
+    public float cachedDamage=0;
 
     @Override
     public void postMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage) {
+        if (damage<cachedDamage) damage = cachedDamage;
         if (context.getTarget() instanceof LivingEntity living){
             var ds = living.damageSources();
+            float finalDamage = damage;
             List.of(LegacyDamageSource.indirectMagic(living),
                     LegacyDamageSource.explosion(living,living),
                     LegacyDamageSource.any(ds.mobProjectile(living,living)),
@@ -66,7 +71,7 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
             ).forEach(source -> {
                 source.setBypassInvulnerableTime().setBypassMagic().setBypassShield().setBypassEnchantment().setBypassArmor();
                 living.invulnerableTime = 0;
-                living.hurt(source,damage*0.2f);
+                living.hurt(source, finalDamage *0.2f);
             });
             if (!(living instanceof Player)) {
                 List.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS).forEach(attribute -> {
@@ -175,13 +180,21 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
 
     @Override
     public void onLeftClickEmpty(IToolStackView tool, ModifierEntry entry, Player player, Level level, EquipmentSlot equipmentSlot) {
-        if (!level.isClientSide&&player.getAttackStrengthScale(0)>0.9){
+        if (!level.isClientSide&&player.getAttackStrengthScale(0)>0.8){
+            createSlash(player,tool,level);
+        }
+    }
+
+    @Override
+    public void onLeftClickBlock(IToolStackView tool, ModifierEntry entry, Player player, Level level, EquipmentSlot equipmentSlot, BlockState state, BlockPos pos) {
+        if (!level.isClientSide&&player.getAttackStrengthScale(0)>0.8&&!tool.getItem().isCorrectToolForDrops(state)){
             createSlash(player,tool,level);
         }
     }
 
     @Override
     public float beforeMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage, float baseKnockback, float knockback) {
+        cachedDamage = damage;
         if (!context.isExtraAttack()&&context.isFullyCharged()){
             createSlash(context.getAttacker(),tool,context.getLevel());
         }
