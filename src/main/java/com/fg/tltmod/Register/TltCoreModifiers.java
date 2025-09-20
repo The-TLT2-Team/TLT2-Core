@@ -6,7 +6,7 @@ import com.fg.tltmod.SomeModifiers.*;
 
 import static com.fg.tltmod.TltCore.MODID;
 
-public class TlTModifiers {
+public class TltCoreModifiers {
 
     public static ModifierDeferredRegister MODIFIERS = ModifierDeferredRegister.create(MODID);
 

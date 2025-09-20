@@ -1,6 +1,6 @@
 package com.fg.tltmod;
 
-import com.fg.tltmod.Register.TlTModifiers;
+import com.fg.tltmod.Register.TltCoreModifiers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -14,7 +14,7 @@ public class TltCore
     public static final String MODID = "tltmod";
     public TltCore(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
-        TlTModifiers.MODIFIERS.register(modEventBus);
+        TltCoreModifiers.MODIFIERS.register(modEventBus);
     }
 
     public static ResourceLocation getResource(String string) {
