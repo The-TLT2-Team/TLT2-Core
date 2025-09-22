@@ -4,12 +4,15 @@ import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.OnHoldingPreventDeathHook;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
+import com.c2h6s.etstlib.util.DynamicComponentUtil;
+import com.c2h6s.tinkers_advanced.TinkersAdvanced;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.content.entity.WaveSlashEntity;
 import com.fg.tltmod.util.mixin.ILivingEntityMixin;
 import com.github.alexthe666.iceandfire.misc.IafDamageRegistry;
 import mekanism.common.registries.MekanismDamageTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,34 +24,65 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.data.predicate.block.BlockPredicate;
+import slimeknights.mantle.data.predicate.entity.LivingEntityPredicate;
+import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.hook.armor.ModifyDamageModifierHook;
+import slimeknights.tconstruct.library.modifiers.hook.build.ToolStatsModifierHook;
+import slimeknights.tconstruct.library.modifiers.hook.build.VolatileDataModifierHook;
+import slimeknights.tconstruct.library.modifiers.modules.build.EnchantmentModule;
+import slimeknights.tconstruct.library.modifiers.modules.combat.LootingModule;
+import slimeknights.tconstruct.library.modifiers.modules.util.ModifierCondition;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.tools.SlotType;
 import slimeknights.tconstruct.library.tools.capability.TinkerDataCapability;
 import slimeknights.tconstruct.library.tools.context.EquipmentContext;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
-import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
-import slimeknights.tconstruct.library.tools.nbt.ModDataNBT;
-import slimeknights.tconstruct.library.tools.nbt.ModifierNBT;
+import slimeknights.tconstruct.library.tools.nbt.*;
+import slimeknights.tconstruct.library.tools.stat.INumericToolStat;
+import slimeknights.tconstruct.library.tools.stat.ModifierStatsBuilder;
+import slimeknights.tconstruct.library.tools.stat.ToolStats;
+import slimeknights.tconstruct.library.utils.RomanNumeralHelper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
-public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreventDeathHook , ModifyDamageModifierHook {
+public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreventDeathHook , ModifyDamageModifierHook , VolatileDataModifierHook, ToolStatsModifierHook {
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         super.registerHooks(hookBuilder);
-        hookBuilder.addHook(this, EtSTLibHooks.PREVENT_DEATH, ModifierHooks.MODIFY_HURT);
+        hookBuilder.addHook(this, EtSTLibHooks.PREVENT_DEATH, ModifierHooks.MODIFY_HURT,ModifierHooks.TOOL_STATS,ModifierHooks.VOLATILE_DATA);
+        hookBuilder.addModule(LootingModule.builder().level(10).weapon());
+        hookBuilder.addModule(LootingModule.builder().level(10).armor());
+        hookBuilder.addModule(new EnchantmentModule.Constant(Enchantments.BLOCK_FORTUNE, 10));
+        hookBuilder.addModule(new EnchantmentModule.ArmorHarvest(Enchantments.BLOCK_FORTUNE, 10, ModifierCondition.ANY_TOOL, Set.of(EquipmentSlot.CHEST,EquipmentSlot.HEAD,EquipmentSlot.LEGS,EquipmentSlot.FEET), BlockPredicate.ANY, LivingEntityPredicate.ANY));
     }
     public static final ResourceLocation KEY_CD = TltCore.getResource("ever_flaming_cd");
     public static final UUID EVER_FLAME_UUID = UUID.fromString("59a9cb4a-e5f2-f7fe-e41f-1b87368dfa29");
     public float cachedDamage=0;
+
+    @Override
+    public void addVolatileData(IToolContext context, ModifierEntry modifier, ToolDataNBT volatileData) {
+        List.of(SlotType.DEFENSE,SlotType.UPGRADE,SlotType.ABILITY).forEach(slotType -> volatileData.addSlots(slotType,modifier.getLevel()*2));
+    }
+
+    @Override
+    public void addToolStats(IToolContext context, ModifierEntry modifier, ModifierStatsBuilder builder) {
+        ToolStats.getAllStats().forEach(iToolStat -> {
+            if (iToolStat instanceof INumericToolStat<?> toolStat &&(iToolStat.getName().getNamespace().equals(TConstruct.MOD_ID)||iToolStat.getName().getNamespace().equals(TinkersAdvanced.MODID))){
+                toolStat.percent(builder,0.5*modifier.getLevel());
+            }
+        });
+    }
 
     @Override
     public void postMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage) {
@@ -153,21 +187,27 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
         if (world.getGameTime()%10==0&&isCorrectSlot){
             holder.addEffect(new MobEffectInstance(MobEffects.LUCK,400,10*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,400,10*modifier.getLevel()-1,false,false));
-            holder.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST,400,10*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.REGENERATION,400,5*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,400,10*modifier.getLevel()-1,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION,400,0,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING,400,0,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.SATURATION,400,0,false,false));
             holder.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,400,3,false,false));
+            if (tool.getPersistentData().getInt(KEY_CD)>0){
+                tool.getPersistentData().putInt(KEY_CD,tool.getPersistentData().getInt(KEY_CD)-1);
+            }
         }
     }
 
     @Override
     public float onHoldingPreventDeath(LivingEntity livingEntity, IToolStackView iToolStackView, ModifierEntry modifierEntry, EquipmentContext equipmentContext, EquipmentSlot equipmentSlot, DamageSource damageSource) {
+        if (iToolStackView.getPersistentData().getInt(KEY_CD)>0){
+            return livingEntity.getMaxHealth();
+        }
         if (iToolStackView.getDamage()<=iToolStackView.getCurrentDurability()*9){
             iToolStackView.setDamage((int) (iToolStackView.getDamage()-0.1f*(iToolStackView.getDamage()+iToolStackView.getCurrentDurability())));
             livingEntity.invulnerableTime = 200;
+            iToolStackView.getPersistentData().putInt(KEY_CD,10);
             return livingEntity.getMaxHealth();
         }
         return 0;
@@ -209,5 +249,10 @@ public class EverFlamingCore extends EtSTBaseModifier implements OnHoldingPreven
         entity.setOwner(living);
         entity.tool = (slimeknights.tconstruct.library.tools.nbt.ToolStack) tool;
         level.addFreshEntity(entity);
+    }
+
+    @Override
+    public Component getDisplayName(int level) {
+        return DynamicComponentUtil.ScrollColorfulText.getColorfulText(getTranslationKey()," "+ RomanNumeralHelper.getNumeral(level).getString(),new int[]{0xFF9999,0xFFFF99},50,10,true);
     }
 }
