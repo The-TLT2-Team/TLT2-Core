@@ -34,7 +34,7 @@ public abstract class RagnarokMixin extends LegendaryTrait {
     @Inject(method = "postHurtImpl",at = @At("HEAD"),cancellable = true)
     public void totalDisallowSeal(int level, LivingEntity attacker, LivingEntity target, CallbackInfo ci){
         target.getCapability(TinkerDataCapability.CAPABILITY).ifPresent(cap-> {
-            if (cap.get(TltcoreConstants.TinkerDataKeys.KEY_TOTAL_ANTI_RAGNAROK,false)) {
+            if (cap.get(TltcoreConstants.TinkerDataKeys.KEY_TOTAL_ANTI_RAGNAROK,0)>0) {
                 ci.cancel();
             }
         });

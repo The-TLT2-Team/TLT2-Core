@@ -14,7 +14,7 @@ public class TltcoreConstants {
     }
     public static class TinkerDataKeys{
         //实体带有这个data后全身物品都不会被封印，用ArmorLevelingModule来添加。
-        public static final TinkerDataCapability.TinkerDataKey<Boolean> KEY_TOTAL_ANTI_RAGNAROK = TinkerDataCapability.TinkerDataKey.of(TltCore.getResource("total_anti_ragnarok"));
+        public static final TinkerDataCapability.TinkerDataKey<Integer> KEY_TOTAL_ANTI_RAGNAROK = TinkerDataCapability.TinkerDataKey.of(TltCore.getResource("total_anti_ragnarok"));
     }
     public static class TagKeys {
     }
