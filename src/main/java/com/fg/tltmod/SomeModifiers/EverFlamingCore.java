@@ -202,12 +202,12 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
     @Override
     public float onHoldingPreventDeath(LivingEntity livingEntity, IToolStackView iToolStackView, ModifierEntry modifierEntry, EquipmentContext equipmentContext, EquipmentSlot equipmentSlot, DamageSource damageSource) {
         if (iToolStackView.getPersistentData().getInt(KEY_CD)>0){
-            return livingEntity.getMaxHealth();
+            return 0;
         }
         if (iToolStackView.getDamage()<=iToolStackView.getCurrentDurability()*9){
             iToolStackView.setDamage((int) (iToolStackView.getDamage()-0.1f*(iToolStackView.getDamage()+iToolStackView.getCurrentDurability())));
             livingEntity.invulnerableTime = 200;
-            iToolStackView.getPersistentData().putInt(KEY_CD,10);
+            iToolStackView.getPersistentData().putInt(KEY_CD,120);
             return livingEntity.getMaxHealth();
         }
         return 0;
