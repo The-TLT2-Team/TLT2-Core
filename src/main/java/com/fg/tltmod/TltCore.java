@@ -1,5 +1,6 @@
 package com.fg.tltmod;
 
+import com.fg.tltmod.Register.TltCoreEffects;
 import com.fg.tltmod.Register.TltCoreEntityTypes;
 import com.fg.tltmod.Register.TltCoreHostilityTrait;
 import com.fg.tltmod.Register.TltCoreModifiers;
@@ -18,6 +19,7 @@ public class TltCore
         IEventBus modEventBus = context.getModEventBus();
         TltCoreModifiers.MODIFIERS.register(modEventBus);
         TltCoreEntityTypes.ENTITY_TYPES.register(modEventBus);
+        TltCoreEffects.EFFECT.register(modEventBus);
         TltCoreHostilityTrait.register();
     }
 
