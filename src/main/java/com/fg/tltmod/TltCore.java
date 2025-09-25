@@ -1,6 +1,7 @@
 package com.fg.tltmod;
 
 import com.fg.tltmod.Register.TltCoreEntityTypes;
+import com.fg.tltmod.Register.TltCoreHostilityTrait;
 import com.fg.tltmod.Register.TltCoreModifiers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +18,7 @@ public class TltCore
         IEventBus modEventBus = context.getModEventBus();
         TltCoreModifiers.MODIFIERS.register(modEventBus);
         TltCoreEntityTypes.ENTITY_TYPES.register(modEventBus);
+        TltCoreHostilityTrait.register();
     }
 
     public static ResourceLocation getResource(String string) {
