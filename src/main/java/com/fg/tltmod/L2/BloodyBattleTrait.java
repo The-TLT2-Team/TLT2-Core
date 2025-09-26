@@ -1,5 +1,6 @@
 package com.fg.tltmod.L2;
 
+import com.fg.tltmod.TltCore;
 import com.fg.tltmod.util.TltmodHurtProcess;
 import dev.xkmc.l2complements.init.registrate.LCEffects;
 import dev.xkmc.l2damagetracker.contents.attack.AttackCache;
@@ -38,7 +39,7 @@ public class BloodyBattleTrait extends MobTrait {
     public BloodyBattleTrait(IntSupplier color) {
         super((color));
     }
-    public static String fight_to_end = "fight_to_end";
+    public static String fight_to_end = TltCore.getResource("fight_to_end").toString();
 
     @Override
     public void onDeath(int a, LivingEntity entity, LivingDeathEvent event) {
