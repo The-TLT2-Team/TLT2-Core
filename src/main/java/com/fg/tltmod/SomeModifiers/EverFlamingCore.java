@@ -122,11 +122,11 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
                         d0 += instance.getModifier(EVER_FLAME_UUID).getAmount();
                         instance.removeModifier(EVER_FLAME_UUID);
                     }
-                    instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-living.getMaxHealth()*0.05, AttributeModifier.Operation.ADDITION));
+                    instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-living.getMaxHealth()*0.025, AttributeModifier.Operation.ADDITION));
                 }
                 if (context.getAttacker() instanceof Player player) {
                     if (!living.isDeadOrDying())
-                        ((ILivingEntityMixin) living).tltmod$hurt(LegacyDamageSource.playerAttack(player),living.getMaxHealth()*0.05f);
+                        ((ILivingEntityMixin) living).tltmod$hurt(LegacyDamageSource.playerAttack(player),living.getMaxHealth()*0.025f);
                 }
             }
             living.invulnerableTime = 0;
@@ -167,11 +167,11 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
                     d0 += instance.getModifier(EVER_FLAME_UUID).getAmount();
                     instance.removeModifier(EVER_FLAME_UUID);
                 }
-                instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-target.getMaxHealth()*0.05, AttributeModifier.Operation.ADDITION));
+                instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-target.getMaxHealth()*0.025, AttributeModifier.Operation.ADDITION));
             }
             if (attacker instanceof Player player) {
                 if (!target.isDeadOrDying())
-                    ((ILivingEntityMixin) target).tltmod$hurt(LegacyDamageSource.playerAttack(player),target.getMaxHealth()*0.05f);
+                    ((ILivingEntityMixin) target).tltmod$hurt(LegacyDamageSource.playerAttack(player),target.getMaxHealth()*0.025f);
             }
         }
         target.invulnerableTime = 0;
