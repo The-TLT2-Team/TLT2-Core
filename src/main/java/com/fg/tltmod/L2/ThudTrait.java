@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.List;
@@ -32,15 +33,13 @@ public class ThudTrait extends MobTrait {
     }
     private static void applyCustomKnockback(LivingEntity attacker, LivingEntity target,double totalStrength) {
         double angle = attacker.getYRot() * (Math.PI / 180.0);
-        double knockbackX = -Math.sin(angle) * totalStrength;
-        double knockbackZ = Math.cos(angle) * totalStrength;
-        double knockbackY = 0.3 + (totalStrength * 0.05);
+        double a =1 - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
+        if (a<0)a=0;
+        double knockbackX = -Math.sin(angle) * totalStrength * a;
+        double knockbackZ = Math.cos(angle) * totalStrength * a;
+        double knockbackY = (0.3 + (totalStrength * 0.05)) * a;
 
         target.setDeltaMovement(knockbackX, knockbackY, knockbackZ);
-        target.hurtMarked = true;
-        target.hasImpulse = true;
-
-        target.setOnGround(false);
     }
     @Override
     public void tick(LivingEntity mob, int a) {

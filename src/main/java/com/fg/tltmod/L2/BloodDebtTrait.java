@@ -25,18 +25,19 @@ public class BloodDebtTrait extends MobTrait {
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
         LivingEntity living=cache.getAttackTarget();
+        living.getPersistentData().putFloat(blood_debt_value,living.getPersistentData().getFloat(blood_debt_value)+cache.getPreDamage()*0.5f*(1f+a*0.4f));
         cache.addHurtModifier(DamageModifier.multTotal(0.5f));
-        living.getPersistentData().putFloat(blood_debt_value,living.getPersistentData().getFloat(blood_debt_value)+cache.getDamageDealt()*0.5f*(1f+a*0.4f));
     }
     private void OnLivingTick(LivingEvent.LivingTickEvent event) {
         var entity=event.getEntity();
         if (entity.level().isClientSide)return;
         float a = entity.getPersistentData().getFloat(blood_debt_value);
         if (a>=1){
+            //entity.setHealth(entity.getHealth() - a*0.02f);
             entity.invulnerableTime=0;
-            entity.hurt(LegacyDamageSource.mobAttack(entity).setBypassArmor().setBypassMagic(),a*0.06f);
+            entity.hurt(LegacyDamageSource.any(entity.level().damageSources().magic()).setBypassArmor().setBypassMagic(),a*0.02f);
             entity.invulnerableTime=0;
-            entity.getPersistentData().putFloat(blood_debt_value,a*0.94f);
+            entity.getPersistentData().putFloat(blood_debt_value,a*0.98f);
         }
     }
     @Override

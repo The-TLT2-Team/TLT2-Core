@@ -17,15 +17,15 @@ public class ContaminatedBloodTrait extends MobTrait {
     public static String contaminated_blood_value = TltCore.getResource( "contaminated_blood_value").toString();
     @Override
     public void onHurtByOthers(int a, LivingEntity entity, LivingHurtEvent event) {
-        event.setAmount(event.getAmount()*0.5f);
         entity.getPersistentData().putFloat(contaminated_blood_value, entity.getPersistentData().getFloat(contaminated_blood_value)+event.getAmount()*0.5f*(1f-a*0.2f));
+        event.setAmount(event.getAmount()*0.5f);
     }
     @Override
     public void tick(LivingEntity mob, int a) {
         float b=mob.getPersistentData().getFloat(contaminated_blood_value);
         if (!mob.level().isClientSide()&&b>=1) {
-            mob.setHealth(mob.getHealth() - b*0.06f);
-            mob.getPersistentData().putFloat(contaminated_blood_value,b*0.94f);
+            mob.setHealth(mob.getHealth() - b*0.02f);
+            mob.getPersistentData().putFloat(contaminated_blood_value,b*0.98f);
         }
     }
     @Override

@@ -23,6 +23,18 @@ public class TltCoreHostilityTrait {
             .desc("The mob will only receive 50% damage, and %s% of the remaining 50% will reduce its life by bleeding").lang("Contaminated Blood").register();
     public static final RegistryEntry<BloodDebtTrait> blood_debt = L2Hostility.REGISTRATE.regTrait("blood_debt", () -> new BloodDebtTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 80, 30, 3, 200))
             .desc("The mob's attack will only deal 50% of the damage, while the other 50% will cause damage in a bleeding manner. It will ignore armor and magic defenses and increase the damage by %s%").lang("Blood Debt").register();
+    public static final RegistryEntry<TitanBloodlineTrait> titan_bloodline = L2Hostility.REGISTRATE.regTrait("titan_bloodline", () -> new TitanBloodlineTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 300, 20, 3, 600))
+            .desc("The damage caused increases by 5% of mob's maximum life.When the mob takes damage, it will increase its current maximum health by %s%, up to a maximum of 10 times").lang("Titan Bloodline").register();
+    public static final RegistryEntry<ShowSwordTrait> show_sword = L2Hostility.REGISTRATE.regTrait("show_sword", () -> new ShowSwordTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 150, 10, 3, 300))
+            .desc("The damage caused by the mob increases by %2$s%, and they are immune to damage from creatures that are more than %1$s apart, but cannot deal damage to them").lang("Show Sword").register();
+    public static final RegistryEntry<DevouringLifeTrait> devouring_life = L2Hostility.REGISTRATE.regTrait("devouring_life", () -> new DevouringLifeTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 20, 30, 5, 60))
+            .desc("The damage caused by the mob will heal themselves according to their %s% value").lang("Devouring Life").register();
+    public static final RegistryEntry<HarvestSharingTrait> harvest_sharing = L2Hostility.REGISTRATE.regTrait("harvest_sharing", () -> new HarvestSharingTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 60, 20, 5, 200))
+            .desc("If any creature within 20 squares recovers its life, it will recover its own life equivalent to %s% of its recovery amount").lang("Harvest Sharing").register();
+    public static final RegistryEntry<CriticalHitTrait> critical_hit = L2Hostility.REGISTRATE.regTrait("critical_hit", () -> new CriticalHitTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 120, 40, 3, 300))
+            .desc("There is a %2$s% chance that each attack will increase the damage by %1$s%").lang("Critical Hit").register();
+    public static final RegistryEntry<VectorStanceTrait> vector_stance = L2Hostility.REGISTRATE.regTrait("vector_stance", () -> new VectorStanceTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 60, 70, 3, 100))
+            .desc("Organisms located in front of themselves will cause %s% less damage to themselves").lang("Vector Stance").register();
 
     public static void register() {
     }
