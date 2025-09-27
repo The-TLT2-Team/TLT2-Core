@@ -9,9 +9,11 @@
     "FoodDataMixin",
     "LivingEntityMixin",
     "PlayerMixin",
+    "ShulkerBulletMixin",
     "l2.EffectUtilMixin",
     "l2.GravityTraitMixin",
-    "l2.RagnarokMixin"
+    "l2.RagnarokMixin",
+    "l2.ReflectMixin"
   ],
   "injectors": {
     "defaultRequire": 1

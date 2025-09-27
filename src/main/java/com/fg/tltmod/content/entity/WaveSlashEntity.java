@@ -8,10 +8,8 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -61,6 +59,7 @@ public class WaveSlashEntity extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity pTarget) {
+        if (pTarget instanceof ItemEntity||pTarget instanceof ExperienceOrb) return false;
         if (pTarget!=this&&!set.contains(pTarget.getId())&&pTarget!=this.getOwner()) {
             if (pTarget instanceof Player player && this.getOwner() instanceof Player player1) {
                 return player1.canHarmPlayer(player);

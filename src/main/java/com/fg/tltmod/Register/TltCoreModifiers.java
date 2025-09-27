@@ -5,6 +5,8 @@ import com.fg.tltmod.SomeModifiers.interaction.InTheNameOfLoveAndHate;
 import com.fg.tltmod.SomeModifiers.melee.Stop;
 import com.fg.tltmod.SomeModifiers.misc.EverFlamingCore;
 import com.fg.tltmod.SomeModifiers.misc.PowerOfPrayer;
+import com.fg.tltmod.SomeModifiers.sevenCurse.NeverEndsStartup;
+import com.fg.tltmod.SomeModifiers.sevenCurse.PiglinDefense;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 
@@ -20,5 +22,8 @@ public class TltCoreModifiers {
     public static final StaticModifier<InTheNameOfLoveAndHate> LOVE_AND_HATE_STATIC = MODIFIERS.register("in_the_name_of_love_and_hate", InTheNameOfLoveAndHate::new);
     public static final StaticModifier<BlessingFromFoxGod> BLESSING_FROM_FOX_GOD = MODIFIERS.register("blessing_from_fox_god",BlessingFromFoxGod::new);
     public static final StaticModifier<PowerOfPrayer> POWER_OF_PRAYER = MODIFIERS.register("power_of_prayer",PowerOfPrayer::new);
+
+    public static final StaticModifier<NeverEndsStartup> NEVER_ENDS_STARTUP = MODIFIERS.register("never_ends_startup", NeverEndsStartup::new);
+    public static final StaticModifier<PiglinDefense> PIGLIN_DEFENSE = MODIFIERS.register("piglin_defense",PiglinDefense::new);
 
 }

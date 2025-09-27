@@ -120,11 +120,11 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
                         d0 += instance.getModifier(EVER_FLAME_UUID).getAmount();
                         instance.removeModifier(EVER_FLAME_UUID);
                     }
-                    instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-living.getMaxHealth()*0.05, AttributeModifier.Operation.ADDITION));
+                    instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-living.getMaxHealth()*0.025, AttributeModifier.Operation.ADDITION));
                 }
                 if (context.getAttacker() instanceof Player player) {
                     if (!living.isDeadOrDying())
-                        ((ILivingEntityMixin) living).tltmod$hurt(LegacyDamageSource.playerAttack(player),living.getMaxHealth()*0.05f);
+                        ((ILivingEntityMixin) living).tltmod$hurt(LegacyDamageSource.playerAttack(player),living.getMaxHealth()*0.025f);
                 }
             }
             living.invulnerableTime = 0;
@@ -165,11 +165,11 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
                     d0 += instance.getModifier(EVER_FLAME_UUID).getAmount();
                     instance.removeModifier(EVER_FLAME_UUID);
                 }
-                instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-target.getMaxHealth()*0.05, AttributeModifier.Operation.ADDITION));
+                instance.addTransientModifier(new AttributeModifier(EVER_FLAME_UUID,Attributes.MAX_HEALTH.getDescriptionId(), d0-target.getMaxHealth()*0.025, AttributeModifier.Operation.ADDITION));
             }
             if (attacker instanceof Player player) {
                 if (!target.isDeadOrDying())
-                    ((ILivingEntityMixin) target).tltmod$hurt(LegacyDamageSource.playerAttack(player),target.getMaxHealth()*0.05f);
+                    ((ILivingEntityMixin) target).tltmod$hurt(LegacyDamageSource.playerAttack(player),target.getMaxHealth()*0.025f);
             }
         }
         target.invulnerableTime = 0;
@@ -200,12 +200,12 @@ public class EverFlamingCore extends TotalRagnarokDefense implements OnHoldingPr
     @Override
     public float onHoldingPreventDeath(LivingEntity livingEntity, IToolStackView iToolStackView, ModifierEntry modifierEntry, EquipmentContext equipmentContext, EquipmentSlot equipmentSlot, DamageSource damageSource) {
         if (iToolStackView.getPersistentData().getInt(KEY_CD)>0){
-            return livingEntity.getMaxHealth();
+            return 0;
         }
         if (iToolStackView.getDamage()<=iToolStackView.getCurrentDurability()*9){
             iToolStackView.setDamage((int) (iToolStackView.getDamage()-0.1f*(iToolStackView.getDamage()+iToolStackView.getCurrentDurability())));
             livingEntity.invulnerableTime = 200;
-            iToolStackView.getPersistentData().putInt(KEY_CD,10);
+            iToolStackView.getPersistentData().putInt(KEY_CD,120);
             return livingEntity.getMaxHealth();
         }
         return 0;

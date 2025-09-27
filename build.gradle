@@ -203,6 +203,7 @@ dependencies {
         transitive = false
         jarJar.ranged(it, "[0.4.3,)")
     }
+    implementation fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
