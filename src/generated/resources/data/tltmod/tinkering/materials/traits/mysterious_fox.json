@@ -1,0 +1,36 @@
+{
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "level": 1,
+        "name": "sakuratinker:absorption"
+      },
+      {
+        "level": 1,
+        "name": "sakuratinker:celestial"
+      },
+      {
+        "level": 1,
+        "name": "tltmod:blessing_from_fox_god"
+      },
+      {
+        "level": 3,
+        "name": "tltmod:power_of_prayer"
+      }
+    ],
+    "tconstruct:melee_harvest": [
+      {
+        "level": 1,
+        "name": "tltmod:in_the_name_of_love_and_hate"
+      },
+      {
+        "level": 1,
+        "name": "tltmod:blessing_from_fox_god"
+      },
+      {
+        "level": 3,
+        "name": "tltmod:power_of_prayer"
+      }
+    ]
+  }
+}

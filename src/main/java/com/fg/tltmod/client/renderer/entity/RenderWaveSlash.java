@@ -19,7 +19,7 @@ import org.joml.Matrix4f;
 import org.joml.Random;
 
 public class RenderWaveSlash extends EntityRenderer<WaveSlashEntity> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(TinkersAdvanced.MODID,"textures/entity/plasma_beam/white.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(TinkersAdvanced.MODID,"textures/entity/plasma_beam/white.png");
     public RenderWaveSlash(EntityRendererProvider.Context pContext) {
         super(pContext);
     }

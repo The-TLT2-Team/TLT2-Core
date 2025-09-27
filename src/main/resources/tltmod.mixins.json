@@ -6,6 +6,7 @@
   "refmap": "tltmod.refmap.json",
   "mixins": [
     "EnchantmentMixin",
+    "FoodDataMixin",
     "LivingEntityMixin",
     "PlayerMixin",
     "l2.EffectUtilMixin",
