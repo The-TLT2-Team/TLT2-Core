@@ -36,6 +36,10 @@ public class TltCoreHostilityTrait {
     public static final RegistryEntry<VectorStanceTrait> vector_stance = L2Hostility.REGISTRATE.regTrait("vector_stance", () -> new VectorStanceTrait(()->0xd3fcff), (rl) -> new TraitConfig(rl, 60, 70, 3, 100))
             .desc("Organisms located in front of themselves will cause %s% less damage to themselves").lang("Vector Stance").register();
 
+
+    public static final RegistryEntry<MagalaErode> magala_erode = L2Hostility.REGISTRATE.regTrait("magala_erode", () -> new MagalaErode(()->0x620591), (rl) -> new TraitConfig(rl, 100, 40, 1, 150))
+            .desc("The self has overcome bloodlust and when attacking or being injured, inflicts bloodlust on the target").lang("Magala Erode").register();
+
     public static void register() {
     }
 }
