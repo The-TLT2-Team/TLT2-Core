@@ -30,20 +30,27 @@ public class HarvestSharingTrait extends MobTrait {
     }
     private void OnLivingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
-        if (living!=null) {
-            List<Mob> ls0 = living.level().getEntitiesOfClass(Mob.class, living.getBoundingBox().inflate(20));
-            for (Mob mob : ls0) {
+        if (living!=null&&!living.level().isClientSide) {
+            if (MobTraitCap.HOLDER.isProper(living)&&MobTraitCap.HOLDER.get(living).getTraitLevel(this)>=1)return;
+            List<LivingEntity> ls0 = living.level().getEntitiesOfClass(LivingEntity.class, living.getBoundingBox().inflate(20));
+            for (LivingEntity mob : ls0) {
                 if (mob != living && mob != null&&MobTraitCap.HOLDER.isProper(mob)) {
-                    if (!validTarget(mob))return;
+                    if (!validTarget(mob)) continue;
                     int a = MobTraitCap.HOLDER.get(mob).getTraitLevel(this);
-                    if (a >= 1) {
-                        mob.heal(event.getAmount()*a*0.2f);
+                    if (a >= 1&&mob.getHealth()<mob.getMaxHealth()) {
+                        float b = event.getAmount()*a*0.2f;
+                        mob.heal(b);
                     }
                 }
 
             }
         }
     }
+    @Override
+    public boolean allow(LivingEntity le, int difficulty, int maxModLv) {
+        return validTarget(le) && super.allow(le, difficulty, maxModLv);
+    }
+
     public boolean validTarget(LivingEntity le) {
         if (le instanceof EnderDragon) {
             return false;

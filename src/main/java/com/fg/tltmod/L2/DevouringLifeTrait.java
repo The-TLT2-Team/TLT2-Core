@@ -22,7 +22,11 @@ public class DevouringLifeTrait extends MobTrait {
 
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
-        float b = cache.getPreDamage()*a*0.2f;
+        if (attacker.level().isClientSide()) return;
+        float b = 1;
+        if (cache.getLivingHurtEvent() != null) {
+            b = cache.getLivingHurtEvent().getAmount()*a*0.2f;
+        }
         attacker.heal(b);
     }
     @Override

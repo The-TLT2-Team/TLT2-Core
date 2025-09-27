@@ -27,7 +27,7 @@ public class ThudTrait extends MobTrait {
         LivingEntity living=cache.getAttackTarget();
         if (!living.hasEffect(TltCoreEffects.oscillation.get())&&attacker.getPersistentData().getInt(thud_cooldown) == 0){
             applyCustomKnockback(attacker, living,Math.pow(2+a,2));
-            living.addEffect(new MobEffectInstance(TltCoreEffects.oscillation.get(),20*a,a-1));
+            living.addEffect(new MobEffectInstance(TltCoreEffects.oscillation.get(),20*(a+1),a-1));
             attacker.getPersistentData().putInt(thud_cooldown, 10);
         }
     }
@@ -50,7 +50,7 @@ public class ThudTrait extends MobTrait {
     @Override
     public void addDetail(List<Component> list) {
         list.add(Component.translatable(getDescriptionId() + ".desc",
-                mapLevel(i -> Component.literal(i + "")
+                mapLevel(i -> Component.literal(i+1 + "")
                         .withStyle(ChatFormatting.AQUA))
         ).withStyle(ChatFormatting.GRAY));
     }

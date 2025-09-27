@@ -35,7 +35,7 @@ public class TitanBloodlineTrait extends MobTrait {
         if (entity.getPersistentData().getInt(titan_bloodline_value)<10){
             entity.getPersistentData().putInt(titan_bloodline_value,entity.getPersistentData().getInt(titan_bloodline_value)+1);
             addMaxHealth(entity, entity.getMaxHealth() * 0.05f * a);
-            entity.heal(entity.getMaxHealth() * 0.05f * a);
+            entity.heal(entity.getMaxHealth() * 0.06f * a);
         }
     }
     private static void addMaxHealth(LivingEntity entity, float reductionAmount) {

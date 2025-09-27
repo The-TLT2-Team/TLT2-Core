@@ -1,5 +1,6 @@
 package com.fg.tltmod.L2;
 
+import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.fg.tltmod.TltCore;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import net.minecraft.ChatFormatting;
@@ -24,7 +25,10 @@ public class ContaminatedBloodTrait extends MobTrait {
     public void tick(LivingEntity mob, int a) {
         float b=mob.getPersistentData().getFloat(contaminated_blood_value);
         if (!mob.level().isClientSide()&&b>=1) {
-            mob.setHealth(mob.getHealth() - b*0.02f);
+//            mob.setHealth(mob.getHealth() - b*0.02f);
+            mob.invulnerableTime=0;
+            mob.hurt(LegacyDamageSource.any(mob.level().damageSources().magic()).setBypassArmor().setBypassMagic(),b*0.02f);
+            mob.invulnerableTime=0;
             mob.getPersistentData().putFloat(contaminated_blood_value,b*0.98f);
         }
     }

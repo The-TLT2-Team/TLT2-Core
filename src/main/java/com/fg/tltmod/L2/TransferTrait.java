@@ -52,7 +52,7 @@ public class TransferTrait extends MobTrait {
         }
     }
     private static boolean teleport(LivingEntity entity) {
-        int r = 6;
+        int r = 12;
         if (!entity.level().isClientSide() && entity.isAlive()) {
             double d0 = entity.getX() + (entity.getRandom().nextDouble() - 0.5D) * r * 2;
             double d1 = entity.getY() + (double) (entity.getRandom().nextInt(r * 2) - r);

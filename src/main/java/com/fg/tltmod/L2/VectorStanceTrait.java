@@ -2,7 +2,12 @@ package com.fg.tltmod.L2;
 
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -17,24 +22,26 @@ public class VectorStanceTrait extends MobTrait {
 
     @Override
     public void onHurtByOthers(int a, LivingEntity entity, LivingHurtEvent event) {
-        if (event.getSource().getEntity() instanceof LivingEntity living&&isInFront(entity,living)){
-            event.setAmount(event.getAmount()*(1f-a*0.25f));
+        if (event.getSource().getEntity() instanceof LivingEntity){
+            if (entity.level().isClientSide)return;
+            if (isInFront(event.getSource(),entity)) {
+                event.setAmount(event.getAmount() * (1f - a * 0.25f));
+            }
         }
     }
-    private boolean isInFront(LivingEntity target, LivingEntity attacker) {
-        if (target == null || attacker == null) {
-            return false;
-        }
-        Vec3 targetLookVec = target.getLookAngle();
-        Vec3 targetLookVecHorizontal = new Vec3(targetLookVec.x, 0, targetLookVec.z).normalize();
-        Vec3 toAttackerVec = new Vec3(
-                attacker.getX() - target.getX(),
-                0,
-                attacker.getZ() - target.getZ()
-        ).normalize();
-        double dotProduct = targetLookVecHorizontal.dot(toAttackerVec);
-        return dotProduct > 0;
+    private boolean isInFront(DamageSource damageSourceIn,LivingEntity living) {
+
+            Vec3 vector3d2 = damageSourceIn.getSourcePosition();
+            if (vector3d2 != null) {
+                Vec3 vector3d = living.getViewVector(1.0F);
+                Vec3 vector3d1 = vector3d2.vectorTo(living.position()).normalize();
+                vector3d1 = new Vec3(vector3d1.x, 0.0D, vector3d1.z);
+                return vector3d1.dot(vector3d) < 0.0D;
+            }
+
+        return false;
     }
+
 
     @Override
     public void addDetail(List<Component> list) {

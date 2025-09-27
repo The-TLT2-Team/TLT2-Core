@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSwapItemsEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -34,7 +35,7 @@ public class Oscillation extends TltCoreEffect {
         MinecraftForge.EVENT_BUS.addListener(this::onFillBucket);
         MinecraftForge.EVENT_BUS.addListener(this::onUseItem);
         MinecraftForge.EVENT_BUS.addListener(this::onPlaceBlock);
-        MinecraftForge.EVENT_BUS.addListener(this::onLivingDamage);
+        MinecraftForge.EVENT_BUS.addListener(this::onLivingHurt);
     }
     public void onPlayerInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.isCancelable() && event.getEntity().hasEffect(TltCoreEffects.oscillation.get())) {
@@ -114,9 +115,9 @@ public class Oscillation extends TltCoreEffect {
         }
     }
 
-    public void onLivingDamage(LivingDamageEvent event) {
+    public void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(TltCoreEffects.oscillation.get())) {
+        if (entity!=null&&entity.hasEffect(TltCoreEffects.oscillation.get())) {
             int a = 1;
             if (entity.getEffect(TltCoreEffects.oscillation.get())!=null){
                 a += entity.getEffect(TltCoreEffects.oscillation.get()).getAmplifier();

@@ -25,7 +25,11 @@ public class BloodDebtTrait extends MobTrait {
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
         LivingEntity living=cache.getAttackTarget();
-        living.getPersistentData().putFloat(blood_debt_value,living.getPersistentData().getFloat(blood_debt_value)+cache.getPreDamage()*0.5f*(1f+a*0.4f));
+        float b = 1;
+        if (cache.getLivingHurtEvent() != null) {
+            b = cache.getLivingHurtEvent().getAmount()*0.5f*(1f+a*0.4f);
+        }
+        living.getPersistentData().putFloat(blood_debt_value,living.getPersistentData().getFloat(blood_debt_value)+b);
         cache.addHurtModifier(DamageModifier.multTotal(0.5f));
     }
     private void OnLivingTick(LivingEvent.LivingTickEvent event) {
