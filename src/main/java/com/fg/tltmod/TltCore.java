@@ -1,9 +1,6 @@
 package com.fg.tltmod;
 
-import com.fg.tltmod.Register.TltCoreEffects;
-import com.fg.tltmod.Register.TltCoreEntityTypes;
-import com.fg.tltmod.Register.TltCoreHostilityTrait;
-import com.fg.tltmod.Register.TltCoreModifiers;
+import com.fg.tltmod.Register.*;
 import com.fg.tltmod.client.gui.HungerBarRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,7 +18,7 @@ public class TltCore
         IEventBus modEventBus = context.getModEventBus();
         TltCoreModifiers.MODIFIERS.register(modEventBus);
         TltCoreEntityTypes.ENTITY_TYPES.register(modEventBus);
-
+        TltCoreItems.BASIC_ITEM.register(modEventBus);
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         TltCoreEffects.EFFECT.register(modEventBus);
         TltCoreHostilityTrait.register();

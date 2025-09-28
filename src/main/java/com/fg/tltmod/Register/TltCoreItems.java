@@ -1,0 +1,15 @@
+package com.fg.tltmod.Register;
+
+import com.fg.tltmod.TltCore;
+import com.fg.tltmod.content.item.DummyToolManaLens;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class TltCoreItems {
+    public static final DeferredRegister<Item> BASIC_ITEM = DeferredRegister.create(ForgeRegistries.ITEMS, TltCore.MODID);
+
+    public static final RegistryObject<Item> DUMMY_TOOL_MANA_LENS = BASIC_ITEM.register("dummy_tool_mana_lens", DummyToolManaLens::new);
+
+}
