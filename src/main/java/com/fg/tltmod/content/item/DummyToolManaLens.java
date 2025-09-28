@@ -1,5 +1,6 @@
 package com.fg.tltmod.content.item;
 
+import com.fg.tltmod.Register.TltCoreItems;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public class DummyToolManaLens extends ModifiableItem implements LensEffectItem 
     }
 
     public static ItemStack getDummyLens(ToolStack tool){
-        var itemStack = new ItemStack(TltCoreI.DUMMY_TOOL_MANA_LENS.get(),1);
+        var itemStack = new ItemStack(TltCoreItems.DUMMY_TOOL_MANA_LENS.get(),1);
         itemStack.setTag(tool.createStack().getTag());
         return itemStack;
     }
