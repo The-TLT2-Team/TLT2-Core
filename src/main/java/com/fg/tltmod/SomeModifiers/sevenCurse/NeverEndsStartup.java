@@ -17,6 +17,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.hook.armor.ModifyDamageModifierHook;
+import slimeknights.tconstruct.library.modifiers.modules.technical.ArmorLevelModule;
+import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.capability.TinkerDataCapability;
 import slimeknights.tconstruct.library.tools.context.EquipmentContext;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
@@ -25,6 +27,12 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 @Mod.EventBusSubscriber(modid = TltCore.MODID)
 public class NeverEndsStartup extends EtSTBaseModifier implements ModifyDamageModifierHook {
     public static final TinkerDataCapability.TinkerDataKey<Integer> KEY_NEVER_END = TltCore.createKey("never_end");
+
+    @Override
+    protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
+        super.registerHooks(hookBuilder);
+        hookBuilder.addModule(new ArmorLevelModule(KEY_NEVER_END,false,null));
+    }
 
     @SubscribeEvent
     public static void onLivingChangeTarget(LivingChangeTargetEvent event){
