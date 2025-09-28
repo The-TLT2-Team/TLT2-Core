@@ -1,4 +1,4 @@
-package com.fg.tltmod.SomeModifiers;
+package com.fg.tltmod.SomeModifiers.misc;
 
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
 import com.fg.tltmod.util.TltcoreConstants;

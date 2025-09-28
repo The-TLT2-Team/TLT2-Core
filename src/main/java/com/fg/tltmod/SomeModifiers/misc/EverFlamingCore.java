@@ -1,9 +1,8 @@
-package com.fg.tltmod.SomeModifiers;
+package com.fg.tltmod.SomeModifiers.misc;
 
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.OnHoldingPreventDeathHook;
-import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
 import com.c2h6s.etstlib.util.DynamicComponentUtil;
 import com.c2h6s.tinkers_advanced.TinkersAdvanced;
 import com.fg.tltmod.TltCore;
@@ -43,7 +42,6 @@ import slimeknights.tconstruct.library.modifiers.modules.combat.LootingModule;
 import slimeknights.tconstruct.library.modifiers.modules.util.ModifierCondition;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.SlotType;
-import slimeknights.tconstruct.library.tools.capability.TinkerDataCapability;
 import slimeknights.tconstruct.library.tools.context.EquipmentContext;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.nbt.*;

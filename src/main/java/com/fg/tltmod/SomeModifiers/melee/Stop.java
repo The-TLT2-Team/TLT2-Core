@@ -1,4 +1,4 @@
-package com.fg.tltmod.SomeModifiers;
+package com.fg.tltmod.SomeModifiers.melee;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;

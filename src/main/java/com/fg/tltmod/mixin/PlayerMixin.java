@@ -14,4 +14,13 @@ public class PlayerMixin {
     public void cancelPvp(DamageSource pSource, float pAmount, CallbackInfoReturnable<Boolean> cir){
         if (pSource.getEntity() instanceof Player) cir.setReturnValue(false);
     }
+
+    @Inject(
+            at = {@At("HEAD")},
+            method = {"canEat"},
+            cancellable = true
+    )
+    private void canEat(boolean canAlwaysEat, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(true);
+    }
 }
