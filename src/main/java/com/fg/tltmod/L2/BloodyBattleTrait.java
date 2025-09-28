@@ -5,6 +5,7 @@ import dev.xkmc.l2damagetracker.contents.attack.AttackCache;
 import dev.xkmc.l2damagetracker.contents.attack.DamageModifier;
 import dev.xkmc.l2hostility.content.logic.TraitEffectCache;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
+import dev.xkmc.l2hostility.content.traits.legendary.LegendaryTrait;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,9 +15,9 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import java.util.List;
 import java.util.function.IntSupplier;
 
-public class BloodyBattleTrait extends MobTrait {
-    public BloodyBattleTrait(IntSupplier color) {
-        super((color));
+public class BloodyBattleTrait extends LegendaryTrait {
+    public BloodyBattleTrait(ChatFormatting format) {
+        super((format));
     }
     public static String fight_to_end = TltCore.getResource("fight_to_end").toString();
 

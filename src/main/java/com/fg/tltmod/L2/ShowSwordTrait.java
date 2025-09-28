@@ -1,30 +1,18 @@
 package com.fg.tltmod.L2;
 
 import com.fg.tltmod.Register.TltCoreHostilityTrait;
-import com.fg.tltmod.TltCore;
 import dev.xkmc.l2damagetracker.contents.attack.AttackCache;
 import dev.xkmc.l2damagetracker.contents.attack.DamageModifier;
-import dev.xkmc.l2hostility.content.capability.mob.MobTraitCap;
-import dev.xkmc.l2hostility.content.capability.mob.PerformanceConstants;
-import dev.xkmc.l2hostility.content.logic.InheritContext;
 import dev.xkmc.l2hostility.content.logic.TraitEffectCache;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
-import dev.xkmc.l2hostility.events.MiscHandlers;
-import dev.xkmc.l2hostility.init.data.LHConfig;
-import dev.xkmc.l2library.base.effects.EffectUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.function.IntSupplier;
 
 public class ShowSwordTrait extends MobTrait {
@@ -43,7 +31,7 @@ public class ShowSwordTrait extends MobTrait {
     }
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
-        cache.addHurtModifier(DamageModifier.multTotal(a*0.4f));
+        cache.addHurtModifier(DamageModifier.multTotal(1f+a*0.4f));
         LivingEntity living=cache.getAttackTarget();
         double c = attacker.distanceTo(living);
         if (c>=(8-a*2)) {
