@@ -37,8 +37,10 @@ public class TltCoreHostilityTrait {
             .desc("Organisms located in front of themselves will cause %s% less damage to themselves").lang("Vector Stance").register();
 
 
-    public static final RegistryEntry<MagalaErode> magala_erode = L2Hostility.REGISTRATE.regTrait("magala_erode", () -> new MagalaErode(()->0x620591), (rl) -> new TraitConfig(rl, 100, 40, 1, 150))
+    public static final RegistryEntry<MagalaErode> magala_erode = L2Hostility.REGISTRATE.regTrait("magala_erode", () -> new MagalaErode(()->0x620591), (rl) -> new TraitConfig(rl, 50, 40, 1, 150))
             .desc("The self has overcome bloodlust and when attacking or being injured, inflicts bloodlust on the target").lang("Magala Erode").register();
+    public static final RegistryEntry<BrokenArmor> broken_armor = L2Hostility.REGISTRATE.regTrait("broken_armor", () -> new BrokenArmor(()->0x620591), (rl) -> new TraitConfig(rl, 20, 60, 5, 40))
+            .desc("Attacks apply %s-second armor-braking effect that reduces your armor value. Reapplying it will increase its level and extend its duration.").lang("Broken Armor").register();
 
     public static void register() {
     }
