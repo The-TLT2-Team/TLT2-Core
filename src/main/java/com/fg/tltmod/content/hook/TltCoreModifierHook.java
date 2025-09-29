@@ -1,19 +1,17 @@
 package com.fg.tltmod.content.hook;
 
 import com.fg.tltmod.TltCore;
+import com.fg.tltmod.content.hook.modifier.BurstDamageModifierHook;
+import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
+import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
-import net.minecraft.world.item.ItemStack;
-import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.module.ModuleHook;
-import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
-import vazkii.botania.api.internal.ManaBurst;
 
 public class TltCoreModifierHook {
-    public static final ModuleHook<UpdateBurstModifierHook> UPDATE_BURST = ModifierHooks.register(TltCore.getResource("update_burst"), UpdateBurstModifierHook.class, UpdateBurstModifierHook.AllMerger::new, new UpdateBurstModifierHook() {
-        @Override
-        public void updateBurst(IToolStackView tool, ModifierEntry modifier, ManaBurst burst, ItemStack stack) {
+    public static final ModuleHook<UpdateBurstModifierHook> UPDATE_BURST = ModifierHooks.register(TltCore.getResource("update_burst"), UpdateBurstModifierHook.class, UpdateBurstModifierHook.AllMerger::new, new UpdateBurstModifierHook() {});
+    public static final ModuleHook<ModifyBurstModifierHook> MODIFY_BURST = ModifierHooks.register(TltCore.getResource("modify_burst"), ModifyBurstModifierHook.class, ModifyBurstModifierHook.AllMerger::new, new ModifyBurstModifierHook() {});
+    public static final ModuleHook<BurstDamageModifierHook> BURST_DAMAGE = ModifierHooks.register(TltCore.getResource("burst_damage"), BurstDamageModifierHook.class, BurstDamageModifierHook.AllMerger::new, (modifier, modifierList, owner, target, burst, baseDamage, damage) -> damage);
+    public static final ModuleHook<BurstHitModifierHook> BURST_HIT = ModifierHooks.register(TltCore.getResource("burst_hit"), BurstHitModifierHook.class,BurstHitModifierHook.merger::new, new BurstHitModifierHook() {});
 
-        }
-    });
 }

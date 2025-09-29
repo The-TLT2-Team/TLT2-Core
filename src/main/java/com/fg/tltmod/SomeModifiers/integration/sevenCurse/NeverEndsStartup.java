@@ -1,4 +1,4 @@
-package com.fg.tltmod.SomeModifiers.sevenCurse;
+package com.fg.tltmod.SomeModifiers.integration.sevenCurse;
 
 import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
