@@ -8,6 +8,7 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.xkmc.l2hostility.content.config.TraitConfig;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import dev.xkmc.l2hostility.init.L2Hostility;
+import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
 
 
@@ -49,7 +50,7 @@ public class TltCoreHostilityTrait {
                     "Evil Karma");
 
     public static final RegistryEntry<BloodyBattleTrait> bloody_battle =
-            register("bloody_battle", () -> new BloodyBattleTrait(() -> 0xd3fcff),
+            register("bloody_battle", () -> new BloodyBattleTrait(ChatFormatting.DARK_RED),
                     rl -> new TraitConfig(rl, 200, 10, 1, 500),
                     "When the mob dies for the first time, it is immune to this death and restores its life to full. It continues to lose life for the next 25 seconds, while increasing the damage dealt to 400% and reducing the damage received to 25%",
                     "Bloody Battle");
@@ -119,6 +120,16 @@ public class TltCoreHostilityTrait {
                     rl -> new TraitConfig(rl, 100, 40, 1, 150),
                     "The self has overcome bloodlust and when attacking or being injured, inflicts bloodlust on the target",
                     "Magala Erode");
+
+    public static final RegistryEntry<BrokenArmor> broken_armor =
+            register(
+                    "broken_armor",
+                    () -> new BrokenArmor(() -> 0x620591),
+                    rl -> new TraitConfig(rl, 20, 60, 5, 40),
+                    "Attacks apply %s-second armor-braking effect that reduces your armor value. " +
+                            "Reapplying it will increase its level and extend its duration.",
+                    "Broken Armor"
+            );
 
     public static void register() {
     }
