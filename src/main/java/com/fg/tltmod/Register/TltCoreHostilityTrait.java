@@ -115,6 +115,12 @@ public class TltCoreHostilityTrait {
                     "Organisms located in front of themselves will cause %s% less damage to themselves",
                     "Vector Stance");
 
+    public static final RegistryEntry<AbsorbManaTrait> absorb_mana =
+            register("absorb_mana", () -> new AbsorbManaTrait(()->0x49ff39),
+                    rl -> new TraitConfig(rl, 150, 30, 3, 400),
+            "Continuously absorb and reduce the mana of items stored in the player's backpack at a rate of %3$s + the max mana limit of the item at a rate of %2$s% per second",
+                    "Absorb Mana");
+
     public static final RegistryEntry<MagalaErode> magala_erode =
             register("magala_erode", () -> new MagalaErode(() -> 0x620591),
                     rl -> new TraitConfig(rl, 100, 40, 1, 150),
@@ -130,6 +136,12 @@ public class TltCoreHostilityTrait {
                             "Reapplying it will increase its level and extend its duration.",
                     "Broken Armor"
             );
+
+    public static final RegistryEntry<DevouringElectricityTrait> devouring_electricity =
+            register("devouring_electricity", () -> new DevouringElectricityTrait(()->0x49ff39),
+                    rl -> new TraitConfig(rl, 200, 30, 3, 200),
+                    "Continuously absorb and reduce the mana of items stored in the player's backpack at a rate of %3$s + the max mana limit of the item at a rate of %2$s% per second",
+                    "Devouring Electricity");
 
     public static void register() {
     }

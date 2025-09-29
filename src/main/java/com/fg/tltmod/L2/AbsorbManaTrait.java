@@ -30,8 +30,10 @@ public class AbsorbManaTrait extends MobTrait {
                         var manaItem = XplatAbstractions.INSTANCE.findManaItem(stackInSlot);
                         if (manaItem != null) {
                             int b = (int) (10*a + manaItem.getMaxMana()*0.002f*a);
+                            if (manaItem.getMana()==0)continue;
                             if (manaItem.getMana()<b)b=manaItem.getMana();
                             manaItem.addMana(-b);
+                            break;
                         }
                     }
                 }
