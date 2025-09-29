@@ -1,7 +1,6 @@
 {
-  "_class": "dev.xkmc.l2hostility.content.config.TraitConfig",
   "cost": 150,
-  "weight": 20,
   "max_rank": 3,
-  "min_level": 500
+  "min_level": 500,
+  "weight": 20
 }

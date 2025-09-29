@@ -2,6 +2,7 @@ package com.fg.tltmod.data;
 
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.data.providers.*;
+import com.fg.tltmod.data.providers.l2hostility.TraitConfigProvider;
 import com.fg.tltmod.data.providers.tinker.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -22,22 +23,25 @@ public class TltCoreDataProviders {
         PackOutput output=generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider=event.getLookupProvider();
         ExistingFileHelper helper=event.getExistingFileHelper();
+        boolean client = event.includeClient();
+        boolean server = event.includeServer();
 
-        generator.addProvider(event.includeClient(),new TltCoreBlockStateProvider(output,helper));
-        generator.addProvider(event.includeClient(),new TltCoreItemModelProvider(output,helper));
-        generator.addProvider(event.includeClient(),new TltCoreFluidTextureProvider(output));
-        generator.addProvider(event.includeClient(),new TltCoreFluidTagProvider(output,lookupProvider,helper));
-        generator.addProvider(event.includeClient(),new FluidBucketModelProvider(output, TltCore.MODID));
+        generator.addProvider(client,new TltCoreBlockStateProvider(output,helper));
+        generator.addProvider(client,new TltCoreItemModelProvider(output,helper));
+        generator.addProvider(client,new TltCoreFluidTextureProvider(output));
+        generator.addProvider(client,new TltCoreFluidTagProvider(output,lookupProvider,helper));
+        generator.addProvider(client,new FluidBucketModelProvider(output, TltCore.MODID));
         TltCoreBlockTagProvider blockTags = new TltCoreBlockTagProvider(output, lookupProvider, helper);
-        generator.addProvider(event.includeClient(),blockTags);
-        generator.addProvider(event.includeServer(),new TltCoreItemTagProvider(output,lookupProvider,blockTags.contentsGetter(),helper));
-        generator.addProvider(event.includeClient(),new TltCoreMaterialProvider(output));
-        generator.addProvider(event.includeClient(),new TltCoreMaterialStatProvider(output));
-        generator.addProvider(event.includeClient(),new TltCoreMaterialModifierProvider(output));
-        generator.addProvider(event.includeClient(),new TltCoreFluidEffectProvider(output));
-        generator.addProvider(event.includeClient(),new TltCoreMaterialTagProvider(output,helper));
-        generator.addProvider(event.includeClient(),new TltCoreModifierTagProvider(output,helper));
-        generator.addProvider(event.includeClient(),new TltCoreMaterialRenderInfoProvider(output,new TltCoreMaterialSpriteProvider(),helper));
-        generator.addProvider(event.includeServer(),new TltCoreModifierProvider(output));
+        generator.addProvider(client,blockTags);
+        generator.addProvider(server,new TltCoreItemTagProvider(output,lookupProvider,blockTags.contentsGetter(),helper));
+        generator.addProvider(client,new TltCoreMaterialProvider(output));
+        generator.addProvider(client,new TltCoreMaterialStatProvider(output));
+        generator.addProvider(client,new TltCoreMaterialModifierProvider(output));
+        generator.addProvider(client,new TltCoreFluidEffectProvider(output));
+        generator.addProvider(client,new TltCoreMaterialTagProvider(output,helper));
+        generator.addProvider(client,new TltCoreModifierTagProvider(output,helper));
+        generator.addProvider(client,new TltCoreMaterialRenderInfoProvider(output,new TltCoreMaterialSpriteProvider(),helper));
+        generator.addProvider(client,new TltCoreModifierProvider(output));
+        generator.addProvider(server, new TraitConfigProvider(generator));
     }
 }
