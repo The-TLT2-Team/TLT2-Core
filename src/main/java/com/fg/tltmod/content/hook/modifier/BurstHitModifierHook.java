@@ -23,9 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface BurstHitModifierHook {
-    default boolean burstHitBlock(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst ){
-        return shouldKill;
-    }
+    default void burstHitBlock(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst ){}
 
     default void beforeBurstHitEntity(ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull Entity target, ManaBurst burst,float damage){}
 
@@ -42,13 +40,12 @@ public interface BurstHitModifierHook {
                 if (level.getBlockState(pos).is(Blocks.AIR)||!level.getFluidState(pos).isEmpty()) return false;
                 ToolStack tool = ToolStack.from(stack);
                 var modifierList = tool.getModifierList();
-                boolean b = false;
+
                 for (var entry:tool.getModifierList()){
-                    b = (entry.getHook(TltCoreModifierHook.BURST_HIT).burstHitBlock(entry,modifierList, burst.entity().getOwner(),level,pos,direction,isManaBlock,shouldKill,burst));
-                    if (b) break;
+                    entry.getHook(TltCoreModifierHook.BURST_HIT).burstHitBlock(entry,modifierList, burst.entity().getOwner(),level,pos,direction,isManaBlock,shouldKill,burst);
                 }
                 burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerBlockConsumption());
-                return b;
+                return burst.getMana()<=0;
             }
             case ENTITY -> {
                 EntityHitResult hitResult = (EntityHitResult) result;
@@ -86,11 +83,8 @@ public interface BurstHitModifierHook {
 
     record merger(Collection<BurstHitModifierHook> modules) implements BurstHitModifierHook {
         @Override
-        public boolean burstHitBlock(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst) {
-            for (BurstHitModifierHook hook:this.modules){
-                if (hook.burstHitBlock(modifier,modifierList,owner,level,blockPos,direction,isManaBlock,shouldKill,burst)) return true;
-            }
-            return false;
+        public void burstHitBlock(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst) {
+            this.modules.forEach(hook->hook.burstHitBlock(modifier,modifierList,owner,level,blockPos,direction,isManaBlock,shouldKill,burst));
         }
 
         @Override
