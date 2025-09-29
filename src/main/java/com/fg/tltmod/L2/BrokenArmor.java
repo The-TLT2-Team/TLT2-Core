@@ -1,5 +1,6 @@
 package com.fg.tltmod.L2;
 
+import com.fuyun.cloudertinker.register.CloudertinkerEffects;
 import dev.xkmc.l2damagetracker.contents.attack.AttackCache;
 import dev.xkmc.l2hostility.content.logic.TraitEffectCache;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;

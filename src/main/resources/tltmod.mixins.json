@@ -10,6 +10,7 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "ShulkerBulletMixin",
+    "bot.ManaBurstEntityMixin",
     "l2.EffectUtilMixin",
     "l2.GravityTraitMixin",
     "l2.RagnarokMixin",

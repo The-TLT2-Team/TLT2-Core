@@ -1,6 +1,7 @@
 package com.fg.tltmod.content.item;
 
 import com.fg.tltmod.Register.TltCoreItems;
+import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -43,8 +44,8 @@ public class DummyToolManaLens extends ModifiableItem implements LensEffectItem 
     }
 
     @Override
-    public boolean collideBurst(ManaBurst burst, HitResult pos, boolean isManaBlock, boolean shouldKill, ItemStack stack) {
-        return false;
+    public boolean collideBurst(ManaBurst burst, HitResult result, boolean isManaBlock, boolean shouldKill, ItemStack stack) {
+        return BurstHitModifierHook.handleBurstHit(burst,result,isManaBlock,shouldKill,stack);
     }
 
 
