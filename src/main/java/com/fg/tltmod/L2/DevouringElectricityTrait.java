@@ -2,10 +2,13 @@ package com.fg.tltmod.L2;
 
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import top.theillusivec4.curios.api.CuriosApi;
 
@@ -19,100 +22,35 @@ public class DevouringElectricityTrait extends MobTrait {
     }
     @Override
     public void tick(LivingEntity mob, int a) {
-        if (!mob.level().isClientSide()) {
-            List<Player> ls0 = mob.level().getEntitiesOfClass(Player.class, mob.getBoundingBox().inflate(8+a*4));
-            for (Player player : ls0) {
-                if (player != mob && player != null) {
-                    List<ItemStack> items = getStacks(player);
-                    for (ItemStack stack:items){
-                        int b = (int) (5*a+getEnergyInfo(stack).getMaxEnergy()*0.0001f*a);
-                        if (getEnergyInfo(stack).getCurrentEnergy()==0)continue;
-                        if (b<getEnergyInfo(stack).getCurrentEnergy())b=getEnergyInfo(stack).getCurrentEnergy();
-                        drainEnergy(stack,b);
-                        break;
-                    }
+        float radius = 6;
+        if (!mob.level().isClientSide()&&mob.level().getGameTime()%5==0) {
+            int extract = a*25000;
+            mob.level().getEntitiesOfClass(Player.class, mob.getBoundingBox().inflate(radius),
+                    player -> player!=mob&&!player.isCreative()&&mob.distanceTo(player)<=6).forEach(player -> {
+                Inventory inventory = player.getInventory();
+                List<ItemStack> stacks = new ArrayList<>(inventory.armor);
+                stacks.addAll(inventory.offhand);
+                for (int i = 0; i < 9; i++) {
+                    stacks.add(inventory.getItem(i));
                 }
-            }
+                stacks.stream().filter(stack -> !stack.isEmpty())
+                        .forEach(stack -> stack.getCapability(ForgeCapabilities.ENERGY)
+                                .ifPresent(cap -> cap.extractEnergy(extract, false)));
+            });
         }
-    }
-    public static List<ItemStack> getStacks(Player player) {
-        List<ItemStack> list = new ArrayList<>();
-        CuriosApi.getCuriosInventory(player).ifPresent((handler) -> handler.getCurios().forEach((id, curios) -> {
-            for(int i = 0; i < curios.getSlots(); ++i) {
-                ItemStack stack = curios.getStacks().getStackInSlot(i);
-                if (!stack.isEmpty()) {
-                    list.add(stack);
-                }
-            }
-        }));
-        for (int j = 0; j < player.getInventory().items.size(); j++) {
-            ItemStack stack = player.getInventory().items.get(j);
-            if (!stack.isEmpty()&&!list.contains(stack)) {
-                list.add(stack);
-            }
+        if (mob.level().isClientSide()) {
+            Vec3 center = mob.position();
+            float tpi = ((float)Math.PI * 2F);
+            Vec3 v0 = new Vec3(0.0F, radius, 0.0F);
+            v0 = v0.xRot(tpi / 4.0F).yRot(mob.getRandom().nextFloat() * tpi);
+            int k = 0xFF7700;
+            mob.level().addAlwaysVisibleParticle(ParticleTypes.EFFECT, center.x + v0.x, center.y + v0.y + (double)0.5F, center.z + v0.z, (double)(k >> 16 & 255) / (double)255.0F, (double)(k >> 8 & 255) / (double)255.0F, (double)(k & 255) / (double)255.0F);
         }
-        for (int slot = 0; slot < player.getInventory().armor.size(); slot++) {
-            ItemStack stack = player.getInventory().armor.get(slot);
-            if (!stack.isEmpty()&&!list.contains(stack)) {
-                list.add(stack);
-            }
-        }
-        for (int slot = 0; slot < player.getInventory().offhand.size(); slot++) {
-            ItemStack stack = player.getInventory().offhand.get(slot);
-            if (!stack.isEmpty()&&!list.contains(stack)){
-                list.add(stack);
-            }
-        }
-        return list;
-    }
-    private static boolean drainEnergy(ItemStack stack,int amount) {
-        if (stack.isEmpty()) {
-            return false;
-        }
-        return stack.getCapability(ForgeCapabilities.ENERGY).resolve()
-                .map(energyStorage -> {
-                    int energyExtracted = energyStorage.extractEnergy(amount, true);
-                    if (energyExtracted > 0) {
-                        energyStorage.extractEnergy(energyExtracted, false);
-                        return true;
-                    }
-                    return false;
-                })
-                .orElse(false);
-    }
-    public static EnergyInfo getEnergyInfo(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return null;
-        }
-        return stack.getCapability(ForgeCapabilities.ENERGY).resolve()
-                .map(energyStorage -> {
-                    int currentEnergy = energyStorage.getEnergyStored();
-                    int maxEnergy = energyStorage.getMaxEnergyStored();
-                    return new EnergyInfo(currentEnergy, maxEnergy);
-                })
-                .orElse(null);
-    }
-    public static class EnergyInfo {
-        private final int currentEnergy;
-        private final int maxEnergy;
-
-        public EnergyInfo(int current, int max) {
-            this.currentEnergy = current;
-            this.maxEnergy = max;
-        }
-
-        public int getCurrentEnergy() { return currentEnergy; }
-        public int getMaxEnergy() { return maxEnergy; }
-
     }
     @Override
     public void addDetail(List<Component> list) {
         list.add(Component.translatable(getDescriptionId() + ".desc",
-                mapLevel(i -> Component.literal(i*5 + "")
-                        .withStyle(ChatFormatting.AQUA)),
-                mapLevel(i -> Component.literal(i*0.01*20 + "")
-                        .withStyle(ChatFormatting.AQUA)),
-                mapLevel(i -> Component.literal((8+i*4) + "")
+                mapLevel(i -> Component.literal(i*25 + "")
                         .withStyle(ChatFormatting.AQUA))
         ).withStyle(ChatFormatting.GRAY));
     }
