@@ -2,9 +2,12 @@ package com.fg.tltmod.SomeModifiers.hidden;
 
 import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.LeftClickModifierHook;
+import com.fg.tltmod.Register.TltCoreModifiers;
 import com.fg.tltmod.content.hook.TltCoreModifierHook;
+import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
 import com.fg.tltmod.content.item.DummyToolManaLens;
 import com.fg.tltmod.util.mixin.IManaBurstMixin;
+import com.fg.tltmod.util.mixin.IToolProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -65,7 +68,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
 
     @Override
     public float beforeMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage, float baseKnockback, float knockback) {
-        if (!context.isExtraAttack()&&context.isFullyCharged()&&context.getAttacker() instanceof Player player){
+        if (tool.getModifierLevel(TltCoreModifiers.FAR_SIGHTS.get())<=0&&!context.isExtraAttack()&&context.isFullyCharged()&&context.getAttacker() instanceof Player player){
             var burst = getBurst(player, (ToolStack) tool);
             if (ManaItemHandler.instance().requestManaExact(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
@@ -80,14 +83,13 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
         burst.setMana(50);
         burst.setStartingMana(50);
         burst.setMinManaLoss(40);
-        burst.setManaLossPerTick(4.0F);
+        burst.setManaLossPerTick(2.0F);
         burst.setGravity(0.0F);
         burst.setDeltaMovement(burst.getDeltaMovement().scale(7));
+        ((IToolProvider)burst).tltmod$setTool(toolStack);
         ItemStack dummyLens = DummyToolManaLens.getDummyLens(toolStack);
-        var modifierList = toolStack.getModifierList();
         burst.setSourceLens(dummyLens);
-        ToolStack stack = ToolStack.from(dummyLens);
-        toolStack.getModifierList().forEach(entry ->entry.getHook(TltCoreModifierHook.MODIFY_BURST).modifyBurst(entry,modifierList,player,burst,stack));
+        ModifyBurstModifierHook.handleBurstCreation(burst,dummyLens,toolStack);
         return burst;
     }
 

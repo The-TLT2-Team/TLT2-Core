@@ -1,8 +1,11 @@
 package com.fg.tltmod.Register;
 
 import com.fg.tltmod.SomeModifiers.armor.BlessingFromFoxGod;
+import com.fg.tltmod.SomeModifiers.hidden.BurstMiningModifier;
 import com.fg.tltmod.SomeModifiers.hidden.LCManaBurstModifier;
+import com.fg.tltmod.SomeModifiers.integration.botania.AlfBurst;
 import com.fg.tltmod.SomeModifiers.integration.botania.ExcaliburBurst;
+import com.fg.tltmod.SomeModifiers.integration.botania.FartherSights;
 import com.fg.tltmod.SomeModifiers.integration.botania.TerraBurst;
 import com.fg.tltmod.SomeModifiers.interaction.InTheNameOfLoveAndHate;
 import com.fg.tltmod.SomeModifiers.melee.Stop;
@@ -30,5 +33,8 @@ public class TltCoreModifiers {
     public static final StaticModifier<LCManaBurstModifier> MANA_BURST_HANDLER = MODIFIERS.register("mana_burst_handler",LCManaBurstModifier::new);
     public static final StaticModifier<TerraBurst> TERRA_BEAM = MODIFIERS.register("terra_burst",TerraBurst::new);
     public static final StaticModifier<ExcaliburBurst> EXCALIBUR_BURST = MODIFIERS.register("excalibur_burst",ExcaliburBurst::new);
+    public static final StaticModifier<AlfBurst> ALF_BURST = MODIFIERS.register("alf_burst",AlfBurst::new);
+    public static final StaticModifier<FartherSights> FAR_SIGHTS = MODIFIERS.register("far_sights",FartherSights::new);
+    public static final StaticModifier<BurstMiningModifier> BURST_MINING = MODIFIERS.register("burst_mining",BurstMiningModifier::new);
 
 }

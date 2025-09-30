@@ -16,7 +16,11 @@ import vazkii.botania.api.internal.ManaBurst;
 
 import java.util.List;
 
-public class TerraBurst extends NoLevelsModifier implements ModifyBurstModifierHook {
+public class AlfBurst extends NoLevelsModifier implements ModifyBurstModifierHook {
+    @Override
+    public int getPriority() {
+        return 80;
+    }
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         super.registerHooks(hookBuilder);
@@ -27,6 +31,9 @@ public class TerraBurst extends NoLevelsModifier implements ModifyBurstModifierH
     @Override
     public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
         var burstEntity = (IManaBurstMixin) burst;
-        burstEntity.tltmod$setBaseDamage(burstEntity.tltmod$getBaseDamage()+7f);
+        burstEntity.tltmod$setBaseDamage(burstEntity.tltmod$getBaseDamage()+8f);
+        burst.setMana(burst.getMana()+100);
+        burst.setManaLossPerTick(burst.getManaLossPerTick()/2);
+        burst.setColor(0xF79100);
     }
 }
