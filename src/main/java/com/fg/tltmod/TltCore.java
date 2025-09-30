@@ -34,4 +34,11 @@ public class TltCore
     public static String makeDescriptionId(String type, String name) {
         return type + ".tltmod." + name;
     }
+
+    public static void sealClass(Object self, String base, String solution) {
+        String name = self.getClass().getName();
+        if (!name.startsWith("com.fg.tltmod.")) {
+            throw new IllegalStateException(base + " being extended from invalid package " + name + ". " + solution);
+        }
+    }
 }
