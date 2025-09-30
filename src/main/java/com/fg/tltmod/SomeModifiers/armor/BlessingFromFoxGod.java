@@ -90,7 +90,7 @@ public class BlessingFromFoxGod extends BaseModifier implements DamageBlockModif
                         int maxMana = manaItem.getMaxMana();
                         int currentMana = manaItem.getMana();
                         if (currentMana < maxMana) {
-                            manaItem.addMana(20 * level);
+                            manaItem.addMana(100 * level);
                         }
                     }
                 }

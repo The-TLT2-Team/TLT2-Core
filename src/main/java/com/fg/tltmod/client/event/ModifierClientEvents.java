@@ -60,7 +60,7 @@ public class ModifierClientEvents {
 
                 poseStack.mulPose(Axis.YP.rotationDegrees(-yaw));
                 poseStack.mulPose(Axis.YP.rotationDegrees(180));
-                poseStack.translate(0.2,0,0.2);
+                poseStack.translate(0,0,0.2);
 
                 RenderEffects.RegularPolygon.render(
                         poseStack,
