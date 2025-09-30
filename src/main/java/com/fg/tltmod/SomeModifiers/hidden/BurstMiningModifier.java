@@ -4,6 +4,7 @@ import com.fg.tltmod.SomeModifiers.integration.botania.FartherSights;
 import com.fg.tltmod.content.hook.TltCoreModifierHook;
 import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
 import com.fg.tltmod.content.hook.modifier.LensProviderModifierHook;
+import com.fg.tltmod.util.tinker.HarvestLogicExtra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -45,8 +46,8 @@ public class BurstMiningModifier extends Modifier implements LensProviderModifie
         if (burst.entity().getTags().contains(FartherSights.KEY_TRIGGER_TOOL)&&tool!=null&&level instanceof ServerLevel&&owner instanceof Player player){
             ItemStack stack = ((ToolStack)tool).createStack();
             BlockState state = level.getBlockState(blockPos);
-            if (IsEffectiveToolHook.isEffective(tool,state)){
-                if (ToolHarvestLogic.handleBlockBreak(stack,blockPos,player)){
+            if (state.canHarvestBlock(level, blockPos, player)){
+                if (HarvestLogicExtra.handleBlockBreakNoToolDamage(stack,blockPos,player)){
                     ToolHarvestContext context = new ToolHarvestContext((ServerLevel) level, player, state, blockPos, direction, true, true);
                     for (ModifierEntry entry : tool.getModifierList()) {
                         entry.getHook(ModifierHooks.BLOCK_BREAK).afterBlockBreak(tool, entry, context);

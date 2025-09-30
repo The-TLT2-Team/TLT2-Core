@@ -50,7 +50,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
     public void onLeftClickEmpty(IToolStackView tool, ModifierEntry entry, Player player, Level level, EquipmentSlot equipmentSlot) {
         if (player.getAttackStrengthScale(0)>0.9&&!level.isClientSide){
             var burst = getBurst(player, (ToolStack) tool);
-            if (ManaItemHandler.instance().requestManaExact(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
+            if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
             }
         }
@@ -60,7 +60,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
     public void onLeftClickBlock(IToolStackView tool, ModifierEntry entry, Player player, Level level, EquipmentSlot equipmentSlot, BlockState state, BlockPos pos) {
         if (player.getAttackStrengthScale(0)>0.9&&!level.isClientSide){
             var burst = getBurst(player, (ToolStack) tool);
-            if (ManaItemHandler.instance().requestManaExact(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
+            if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
             }
         }
@@ -70,7 +70,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
     public float beforeMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damage, float baseKnockback, float knockback) {
         if (tool.getModifierLevel(TltCoreModifiers.FAR_SIGHTS.get())<=0&&!context.isExtraAttack()&&context.isFullyCharged()&&context.getAttacker() instanceof Player player){
             var burst = getBurst(player, (ToolStack) tool);
-            if (ManaItemHandler.instance().requestManaExact(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
+            if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
             }
         }
@@ -81,7 +81,6 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
         ManaBurstEntity burst = new ManaBurstEntity(player);
         burst.setColor(2162464);
         burst.setMana(50);
-        burst.setStartingMana(50);
         burst.setMinManaLoss(40);
         burst.setManaLossPerTick(2.0F);
         burst.setGravity(0.0F);
@@ -90,6 +89,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
         ItemStack dummyLens = DummyToolManaLens.getDummyLens(toolStack);
         burst.setSourceLens(dummyLens);
         ModifyBurstModifierHook.handleBurstCreation(burst,dummyLens,toolStack);
+        burst.setStartingMana(burst.getMana());
         return burst;
     }
 

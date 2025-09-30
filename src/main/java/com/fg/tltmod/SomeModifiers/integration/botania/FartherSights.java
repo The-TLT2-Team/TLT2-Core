@@ -51,7 +51,7 @@ public class FartherSights extends NoLevelsModifier implements AttributesModifie
                 burst.entity().addTag(KEY_TRIGGER_TOOL);
                 burst.setMana(burst.getMana()+100);
                 var burstMixin = (IManaBurstMixin) burst;
-                burstMixin.tltmod$setPerBlockConsumption(burstMixin.tltmod$getPerBlockConsumption()+100);
+                burstMixin.tltmod$setPerBlockConsumption(burstMixin.tltmod$getPerBlockConsumption()+50);
             }
         }
     }

@@ -43,6 +43,8 @@ public interface BurstHitModifierHook {
         IToolStackView actualTool = ((IToolProvider)burst).tltmod$getTool();
         ToolStack tool = ToolStack.from(stack);
         List<ItemStack> list = LensProviderModifierHook.gatherLens(tool,burst);
+        boolean didHitBlock = false;
+        boolean didHitEntity = false;
         boolean b = switch (result.getType()){
             case BLOCK -> {
                 if (isManaBlock) yield true;
@@ -57,8 +59,8 @@ public interface BurstHitModifierHook {
                 for (var entry:tool.getModifierList()){
                     entry.getHook(TltCoreModifierHook.BURST_HIT).burstHitBlock(actualTool,entry,modifierList, burst.entity().getOwner(),level,pos,direction,isManaBlock,shouldKill,burst);
                 }
-                burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerBlockConsumption());
-                yield burst.getMana()<=0;
+                didHitBlock = true;
+                yield false;
             }
             case ENTITY -> {
                 EntityHitResult hitResult = (EntityHitResult) result;
@@ -81,7 +83,7 @@ public interface BurstHitModifierHook {
                 if (burstEntity.getTags().contains(FartherSights.KEY_TRIGGER_TOOL)&&actualTool!=null){
                     if (AttackUtil.attackEntity(actualTool,living, InteractionHand.MAIN_HAND,entity,()->1,false, EquipmentSlot.MAINHAND,
                             true, tool.getStats().get(ToolStats.ATTACK_DAMAGE)+1+finalDamage,true)){
-                        burst.setMana(burst.getMana()-((IManaBurstMixin) burstEntity).tltmod$getPerConsumption());
+                        didHitEntity = true;
                     }
                 }
                 else if (entity.hurt(LegacyDamageSource.mobAttack(living).setBypassArmor(),damage)){
@@ -89,9 +91,9 @@ public interface BurstHitModifierHook {
                         float damageDealt =Math.max( legacyHealth-target.getHealth(),0);
                         modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).afterBurstHitEntity(actualTool,entry,modifierList,living,target,burst, damageDealt));
                     }
-                    burst.setMana(burst.getMana()-((IManaBurstMixin) burstEntity).tltmod$getPerConsumption());
+                    didHitEntity = true;
                 }
-                yield burst.getMana()<=0;
+                yield false;
             }
             default -> false;
         };
@@ -100,6 +102,22 @@ public interface BurstHitModifierHook {
                 if (lensStack.getItem() instanceof LensItem lens) lens.collideBurst(burst,result,isManaBlock,shouldKill,lensStack);
             });
         }
+        if (!isManaBlock){
+            switch (result.getType()){
+                case ENTITY -> {
+                    if (didHitEntity){
+                        burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerConsumption());
+                    }
+                }
+                case BLOCK -> {
+                    if (didHitBlock){
+                        burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerBlockConsumption());
+                    }
+                }
+                default -> {}
+            }
+        }
+        b = b||burst.getMana()<=0;
         return b;
     }
 
