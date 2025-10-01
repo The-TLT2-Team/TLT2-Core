@@ -9,19 +9,15 @@ import dev.xkmc.l2hostility.init.data.LangData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import java.util.List;
 
@@ -32,7 +28,7 @@ public class CurioAbyssalThornMixin extends MultiSlotItem implements ICursed {
     }
 
     @Override
-    public boolean canEquip(SlotContext context, ItemStack stack) {
+    public boolean canEquip(SlotContext context, @NotNull ItemStack stack) {
         boolean original = CuriosApi.getCuriosInventory(context.entity())
                 .resolve()
                 .flatMap(e -> e.findFirstCurio(this))
@@ -51,7 +47,7 @@ public class CurioAbyssalThornMixin extends MultiSlotItem implements ICursed {
      * @reason 重写tooltip
      */
     @Overwrite
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> list, @NotNull TooltipFlag flag) {
         list.add(LangData.ABYSSAL_THORN.get(new Object[0]).withStyle(ChatFormatting.RED));
         ItemLoreHelper.indicateCursedOnesOnly(list);
     }

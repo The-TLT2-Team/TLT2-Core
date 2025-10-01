@@ -1,0 +1,16 @@
+{
+  "type": "tconstruct:incremental_modifier",
+  "allow_crystal": true,
+  "amount_per_item": 1,
+  "input": {
+    "item": "botania:elementium_ingot"
+  },
+  "needed_per_level": 2,
+  "result": "tltmod:mana_refactor",
+  "slots": {
+    "upgrades": 1
+  },
+  "tools": {
+    "tag": "sakuratinker:modifiable/curio"
+  }
+}

@@ -4,6 +4,7 @@ import com.fg.tltmod.SomeModifiers.armor.*;
 import com.fg.tltmod.SomeModifiers.harvest.*;
 import com.fg.tltmod.SomeModifiers.hidden.*;
 import com.fg.tltmod.SomeModifiers.integration.botania.*;
+import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier;
 import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
 import com.fg.tltmod.SomeModifiers.misc.*;
@@ -35,5 +36,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<HeatTendency> HEAT_TENDENCY = MODIFIERS.register("heat_tendency",HeatTendency::new);
     public static final StaticModifier<PrimeOfGarbageStones> PRIME_OF_GARBAGE_STONES = MODIFIERS.register("prime_of_garbage_stones",PrimeOfGarbageStones::new);
     public static final StaticModifier<TannedModifier> REINFORCED = MODIFIERS.register("reinforced",TannedModifier::new);
-
+    public static final StaticModifier<ManaRefactorModifier> MANA_REFACTOR = MODIFIERS.register("mana_refactor", ManaRefactorModifier::new);
 }

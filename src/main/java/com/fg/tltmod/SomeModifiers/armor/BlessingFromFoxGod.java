@@ -4,6 +4,7 @@ import com.fg.tltmod.TltCore;
 import com.google.common.collect.Iterables;
 import com.ssakura49.sakuratinker.generic.BaseModifier;
 import com.ssakura49.sakuratinker.register.STSlots;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -95,7 +96,6 @@ public class BlessingFromFoxGod extends BaseModifier implements DamageBlockModif
                     }
                 }
             }
-
         }
     }
 

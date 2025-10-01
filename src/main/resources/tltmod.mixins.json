@@ -18,7 +18,8 @@
     "l2.EffectUtilMixin",
     "l2.GravityTraitMixin",
     "l2.RagnarokMixin",
-    "l2.ReflectMixin"
+    "l2.ReflectMixin",
+    "sophisticated.FeedingUpgradeWrapperMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,8 @@
 package com.fg.tltmod.data.providers;
 
 import com.fg.tltmod.TltCore;
+import com.ssakura49.sakuratinker.register.STTags;
+import com.xiaoyue.tinkers_ingenuity.register.TIItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -17,5 +19,8 @@ public class TltCoreItemTagProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
+        this.tag(STTags.Items.TINKER_CURIO).replace(false).add(
+                TIItems.TINKERS_MEDAL.get()
+        );
     }
 }

@@ -14,6 +14,8 @@ public class Config {
     private static final ForgeConfigSpec.BooleanValue GUI;
     private static final ForgeConfigSpec.BooleanValue MULTI_GUI;
 
+    public static final ForgeConfigSpec.IntValue FEEDING_UPGRADE_COOLDOWN;
+
 
     public static boolean playerHunger;
     public static int maxHunger;
@@ -44,6 +46,14 @@ public class Config {
         }
         BUILDER.pop();
 
+        BUILDER.push("精妙相关配置");
+        {
+            FEEDING_UPGRADE_COOLDOWN = BUILDER
+                    .comment("精妙背包喂食升级最低冷却")
+                    .defineInRange("feedingCooldown", 60, 10, Integer.MAX_VALUE);
+        }
+        BUILDER.pop();
+
 
         SPEC = BUILDER.build();
     }
@@ -60,16 +70,14 @@ public class Config {
     public static boolean isPlayerHungerEnabled() {
         return PLAYER_HUNGER.get();
     }
-
     public static int getMaxHunger() {
         return MAX_HUNGER.get();
     }
-
     public static boolean getGUI() {
         return GUI.get();
     }
-
     public static boolean isMultiGui() {
         return MULTI_GUI.get();
     }
+    public static int getFeedingCooldown() {return FEEDING_UPGRADE_COOLDOWN.get();}
 }
