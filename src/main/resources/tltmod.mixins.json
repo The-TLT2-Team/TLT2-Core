@@ -12,13 +12,16 @@
     "ShulkerBulletMixin",
     "bot.GaiaGuardianEntityMixin",
     "bot.ManaBurstEntityMixin",
+    "enigmaticLegacy.CursedRingMixin",
     "exbot.GaiaIIIMixin",
     "exbot.GaiaMixin",
     "l2.CurioAbyssalThornMixin",
     "l2.EffectUtilMixin",
     "l2.GravityTraitMixin",
+    "l2.HostilityOrbMixin",
     "l2.RagnarokMixin",
-    "l2.ReflectMixin"
+    "l2.ReflectMixin",
+    "tconstruct.ToolStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1

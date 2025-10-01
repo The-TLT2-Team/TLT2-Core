@@ -35,5 +35,6 @@ public class TltCoreModifiers {
     public static final StaticModifier<HeatTendency> HEAT_TENDENCY = MODIFIERS.register("heat_tendency",HeatTendency::new);
     public static final StaticModifier<PrimeOfGarbageStones> PRIME_OF_GARBAGE_STONES = MODIFIERS.register("prime_of_garbage_stones",PrimeOfGarbageStones::new);
     public static final StaticModifier<TannedModifier> REINFORCED = MODIFIERS.register("reinforced",TannedModifier::new);
+    public static final StaticModifier<TheCursedOne> THE_CURSED_ONE = MODIFIERS.register("the_cursed_one",TheCursedOne::new);
 
 }

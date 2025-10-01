@@ -2,6 +2,7 @@ package com.fg.tltmod;
 
 import com.fg.tltmod.Register.*;
 import com.fg.tltmod.client.gui.HungerBarRenderer;
+import com.fg.tltmod.network.TltCorePacketHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -22,6 +23,7 @@ public class TltCore
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         TltCoreEffects.EFFECT.register(modEventBus);
         TltCoreHostilityTrait.register();
+        TltCorePacketHandler.init();
     }
 
     public static ResourceLocation getResource(String string) {
