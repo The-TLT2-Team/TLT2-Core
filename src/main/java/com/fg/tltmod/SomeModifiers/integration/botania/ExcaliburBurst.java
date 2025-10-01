@@ -13,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
-import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.impl.NoLevelsModifier;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import vazkii.botania.api.internal.ManaBurst;
 import vazkii.botania.common.entity.ManaBurstEntity;
@@ -35,7 +35,7 @@ public class ExcaliburBurst extends NoLevelsModifier implements ModifyBurstModif
     }
 
     @Override
-    public void modifyBurst(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
+    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
         burst.entity().setDeltaMovement(burst.entity().getDeltaMovement().scale(1.5));
         burst.setColor(0xFFFF20);
         burst.setMana(burst.getMana()+50);
@@ -45,7 +45,7 @@ public class ExcaliburBurst extends NoLevelsModifier implements ModifyBurstModif
     }
 
     @Override
-    public void updateBurst(ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst) {
+    public void updateBurst(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst) {
         var entity = EntityInRangeUtil.getNearestLivingEntity(burst.entity(),8,((IManaBurstMixin)burst).tltmod$getHitEntityIdList(),entity1 -> canHitEntity(entity1, (ManaBurstEntity) burst));
         if (entity!=null) ProjectileUtil.homingToward(burst.entity(),entity,1,4);
     }

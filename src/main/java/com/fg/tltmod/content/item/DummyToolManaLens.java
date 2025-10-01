@@ -1,6 +1,7 @@
 package com.fg.tltmod.content.item;
 
 import com.fg.tltmod.Register.TltCoreItems;
+import com.fg.tltmod.api.tool.IBotLensProvider;
 import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
 import net.minecraft.world.item.ItemStack;
@@ -9,11 +10,16 @@ import net.minecraft.world.phys.HitResult;
 import slimeknights.tconstruct.library.tools.definition.ToolDefinition;
 import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.library.tools.item.ModifiableItem;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import vazkii.botania.api.internal.ManaBurst;
 import vazkii.botania.api.mana.BurstProperties;
 import vazkii.botania.api.mana.LensEffectItem;
 import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.common.item.lens.Lens;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DummyToolManaLens extends ModifiableItem implements LensEffectItem {
     public DummyToolManaLens() {
@@ -40,15 +46,12 @@ public class DummyToolManaLens extends ModifiableItem implements LensEffectItem 
 
     @Override
     public void apply(ItemStack stack, BurstProperties props, Level level) {
-
     }
 
     @Override
     public boolean collideBurst(ManaBurst burst, HitResult result, boolean isManaBlock, boolean shouldKill, ItemStack stack) {
         return BurstHitModifierHook.handleBurstHit(burst,result,isManaBlock,shouldKill,stack);
     }
-
-
 
     @Override
     public boolean doParticles(ManaBurst burst, ItemStack stack) {

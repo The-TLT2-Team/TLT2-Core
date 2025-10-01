@@ -1,6 +1,7 @@
 package com.fg.tltmod.mixin.bot;
 
 import com.fg.tltmod.util.mixin.IManaBurstMixin;
+import com.fg.tltmod.util.mixin.IToolProvider;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,10 +13,11 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import vazkii.botania.common.entity.ManaBurstEntity;
 
 @Mixin(value = ManaBurstEntity.class,remap = false)
-public abstract class ManaBurstEntityMixin extends ThrowableProjectile implements IManaBurstMixin {
+public abstract class ManaBurstEntityMixin extends ThrowableProjectile implements IManaBurstMixin , IToolProvider {
     @Unique
     private IntOpenHashSet tltmod$hitEntityIds = new IntOpenHashSet();
     @Unique
@@ -24,6 +26,8 @@ public abstract class ManaBurstEntityMixin extends ThrowableProjectile implement
     private int tltmod$perConsumption=50;
     @Unique
     private int tltmod$perBlockConsumption=50;
+    @Unique
+    private IToolStackView tltmod$tool;
 
     protected ManaBurstEntityMixin(EntityType<? extends ThrowableProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -77,5 +81,15 @@ public abstract class ManaBurstEntityMixin extends ThrowableProjectile implement
     @Override
     public void tltmod$setPerBlockConsumption(int i) {
         tltmod$perBlockConsumption = i;
+    }
+
+    @Override
+    public IToolStackView tltmod$getTool() {
+        return tltmod$tool;
+    }
+
+    @Override
+    public void tltmod$setTool(IToolStackView tool) {
+        this.tltmod$tool = tool;
     }
 }

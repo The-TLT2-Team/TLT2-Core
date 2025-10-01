@@ -193,6 +193,7 @@ dependencies {
     implementation fg.deobf("curse.maven:patchouli-306770:6164575")
     implementation fg.deobf("curse.maven:codechicken-lib-1-8-242818:5753868")
     implementation fg.deobf("curse.maven:citadel-331936:6702068")
+    implementation fg.deobf("curse.maven:extrabotany-reburn-1271869:6818025")
 
     compileOnly fg.deobf(jarJar("com.tterrag.registrate:Registrate:MC1.20-1.3.11")) {
         transitive = false

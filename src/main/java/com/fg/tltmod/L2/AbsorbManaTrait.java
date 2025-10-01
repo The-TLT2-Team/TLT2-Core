@@ -3,10 +3,12 @@ package com.fg.tltmod.L2;
 import com.google.common.collect.Iterables;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.xplat.XplatAbstractions;
 
@@ -20,35 +22,28 @@ public class AbsorbManaTrait extends MobTrait {
 
     @Override
     public void tick(LivingEntity mob, int a) {
-        if (!mob.level().isClientSide()) {
-            List<Player> ls0 = mob.level().getEntitiesOfClass(Player.class, mob.getBoundingBox().inflate(8+a*4));
-            for (Player player : ls0) {
-                if (player != mob && player != null) {
-                    List<ItemStack> items = ManaItemHandler.INSTANCE.getManaItems(player);
-                    List<ItemStack> acc = ManaItemHandler.INSTANCE.getManaAccesories(player);
-                    for (ItemStack stackInSlot : Iterables.concat(items, acc)) {
-                        var manaItem = XplatAbstractions.INSTANCE.findManaItem(stackInSlot);
-                        if (manaItem != null) {
-                            int b = (int) (10*a + manaItem.getMaxMana()*0.002f*a);
-                            if (manaItem.getMana()==0)continue;
-                            if (manaItem.getMana()<b)b=manaItem.getMana();
-                            manaItem.addMana(-b);
-                            break;
-                        }
-                    }
-                }
-            }
+        float range = 5;
+        if (!mob.level().isClientSide()&&mob.level().getGameTime()%10==0) {
+            int extract = a*100;
+            mob.level().getEntitiesOfClass(Player.class, mob.getBoundingBox().inflate(range),
+                    player -> player!=mob&&!player.isCreative()&&mob.distanceTo(player)<=6)
+                    .forEach(player -> ManaItemHandler.instance()
+                            .requestManaForTool(player.getMainHandItem(),player,extract,true));
+        }
+        if (mob.level().isClientSide()) {
+            Vec3 center = mob.position();
+            float tpi = ((float)Math.PI * 2F);
+            Vec3 v0 = new Vec3(0.0F, range, 0.0F);
+            v0 = v0.xRot(tpi / 4.0F).yRot(mob.getRandom().nextFloat() * tpi);
+            int k = 0x0099FF;
+            mob.level().addAlwaysVisibleParticle(ParticleTypes.EFFECT, center.x + v0.x, center.y + v0.y + (double)0.5F, center.z + v0.z, (double)(k >> 16 & 255) / (double)255.0F, (double)(k >> 8 & 255) / (double)255.0F, (double)(k & 255) / (double)255.0F);
         }
     }
 
     @Override
     public void addDetail(List<Component> list) {
         list.add(Component.translatable(getDescriptionId() + ".desc",
-                mapLevel(i -> Component.literal(i*10*20 + "")
-                        .withStyle(ChatFormatting.AQUA)),
-                mapLevel(i -> Component.literal(i*0.2*20 + "")
-                        .withStyle(ChatFormatting.AQUA)),
-                mapLevel(i -> Component.literal((i*4+8) + "")
+                mapLevel(i -> Component.literal(i*100 + "")
                         .withStyle(ChatFormatting.AQUA))
         ).withStyle(ChatFormatting.GRAY));
     }

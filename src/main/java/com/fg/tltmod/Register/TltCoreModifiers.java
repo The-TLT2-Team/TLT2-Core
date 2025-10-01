@@ -1,17 +1,16 @@
 package com.fg.tltmod.Register;
 
-import com.fg.tltmod.SomeModifiers.armor.BlessingFromFoxGod;
-import com.fg.tltmod.SomeModifiers.hidden.LCManaBurstModifier;
-import com.fg.tltmod.SomeModifiers.integration.botania.ExcaliburBurst;
-import com.fg.tltmod.SomeModifiers.integration.botania.TerraBurst;
-import com.fg.tltmod.SomeModifiers.interaction.InTheNameOfLoveAndHate;
-import com.fg.tltmod.SomeModifiers.melee.Stop;
-import com.fg.tltmod.SomeModifiers.misc.EverFlamingCore;
-import com.fg.tltmod.SomeModifiers.misc.PowerOfPrayer;
-import com.fg.tltmod.SomeModifiers.integration.sevenCurse.NeverEndsStartup;
-import com.fg.tltmod.SomeModifiers.integration.sevenCurse.PiglinDefense;
+import com.fg.tltmod.SomeModifiers.armor.*;
+import com.fg.tltmod.SomeModifiers.harvest.*;
+import com.fg.tltmod.SomeModifiers.hidden.*;
+import com.fg.tltmod.SomeModifiers.integration.botania.*;
+import com.fg.tltmod.SomeModifiers.interaction.*;
+import com.fg.tltmod.SomeModifiers.melee.*;
+import com.fg.tltmod.SomeModifiers.misc.*;
+import com.fg.tltmod.SomeModifiers.integration.sevenCurse.*;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
+import slimeknights.tconstruct.tools.modifiers.traits.general.TannedModifier;
 
 import static com.fg.tltmod.TltCore.MODID;
 
@@ -30,5 +29,11 @@ public class TltCoreModifiers {
     public static final StaticModifier<LCManaBurstModifier> MANA_BURST_HANDLER = MODIFIERS.register("mana_burst_handler",LCManaBurstModifier::new);
     public static final StaticModifier<TerraBurst> TERRA_BEAM = MODIFIERS.register("terra_burst",TerraBurst::new);
     public static final StaticModifier<ExcaliburBurst> EXCALIBUR_BURST = MODIFIERS.register("excalibur_burst",ExcaliburBurst::new);
+    public static final StaticModifier<AlfBurst> ALF_BURST = MODIFIERS.register("alf_burst",AlfBurst::new);
+    public static final StaticModifier<FartherSights> FAR_SIGHTS = MODIFIERS.register("far_sights",FartherSights::new);
+    public static final StaticModifier<BurstMiningModifier> BURST_MINING = MODIFIERS.register("burst_mining",BurstMiningModifier::new);
+    public static final StaticModifier<HeatTendency> HEAT_TENDENCY = MODIFIERS.register("heat_tendency",HeatTendency::new);
+    public static final StaticModifier<PrimeOfGarbageStones> PRIME_OF_GARBAGE_STONES = MODIFIERS.register("prime_of_garbage_stones",PrimeOfGarbageStones::new);
+    public static final StaticModifier<TannedModifier> REINFORCED = MODIFIERS.register("reinforced",TannedModifier::new);
 
 }

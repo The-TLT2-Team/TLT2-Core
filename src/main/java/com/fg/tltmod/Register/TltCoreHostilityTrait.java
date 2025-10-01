@@ -117,8 +117,8 @@ public class TltCoreHostilityTrait {
 
     public static final RegistryEntry<AbsorbManaTrait> absorb_mana =
             register("absorb_mana", () -> new AbsorbManaTrait(()->0x49ff39),
-                    rl -> new TraitConfig(rl, 150, 30, 3, 400),
-            "Continuously absorb and reduce the mana of items stored in the player's backpack at a rate of %3$s + the max mana limit of the item at a rate of %2$s% per second",
+                    rl -> new TraitConfig(rl, 150, 30, 5, 400),
+            "Extract %smana from player each 10 ticks.",
                     "Absorb Mana");
 
     public static final RegistryEntry<MagalaErode> magala_erode =
@@ -139,8 +139,8 @@ public class TltCoreHostilityTrait {
 
     public static final RegistryEntry<DevouringElectricityTrait> devouring_electricity =
             register("devouring_electricity", () -> new DevouringElectricityTrait(()->0x49ff39),
-                    rl -> new TraitConfig(rl, 200, 30, 3, 200),
-                    "Continuously absorb and reduce the mana of items stored in the player's backpack at a rate of %3$s + the max mana limit of the item at a rate of %2$s% per second",
+                    rl -> new TraitConfig(rl, 200, 30, 5, 300),
+                    "Extract %skFE of energy from player each 5 ticks.",
                     "Devouring Electricity");
 
     public static void register() {
