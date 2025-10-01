@@ -14,6 +14,7 @@
     "bot.ManaBurstEntityMixin",
     "exbot.GaiaIIIMixin",
     "exbot.GaiaMixin",
+    "l2.CurioAbyssalThornMixin",
     "l2.EffectUtilMixin",
     "l2.GravityTraitMixin",
     "l2.RagnarokMixin",
