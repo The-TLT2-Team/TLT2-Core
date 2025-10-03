@@ -9,6 +9,7 @@ import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
 import com.fg.tltmod.SomeModifiers.misc.*;
 import com.fg.tltmod.SomeModifiers.integration.sevenCurse.*;
+import com.fg.tltmod.SomeModifiers.rebalance.BlowPipeRebalance;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 import slimeknights.tconstruct.tools.modifiers.traits.general.TannedModifier;
@@ -39,4 +40,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<TheCursedOne> THE_CURSED_ONE = MODIFIERS.register("the_cursed_one",TheCursedOne::new);
     public static final StaticModifier<RageOfSparta> RAGE_OF_SPARTA = MODIFIERS.register("rage_of_sparta",RageOfSparta::new);
     public static final StaticModifier<ManaRefactorModifier> MANA_REFACTOR = MODIFIERS.register("mana_refactor", ManaRefactorModifier::new);
+    public static final StaticModifier<BlowPipeRebalance> BLOW_PIPE_REBALANCE = MODIFIERS.register("blowpipe_rebalance", BlowPipeRebalance::new);
 }
