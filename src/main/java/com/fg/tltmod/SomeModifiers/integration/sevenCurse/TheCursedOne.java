@@ -47,8 +47,8 @@ import java.util.List;
 public class TheCursedOne extends NoLevelsModifier implements ToolDamageModifierHook, ToolStatsModifierHook, VolatileDataModifierHook, ModifierRemovalHook, MeleeHitModifierHook , CurioKillTargetModifierHook, TooltipModifierHook , InventoryTickModifierHook {
     public static final ResourceLocation KEY_CURSED_PROGRESS = TltCore.getResource("curse_progress");
     public static final ResourceLocation KEY_CURSED_LEVEL = TltCore.getResource("curse_level");
-    private static int BASIC_MAX_PROGRESS = 400;
-    private static int POW = 2;
+    private static final int BASIC_MAX_PROGRESS = 400;
+    private static final int POW = 2;
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
