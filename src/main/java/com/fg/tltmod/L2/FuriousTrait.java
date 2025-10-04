@@ -43,4 +43,10 @@ public class FuriousTrait extends MobTrait {
                         .withStyle(ChatFormatting.AQUA))
         ).withStyle(ChatFormatting.GRAY));
     }
+
+    @Override
+    public boolean allow(LivingEntity le, int difficulty, int maxModLv) {
+        if (le.getMaxHealth()>100*(1+LHConfig.COMMON.healthFactor.get()*difficulty)) return false;
+        return super.allow(le,difficulty,maxModLv);
+    }
 }

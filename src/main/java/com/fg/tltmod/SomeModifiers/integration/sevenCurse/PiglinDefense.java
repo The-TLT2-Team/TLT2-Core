@@ -33,11 +33,9 @@ public class PiglinDefense extends Modifier {
         Entity target = event.getNewTarget();
         if (target instanceof Player player && SuperpositionHandler.isTheCursedOne(player)) {
             if (entity instanceof AbstractPiglin ||entity instanceof ZombifiedPiglin){
-                if (entity.getLastAttacker()!=target){
-                    target.getCapability(TinkerDataCapability.CAPABILITY).ifPresent(cap -> {
-                        if (cap.get(PIGLIN_DEFENSE, 0) > 0) event.setCanceled(true);
-                    });
-                }
+                target.getCapability(TinkerDataCapability.CAPABILITY).ifPresent(cap -> {
+                    if (cap.get(PIGLIN_DEFENSE, 0) > 0) event.setCanceled(true);
+                });
             }
         }
     }

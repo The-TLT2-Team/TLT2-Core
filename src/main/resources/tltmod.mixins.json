@@ -6,6 +6,8 @@
   "refmap": "tltmod.refmap.json",
   "mixins": [
     "EnchantmentMixin",
+    "EndGatewayBlockEntityMixin",
+    "FallingBlockEntityMixin",
     "FoodDataMixin",
     "LivingEntityMixin",
     "PlayerMixin",

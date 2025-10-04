@@ -1,6 +1,9 @@
 package com.fg.tltmod.L2;
 
+import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
+import com.fg.tltmod.Register.TltCoreModifiers;
 import com.fg.tltmod.TltCore;
+import com.fg.tltmod.util.tinker.ModifierLevelUtil;
 import dev.xkmc.l2hostility.content.traits.base.MobTrait;
 import dev.xkmc.l2hostility.init.data.LHConfig;
 import net.minecraft.ChatFormatting;
@@ -11,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +24,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import slimeknights.tconstruct.common.TinkerEffect;
 import slimeknights.tconstruct.library.modifiers.ModifierId;
 import slimeknights.tconstruct.library.tools.helper.ModifierUtil;
+import slimeknights.tconstruct.library.tools.item.IModifiable;
+import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.shared.TinkerEffects;
 import slimeknights.tconstruct.tools.TinkerModifiers;
 
@@ -36,8 +42,32 @@ public class TransferTrait extends MobTrait {
     public void onHurtByOthers(int a, LivingEntity entity, LivingHurtEvent event) {
         Random random=new Random();
         if (event.getSource().getEntity() instanceof LivingEntity living) {
-            if (getAllModifierlevel(living, TinkerModifiers.enderference.getId())>0
-                    ||living.hasEffect(TinkerEffects.enderference.get()))return;
+            boolean shouldTeleport;
+            for (EquipmentSlot slot: EquipmentSlot.values()){
+                shouldTeleport = switch (slot){
+                    case OFFHAND,MAINHAND ->{
+                        if (living.getItemBySlot(slot).getItem() instanceof IModifiable){
+                            ToolStack tool = ToolStack.from(living.getItemBySlot(slot));
+                            if (tool.getModifierLevel(TinkerModifiers.enderference.get())>0) yield false;
+                            if (tool.getModifierLevel(TltCoreModifiers.NEVER_ENDS_STARTUP.get())>0&&
+                                    living instanceof Player player&&
+                                    SuperpositionHandler.isTheCursedOne(player)) yield false;
+                        }
+                        yield true;
+                    }
+                    default -> {
+                        if (living.getItemBySlot(slot).getItem() instanceof IModifiable){
+                            ToolStack tool = ToolStack.from(living.getItemBySlot(slot));
+                            if (tool.getModifierLevel(new ModifierId("tinkerscalibration:enderference_armor"))>0) yield false;
+                            if (tool.getModifierLevel(TltCoreModifiers.NEVER_ENDS_STARTUP.get())>0&&
+                                    living instanceof Player player&&
+                                    SuperpositionHandler.isTheCursedOne(player)) yield false;
+                        }
+                        yield true;
+                    }
+                };
+                if (!shouldTeleport) return;
+            }
 
             if (random.nextInt(100) < a * 10 && entity.getPersistentData().getInt(transfer_cooldown) == 0) {
                 teleport(living);
@@ -94,13 +124,5 @@ public class TransferTrait extends MobTrait {
                 mapLevel(i -> Component.literal(i*10 + "")
                         .withStyle(ChatFormatting.AQUA))
         ).withStyle(ChatFormatting.GRAY));
-    }
-    public static int getAllModifierlevel(LivingEntity entity, ModifierId modifierId) {
-        return ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.MAINHAND), modifierId)
-                + ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.OFFHAND), modifierId)
-                + ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.HEAD), modifierId)
-                + ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.CHEST), modifierId)
-                + ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.LEGS), modifierId)
-                + ModifierUtil.getModifierLevel(entity.getItemBySlot(EquipmentSlot.FEET), modifierId);
     }
 }
