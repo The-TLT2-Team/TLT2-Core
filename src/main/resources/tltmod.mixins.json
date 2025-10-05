@@ -12,6 +12,7 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "ShulkerBulletMixin",
+    "SlimeMoveControlInvoker",
     "alexscaves.CommonEventMixin",
     "bot.GaiaGuardianEntityMixin",
     "bot.ManaBurstEntityMixin",
@@ -24,7 +25,6 @@
     "l2.HostilityOrbMixin",
     "l2.RagnarokMixin",
     "l2.ReflectMixin",
-    "sophisticated.FeedingUpgradeWrapperMixin",
     "sophisticated.FeedingUpgradeWrapperMixin",
     "tconstruct.RandomizedMixin",
     "tconstruct.ToolStackMixin"

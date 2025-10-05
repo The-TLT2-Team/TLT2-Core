@@ -6,6 +6,7 @@ import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,4 +41,6 @@ public class ForgeEventHandler {
         }
         ((IFallingBlockEntityMixin)entity).tltmod$setBlockState(list.get(random.nextInt(list.size())).defaultBlockState());
     }
+
+
 }

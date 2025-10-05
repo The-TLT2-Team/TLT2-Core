@@ -6,6 +6,7 @@ import com.fg.tltmod.TltCore;
 import com.fg.tltmod.client.renderer.entity.LaserEntityRenderer;
 import com.fg.tltmod.client.renderer.entity.RenderWaveSlash;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,6 +21,7 @@ public class ModClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event){
         event.registerEntityRenderer(TltCoreEntityTypes.WAVE_SLASH.get(), RenderWaveSlash::new);
         event.registerEntityRenderer(TltCoreEntityTypes.LASER_A.get(), LaserEntityRenderer::new);
+        event.registerEntityRenderer(TltCoreEntityTypes.MOON_SLIME_BOSS.get(), SlimeRenderer::new);
     }
 
     @SubscribeEvent

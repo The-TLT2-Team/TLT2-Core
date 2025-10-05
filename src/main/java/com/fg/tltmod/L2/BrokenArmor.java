@@ -20,13 +20,13 @@ public class BrokenArmor extends MobTrait {
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
         LivingEntity living=cache.getAttackTarget();
-        if (living.getEffect(CloudertinkerEffects.Armorbroken.get())==null){
+        MobEffectInstance instance = living.getEffect(CloudertinkerEffects.Armorbroken.get());
+        if (instance==null){
             living.addEffect(new MobEffectInstance(CloudertinkerEffects.Armorbroken.get(),100*a,0));
-        }else{
-            int timeleft = attacker.getEffect(CloudertinkerEffects.Armorbroken.get()).getDuration();
-            int EffectLevel = attacker.getEffect(CloudertinkerEffects.Armorbroken.get()).getAmplifier();
+        } else {
+            int timeleft = instance.getDuration();
+            int EffectLevel = instance.getAmplifier();
             living.addEffect(new MobEffectInstance(CloudertinkerEffects.Armorbroken.get(),timeleft+(60*a),EffectLevel+1));
-
         }
     }
     @Override
