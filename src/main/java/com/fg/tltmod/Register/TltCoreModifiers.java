@@ -3,6 +3,7 @@ package com.fg.tltmod.Register;
 import com.fg.tltmod.SomeModifiers.armor.*;
 import com.fg.tltmod.SomeModifiers.harvest.*;
 import com.fg.tltmod.SomeModifiers.hidden.*;
+import com.fg.tltmod.SomeModifiers.integration.arsnouveau.CasterToolModifier;
 import com.fg.tltmod.SomeModifiers.integration.botania.*;
 import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier;
 import com.fg.tltmod.SomeModifiers.interaction.*;
@@ -39,4 +40,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<TheCursedOne> THE_CURSED_ONE = MODIFIERS.register("the_cursed_one",TheCursedOne::new);
 
     public static final StaticModifier<ManaRefactorModifier> MANA_REFACTOR = MODIFIERS.register("mana_refactor", ManaRefactorModifier::new);
+    public static final StaticModifier<CasterToolModifier> CASTER_TOOL = MODIFIERS.register("caster_tool",CasterToolModifier::new);
 }

@@ -44,5 +44,6 @@ public class TltCoreDataProviders {
         generator.addProvider(client,new TltCoreModifierProvider(output));
         generator.addProvider(server, new TraitConfigProvider(generator));
         generator.addProvider(server, new TltCoreModifierRecipeProvider(output));
+        generator.addProvider(server, new TltCoreTraitsGLMProvider(output));
     }
 }

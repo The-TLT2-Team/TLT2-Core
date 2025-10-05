@@ -175,7 +175,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation fg.deobf("slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}")
     implementation fg.deobf("slimeknights.tconstruct:TConstruct:${minecraft_version}-3.10.1.76")
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:15.20.0.106")
+    implementation fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:15.20.0.106")
     implementation fg.deobf("curse.maven:l2library-620203:6806000")
     implementation fg.deobf("curse.maven:l2hostility-909207:6985550")
     implementation fg.deobf("curse.maven:l2-complements-758349:6939786")
@@ -195,6 +195,16 @@ dependencies {
     implementation fg.deobf("curse.maven:citadel-331936:6702068")
     implementation fg.deobf("curse.maven:extrabotany-reburn-1271869:6818025")
     implementation fg.deobf("curse.maven:tinkers-ingenuity-1300480:7041355")
+    implementation fg.deobf("curse.maven:alexs-caves-924854:5848216")
+
+    implementation fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
+    implementation fg.deobf("curse.maven:caelus-308989:5281700")
+    implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+    implementation fg.deobf("curse.maven:extrabotany-reburn-1271869:6818025")
+    implementation fg.deobf("curse.maven:event-wrapper-1256971:6788387")
+    implementation fg.deobf("curse.maven:sophisticated-core-618298:7051013")
+    implementation fg.deobf("curse.maven:geckolib-388172:7025129")
+    implementation fg.deobf("curse.maven:ars-nouveau-401955:6688854")
 
     compileOnly fg.deobf(jarJar("com.tterrag.registrate:Registrate:MC1.20-1.3.11")) {
         transitive = false
@@ -212,12 +222,6 @@ dependencies {
         transitive = false
         jarJar.ranged(it, "[0.4.3,)")
     }
-    implementation fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
-    implementation fg.deobf("curse.maven:caelus-308989:5281700")
-    implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
-    implementation fg.deobf("curse.maven:extrabotany-reburn-1271869:6818025")
-    implementation fg.deobf("curse.maven:event-wrapper-1256971:6788387")
-    implementation fg.deobf("curse.maven:sophisticated-core-618298:7051013")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

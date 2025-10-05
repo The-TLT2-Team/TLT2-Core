@@ -10,6 +10,7 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "ShulkerBulletMixin",
+    "alexscaves.CommonEventMixin",
     "bot.GaiaGuardianEntityMixin",
     "bot.ManaBurstEntityMixin",
     "enigmaticLegacy.CursedRingMixin",
@@ -21,8 +22,7 @@
     "l2.HostilityOrbMixin",
     "l2.RagnarokMixin",
     "l2.ReflectMixin",
-    "sophisticated.FeedingUpgradeWrapperMixin"
-    "l2.ReflectMixin",
+    "sophisticated.FeedingUpgradeWrapperMixin",
     "tconstruct.ToolStackMixin"
   ],
   "injectors": {

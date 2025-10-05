@@ -2,7 +2,7 @@ package com.fg.tltmod.SomeModifiers.integration.botania.mana;
 
 import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.CustomBarDisplayModifierHook;
-import com.fg.tltmod.content.capability.ManaCurioCapability;
+import com.fg.tltmod.content.capability.compat.botania.ManaCurioCapability;
 import com.fg.tltmod.util.MathUtil;
 import com.ssakura49.sakuratinker.generic.BaseModifier;
 import com.ssakura49.sakuratinker.utils.component.DynamicComponentUtil;
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 import java.util.List;
 
-import static com.fg.tltmod.content.capability.ManaCurioCapability.*;
+import static com.fg.tltmod.content.capability.compat.botania.ManaCurioCapability.*;
 
 public abstract class BasicManaModifier extends BaseModifier implements ModifierRemovalHook, TooltipModifierHook, ToolStatsModifierHook, CustomBarDisplayModifierHook, ValidateModifierHook {
     @Override
@@ -52,21 +52,20 @@ public abstract class BasicManaModifier extends BaseModifier implements Modifier
     @Nullable
     @Override
     public Component onRemoved(@NotNull IToolStackView tool, @NotNull Modifier modifier) {
-        if (getToolMaxMana(tool) <= 0) {
-            tool.getPersistentData().remove(MANA_KEY);
-        }
+        checkMana(tool);
         return null;
     }
 
     @Override
     public void addTooltip(IToolStackView tool, ModifierEntry modifierEntry, @Nullable Player player, List<Component> list, TooltipKey tooltipKey, TooltipFlag tooltipFlag) {
-        Component component = DynamicComponentUtil.ScrollColorfulText.getColorfulText("tooltip.tltmod.mana_storage",":"+" "+ MathUtil.Mana.getManaString(getToolMana(tool))+"/"+ MathUtil.Mana.getManaString(getToolMaxMana(tool)),new int[]{0xFF0000,0xFF5A00},40,100,true);
+        Component component = DynamicComponentUtil.ScrollColorfulText.getColorfulText("tooltip.tltmod.mana_storage",":"+" "+ MathUtil.Mana.getManaString(getToolMana(tool))+"/"+ MathUtil.Mana.getManaString(getToolMaxMana(tool)),new int[]{0x00ff9a,0x00ffff},40,100,true);
         if (!list.contains(component)) list.add(component);
     }
 
     @Override
     public void addToolStats(IToolContext iToolContext, ModifierEntry modifierEntry, ModifierStatsBuilder modifierStatsBuilder) {
         ManaCurioCapability.MAX_STAT.add(modifierStatsBuilder,getCapacity(modifierEntry));
+        //TltCore.LOGGER.info("ManaRefactorModifier addToolStats: +{}", getCapacity(modifierEntry));
     }
 
     public abstract int getCapacity(ModifierEntry modifier);

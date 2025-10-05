@@ -1,0 +1,12 @@
+{
+  "type": "tltmod:loot_cursed_ring",
+  "conditions": [
+    {
+      "condition": "minecraft:killed_by_player"
+    },
+    {
+      "condition": "l2hostility:player_has_item",
+      "item": "enigmaticlegacy:cursed_ring"
+    }
+  ]
+}
