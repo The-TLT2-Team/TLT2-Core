@@ -26,9 +26,10 @@ public class ThudTrait extends MobTrait {
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
         LivingEntity living=cache.getAttackTarget();
         if (!living.hasEffect(TltCoreEffects.oscillation.get())&&attacker.getPersistentData().getInt(thud_cooldown) == 0){
-            applyCustomKnockback(attacker, living,Math.pow(2+a,2));
-            living.addEffect(new MobEffectInstance(TltCoreEffects.oscillation.get(),20*(a+1),a-1));
-            attacker.getPersistentData().putInt(thud_cooldown, 10);
+            if (living.addEffect(new MobEffectInstance(TltCoreEffects.oscillation.get(),20*(a+1),a-1))){
+                attacker.getPersistentData().putInt(thud_cooldown, 10);
+                applyCustomKnockback(attacker, living,Math.pow(2+a,2));
+            }
         }
     }
     private static void applyCustomKnockback(LivingEntity attacker, LivingEntity target,double totalStrength) {
