@@ -3,15 +3,16 @@ package com.fg.tltmod.client.renderer.entity;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.client.renderer.RenderType.TLTRenderType;
 import com.fg.tltmod.content.entity.LaserEntity;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import com.ssakura49.sakuratinker.render.RendererUtils;
 import com.ssakura49.sakuratinker.render.shader.GlowRenderLayer;
 import com.ssakura49.sakuratinker.render.shader.STRenderType;
 import com.ssakura49.sakuratinker.utils.math.MathUtils;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,6 +26,8 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector4f;
+
+import static com.ssakura49.sakuratinker.render.RendererUtils.beam;
 
 public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(TltCore.MODID, "textures/entity/laser.png");
@@ -74,30 +77,32 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
         VertexConsumer ivertexbuilder = source.getBuffer(TLTRenderType.getGlowingEffect(getTextureLocation(laser)));
 
         renderStart(frame, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, poseStack, ivertexbuilder, packedLightIn);
-        renderBeam( rot,length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, poseStack, ivertexbuilder, packedLightIn);
+        renderBeam( rot,length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, poseStack, ivertexbuilder,source, packedLightIn);
         poseStack.pushPose();
         poseStack.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
         renderEnd(frame, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, laser.blockSide, poseStack, ivertexbuilder, packedLightIn);
         poseStack.popPose();
     }
 
-    private void renderRegular(float rot,float yaw,float pitch,PoseStack poseStack) {
-        MultiBufferSource.BufferSource source = Minecraft.getInstance().renderBuffers().bufferSource();
-        //RenderSystem.enableDepthTest();
-        //RenderSystem.depthMask(true);
+    private void renderRegular(float rot,float yaw,float pitch,PoseStack poseStack,MultiBufferSource source) {
+        //MultiBufferSource.BufferSource source = Minecraft.getInstance().renderBuffers().bufferSource();
+        //Tesselator.getInstance().getBuilder().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+//        RenderSystem.enableDepthTest();
+//        RenderSystem.depthMask(true);
         poseStack.pushPose();
+
         //1
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 1F);
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot)));
-        RendererUtils.renderRegularPolygon(poseStack, source, 1.0F, 3F, 0.3F, 1024, 1.0F, 1.0F, 1.0F, 1.0F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F, true);
+        renderRegularPolygon(poseStack, source, 1.0F, 3F, 0.3F, 1024, 1.0F, 1.0F, 1.0F, 1.0F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F);
         poseStack.translate(0.0F, 0.0F, -0.01F);
-        RendererUtils.renderRegularPolygon(poseStack, source, 1.0F, 3, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F, true);
+        renderRegularPolygon(poseStack, source, 1.0F, 3, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot*2.4936)));
-        RendererUtils.renderRing(poseStack, source, (double)0.0F, 90.0F, 1.1F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
+        renderRing(poseStack, source, (double)0.0F, 90.0F, 1.1F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
         poseStack.popPose();
 
         poseStack.popPose();
@@ -105,14 +110,14 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 2F);
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(-rot)));
-        RendererUtils.renderRegularPolygon(poseStack, source, 1.5F, 3.0F, 0.3F, 1024, 1.0F, 1.0F, 1.0F, 1.0F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F, true);
+        renderRegularPolygon(poseStack, source, 1.5F, 3.0F, 0.3F, 1024, 1.0F, 1.0F, 1.0F, 1.0F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F);
         poseStack.translate(0.0F, 0.0F, -0.01F);
-        RendererUtils.renderRegularPolygon(poseStack, source, 1.5F, 3, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F, true);
+        renderRegularPolygon(poseStack, source, 1.5F, 3, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(-rot*2.4936)));
-        RendererUtils.renderRing(poseStack, source, (double)0.0F, 90.0F, 1.3F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
+        renderRing(poseStack, source, (double)0.0F, 90.0F, 1.3F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
         poseStack.popPose();
 
         poseStack.popPose();
@@ -120,14 +125,14 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 3F);
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(-rot*1.2)));
-        RendererUtils.renderRegularPolygon(poseStack, source, 2.0F, 4.0F, 0.3F, 1024, 0.6F, 0.6F, 1.0F, 0.8F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F, true);
+        renderRegularPolygon(poseStack, source, 2.0F, 4.0F, 0.3F, 1024, 0.6F, 0.6F, 1.0F, 0.8F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F);
         poseStack.translate(0.0F, 0.0F, -0.01F);
-        RendererUtils.renderRegularPolygon(poseStack, source, 2.1F, 4, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F, true);
+        renderRegularPolygon(poseStack, source, 2.1F, 4, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot*2.4936)));
-        RendererUtils.renderRing(poseStack, source, (double)0.0F, 90.0F, 2.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
+        renderRing(poseStack, source, (double)0.0F, 90.0F, 2.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
         poseStack.popPose();
 
         poseStack.popPose();
@@ -135,14 +140,14 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 4F);
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot*1.2)));
-        RendererUtils.renderRegularPolygon(poseStack, source, 2.5F, 4, 0.3F, 1024, 0.6F, 0.6F, 1.0F, 0.8F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F, true);
+        renderRegularPolygon(poseStack, source, 2.5F, 4, 0.3F, 1024, 0.6F, 0.6F, 1.0F, 0.8F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F);
         poseStack.translate(0.0F, 0.0F, -0.01F);
-        RendererUtils.renderRegularPolygon(poseStack, source, 2.6F, 4, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F, true);
+        renderRegularPolygon(poseStack, source, 2.6F, 4, 0.22F, 1024, 0.6F, 0.8F, 0.7F, 1.0F);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(-rot*2.4936)));
-        RendererUtils.renderRing(poseStack, source, (double)0.0F, 90.0F, 2.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
+        renderRing(poseStack, source, (double)0.0F, 90.0F, 2.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
         poseStack.popPose();
 
         poseStack.popPose();
@@ -150,21 +155,22 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.0F, 5F);
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot)));
-        RendererUtils.renderRegularPolygon(poseStack, source, 3.0F, 5.0F, 0.4F, 1024, 0.4F, 0.4F, 0.4F, 0.4F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F, true);
+        renderRegularPolygon(poseStack, source, 3.0F, 5.0F, 0.4F, 1024, 0.4F, 0.4F, 0.4F, 0.4F, STRenderType.END_PORTAL(RendererUtils.cosmic), 1.0F);
         poseStack.translate(0.0F, 0.0F, -0.01F);
-        RendererUtils.renderRegularPolygon(poseStack, source, 3.2F, 5, 0.16F, 1024, 0.6F, 0.8F, 0.7F, 1.0F, true);
+        renderRegularPolygon(poseStack, source, 3.2F, 5, 0.16F, 1024, 0.6F, 0.8F, 0.7F, 1.0F);
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.mulPose(new Quaternionf().rotationZ((float)Math.toRadians(rot*2.4936)));
-        RendererUtils.renderRing(poseStack, source, (double)0.0F, 90.0F, 3.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
+        renderRing(poseStack, source, (double)0.0F, 90.0F, 3.2F, 0.19296484F, 64, 128, 128, 0.6F, 0.6F, 0.6F, 0.7F, ring);
         poseStack.popPose();
 
         poseStack.popPose();
         //
         poseStack.popPose();
-        //RenderSystem.disableDepthTest();
-        source.endBatch();
+
+//        RenderSystem.disableDepthTest();
+//        source.endBatch();
     }
 
     private void renderFlatQuad(int frame,float yaw,float pitch, PoseStack poseStack, VertexConsumer builder, int packedLightIn) {
@@ -255,7 +261,7 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
 
     }
 
-    private void renderBeam(float rot, float length, float yaw, float pitch, int frame, PoseStack poseStack, VertexConsumer builder, int packedLightIn) {
+    private void renderBeam(float rot, float length, float yaw, float pitch, int frame, PoseStack poseStack, VertexConsumer builder,MultiBufferSource source, int packedLightIn) {
         poseStack.pushPose();
         poseStack.mulPose((new Quaternionf()).rotationX(90 * ((float)Math.PI / 180F)));
         poseStack.mulPose((new Quaternionf()).rotationZ((yaw - 90f) * ((float)Math.PI / 180F) ));
@@ -276,7 +282,7 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
 
             poseStack.pushPose();
             poseStack.mulPose((new Quaternionf()).rotationX((float)Math.toRadians(-90)));
-            renderRegular(rot,yaw,pitch,poseStack);
+            renderRegular(rot,yaw,pitch,poseStack,source);
             poseStack.popPose();
         }
         poseStack.popPose();
@@ -290,6 +296,78 @@ public class LaserEntityRenderer extends EntityRenderer<LaserEntity> {
                 .uv2(packedLightIn)
                 .normal(normals, 0.0F, 1.0F, 0.0F)
                 .endVertex();
+    }
+
+    public static void renderRegularPolygon(PoseStack stack, MultiBufferSource source, float radius, float sides, float width, int packedLight, float r, float g, float b, float a, RenderType renderType, float percentage) {
+        float PI = 3.1415925F;
+        sides /= 2.0F;
+        VertexConsumer bb = source.getBuffer(renderType);
+        Matrix4f m = stack.last().pose();
+        Matrix3f matrix3f = stack.last().normal();
+        Vector4f color = new Vector4f(r, g, b, a);
+
+        for(float alpha = 0.0F; alpha < 2.0F * PI && (!(percentage < 1.0F) || !(alpha / (2.0F * PI) >= percentage)); alpha += PI / sides) {
+            double cos = (double)MathUtils.cos(alpha);
+            double sin = (double)MathUtils.sin(alpha);
+            double cos_ = (double)MathUtils.cos(alpha + PI / sides);
+            double sin_ = (double)MathUtils.sin(alpha + PI / sides);
+            float x = (float)((double)radius * cos);
+            float y = (float)((double)radius * sin);
+            vertexRP(bb, m, matrix3f, packedLight, x, y, 0.0F, 0.0F, color);
+            x = (float)((double)radius * cos_);
+            y = (float)((double)radius * sin_);
+            vertexRP(bb, m, matrix3f, packedLight, x, y, 0.0F, 0.0F, color);
+            x = (float)((double)(radius - width) * cos_);
+            y = (float)((double)(radius - width) * sin_);
+            vertexRP(bb, m, matrix3f, packedLight, x, y, 0.0F, 0.0F, color);
+            x = (float)((double)(radius - width) * cos);
+            y = (float)((double)(radius - width) * sin);
+            vertexRP(bb, m, matrix3f, packedLight, x, y, 0.0F, 0.0F, color);
+        }
+    }
+
+    public static void renderRegularPolygon(PoseStack stack, MultiBufferSource source, float radius, int sides, float width, int packedLight, float r, float g, float b, float a) {
+        renderRegularPolygon(stack, source, radius, (float)sides, width, packedLight, r, g, b, a, STRenderType.glow(beam), 1.0F);
+    }
+
+
+    public static void vertexRP(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, int light, float x, float y, float u, float v, Vector4f color) {
+        vertexConsumer.vertex(matrix4f, x, y, 0.0F).color(color.x, color.y, color.z, color.w).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
+    }
+
+    public static void renderRing(PoseStack matrix, MultiBufferSource buffer, double cy, float flatness, float radius, float height, int num_segments, int lx, int ly, float r, float g, float b, float a, RenderType type) {
+        Matrix4f positionMatrix = matrix.last().pose();
+        VertexConsumer bb = buffer.getBuffer(type);
+        double theta = 6.2831852 / (double)num_segments;
+        double q = (double)height * MathUtils.sin(Math.toRadians((double)flatness));
+        double p = (double)radius + (double)height * MathUtils.cos(Math.toRadians((double)flatness));
+        double x = (double)0.0F;
+        double y = (double)0.0F;
+        double z = (double)0.0F;
+        double xb = (double)0.0F;
+        double yb = (double)0.0F;
+        double zb = (double)0.0F;
+        float squeeze = 3.0F;
+        float texx = 0.0F;
+
+        for(int i = 0; i < num_segments + 1; ++i) {
+            texx += squeeze / (float)(num_segments + 1);
+            if (texx >= 1.0F) {
+                texx = squeeze / (float)(num_segments + 1);
+                bb.vertex(positionMatrix, (float)x, (float)y, (float)z).color(r, g, b, a).uv(0.0F, 0.0F).uv2(lx, ly).endVertex();
+                bb.vertex(positionMatrix, (float)xb, (float)yb, (float)zb).color(r, g, b, a).uv(0.0F, 1.0F).uv2(lx, ly).endVertex();
+            }
+
+            double tt = (double)i * theta;
+            x = (double)(-radius) * MathUtils.sin(tt);
+            y = cy;
+            z = (double)radius * MathUtils.cos(tt);
+            xb = -p * MathUtils.sin(tt);
+            yb = cy - q;
+            zb = p * MathUtils.cos(tt);
+            bb.vertex(positionMatrix, (float)x, (float)cy, (float)z).color(r, g, b, a).uv(texx, 0.0F).uv2(lx, ly).endVertex();
+            bb.vertex(positionMatrix, (float)xb, (float)yb, (float)zb).color(r, g, b, a).uv(texx, 1.0F).uv2(lx, ly).endVertex();
+        }
     }
 }
 
