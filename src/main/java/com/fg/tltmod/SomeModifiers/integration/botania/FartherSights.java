@@ -44,14 +44,13 @@ public class FartherSights extends NoLevelsModifier implements AttributesModifie
     }
 
     @Override
-    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
+    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, IManaBurstMixin burstExtras, ToolStack dummyLens) {
         if (owner instanceof Player player&&player.getMainHandItem().getItem() instanceof IModifiable){
             ToolStack toolStack = ToolStack.from(player.getMainHandItem());
             if (toolStack.getModifierLevel(this)>0){
                 burst.entity().addTag(KEY_TRIGGER_TOOL);
                 burst.setMana(burst.getMana()+100);
-                var burstMixin = (IManaBurstMixin) burst;
-                burstMixin.tltmod$setPerBlockConsumption(burstMixin.tltmod$getPerBlockConsumption()+50);
+                burstExtras.tltmod$setPerBlockConsumption(burstExtras.tltmod$getPerBlockConsumption()+50);
             }
         }
     }

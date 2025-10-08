@@ -35,7 +35,7 @@ public class ExcaliburBurst extends NoLevelsModifier implements ModifyBurstModif
     }
 
     @Override
-    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
+    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, IManaBurstMixin burstExtras, ToolStack dummyLens) {
         burst.entity().setDeltaMovement(burst.entity().getDeltaMovement().scale(1.5));
         burst.setColor(0xFFFF20);
         burst.setMana(burst.getMana()+50);

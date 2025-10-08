@@ -25,8 +25,7 @@ public class TerraBurst extends NoLevelsModifier implements ModifyBurstModifierH
     }
 
     @Override
-    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
-        var burstEntity = (IManaBurstMixin) burst;
-        burstEntity.tltmod$setBaseDamage(burstEntity.tltmod$getBaseDamage()+7f);
+    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, IManaBurstMixin burstExtras, ToolStack dummyLens) {
+        burstExtras.tltmod$setBaseDamage(burstExtras.tltmod$getBaseDamage()+7f);
     }
 }

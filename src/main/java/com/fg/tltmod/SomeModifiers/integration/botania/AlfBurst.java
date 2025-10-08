@@ -29,7 +29,7 @@ public class AlfBurst extends NoLevelsModifier implements ModifyBurstModifierHoo
     }
 
     @Override
-    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, ToolStack dummyLens) {
+    public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, IManaBurstMixin burstExtras, ToolStack dummyLens) {
         var burstEntity = (IManaBurstMixin) burst;
         burstEntity.tltmod$setBaseDamage(burstEntity.tltmod$getBaseDamage()+8f);
         burst.setMana(burst.getMana()+100);
