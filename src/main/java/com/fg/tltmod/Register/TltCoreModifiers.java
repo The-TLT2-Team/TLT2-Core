@@ -6,11 +6,15 @@ import com.fg.tltmod.SomeModifiers.hidden.*;
 import com.fg.tltmod.SomeModifiers.integration.arsnouveau.CasterToolModifier;
 import com.fg.tltmod.SomeModifiers.integration.botania.*;
 import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier;
+import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ExcaliburBurst;
+import com.fg.tltmod.SomeModifiers.integration.botania.specialized.Thunderstorm;
 import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
 import com.fg.tltmod.SomeModifiers.misc.*;
 import com.fg.tltmod.SomeModifiers.integration.sevenCurse.*;
+import com.fg.tltmod.SomeModifiers.rebalance.ArrowThrowerRebalance;
 import com.fg.tltmod.SomeModifiers.rebalance.BlowPipeRebalance;
+import com.fg.tltmod.SomeModifiers.rebalance.DashRebalance;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 import slimeknights.tconstruct.tools.modifiers.traits.general.TannedModifier;
@@ -43,4 +47,7 @@ public class TltCoreModifiers {
     public static final StaticModifier<ManaRefactorModifier> MANA_REFACTOR = MODIFIERS.register("mana_refactor", ManaRefactorModifier::new);
     public static final StaticModifier<BlowPipeRebalance> BLOW_PIPE_REBALANCE = MODIFIERS.register("blowpipe_rebalance", BlowPipeRebalance::new);
     public static final StaticModifier<CasterToolModifier> CASTER_TOOL = MODIFIERS.register("caster_tool",CasterToolModifier::new);
+    public static final StaticModifier<ArrowThrowerRebalance> ARROW_THROWER_REBALANCE = MODIFIERS.register("arrow_thrower_rebalance",ArrowThrowerRebalance::new);
+    public static final StaticModifier<DashRebalance> DASH_REBALANCE = MODIFIERS.register("dash_rebalance",DashRebalance::new);
+    public static final StaticModifier<Thunderstorm> THUNDERSTORM = MODIFIERS.register("thunderstorm",Thunderstorm::new);
 }

@@ -2,6 +2,7 @@ package com.fg.tltmod.Register;
 
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.content.entity.LaserEntity;
+import com.fg.tltmod.content.entity.ThunderBurstEntity;
 import com.fg.tltmod.content.entity.WaveSlashEntity;
 import com.fg.tltmod.content.entity.living.MoonSlimeBoss;
 import net.minecraft.world.entity.EntityType;
@@ -12,6 +13,7 @@ import slimeknights.mantle.registration.deferred.EntityTypeDeferredRegister;
 import slimeknights.mantle.registration.object.EntityObject;
 import slimeknights.tconstruct.world.TinkerWorld;
 import slimeknights.tconstruct.world.entity.EnderSlimeEntity;
+import vazkii.botania.common.entity.ManaBurstEntity;
 
 public class TltCoreEntityTypes {
     public static final EntityTypeDeferredRegister ENTITY_TYPES = new EntityTypeDeferredRegister(TltCore.MODID);
@@ -35,4 +37,11 @@ public class TltCoreEntityTypes {
                     .setTrackingRange(32)
                     .sized(2.0F, 2.0F)
                     .setCustomClientFactory((spawnEntity, world) -> TltCoreEntityTypes.MOON_SLIME_BOSS.get().create(world)), 0xCCBBB0, 0xFFEECC);
+    public static final RegistryObject<EntityType<ManaBurstEntity>> THUNDER_BURST = ENTITY_TYPES.register("thunder_burst",()->
+            EntityType.Builder.<ManaBurstEntity>of(ThunderBurstEntity::new, MobCategory.MISC)
+                    .sized(2f,2f)
+                    .setCustomClientFactory(((spawnEntity, level) -> new ThunderBurstEntity(level)))
+                    .setTrackingRange(8)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(4));
 }

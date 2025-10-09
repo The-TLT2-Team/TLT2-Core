@@ -45,5 +45,9 @@ public class TltCoreDataProviders {
         generator.addProvider(server, new TraitConfigProvider(generator));
         generator.addProvider(server, new TltCoreModifierRecipeProvider(output));
         generator.addProvider(server, new TltCoreTraitsGLMProvider(output));
+
+        //正常runData时不用运行这个，这个是用来生成A洞群系的地表规则的。
+        //生成后的文件是手动复制result内的内容放进其它维度的噪声生成器的地表规则内，用后需删除。
+        //generator.addProvider(server,new TltCoreNoiseSettingProvider(output));
     }
 }

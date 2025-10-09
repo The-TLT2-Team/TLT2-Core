@@ -1,7 +1,8 @@
-package com.fg.tltmod.SomeModifiers.integration.botania;
+package com.fg.tltmod.SomeModifiers.integration.botania.specialized;
 
 import com.c2h6s.etstlib.util.EntityInRangeUtil;
 import com.c2h6s.etstlib.util.ProjectileUtil;
+import com.fg.tltmod.SomeModifiers.integration.botania.base.SpecializedBurstModifier;
 import com.fg.tltmod.content.hook.TltCoreModifierHook;
 import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
-import slimeknights.tconstruct.library.modifiers.impl.NoLevelsModifier;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
@@ -22,11 +22,7 @@ import vazkii.botania.common.entity.ManaBurstEntity;
 
 import java.util.List;
 
-public class ExcaliburBurst extends NoLevelsModifier implements ModifyBurstModifierHook, UpdateBurstModifierHook {
-    @Override
-    public int getPriority() {
-        return 70;
-    }
+public class ExcaliburBurst extends SpecializedBurstModifier implements ModifyBurstModifierHook, UpdateBurstModifierHook {
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
@@ -38,14 +34,13 @@ public class ExcaliburBurst extends NoLevelsModifier implements ModifyBurstModif
     public void modifyBurst(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst, IManaBurstMixin burstExtras, ToolStack dummyLens) {
         burst.entity().setDeltaMovement(burst.entity().getDeltaMovement().scale(1.5));
         burst.setColor(0xFFFF20);
-        burst.setMana(burst.getMana()+50);
-        var burstEntity = (IManaBurstMixin) burst;
-        burstEntity.tltmod$setBaseDamage(burstEntity.tltmod$getBaseDamage()+9f);
-        burstEntity.tltmod$setPerConsumption(burstEntity.tltmod$getPerConsumption()+50);
+        burst.setMana(burst.getMana()+100);
+        burstExtras.addBaseDamage(16);
+        burstExtras.addEntityPerConsumption(50);
     }
 
     @Override
-    public void updateBurst(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst) {
+    public void updateBurst(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst,IManaBurstMixin burstExtra) {
         var entity = EntityInRangeUtil.getNearestLivingEntity(burst.entity(),8,((IManaBurstMixin)burst).tltmod$getHitEntityIdList(),entity1 -> canHitEntity(entity1, (ManaBurstEntity) burst));
         if (entity!=null) ProjectileUtil.homingToward(burst.entity(),entity,1,4);
     }

@@ -30,6 +30,7 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.entity.ManaBurstEntity;
+import vazkii.botania.common.handler.BotaniaSounds;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
             var burst = getBurst(player, (ToolStack) tool);
             if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
+                burst.playSound(BotaniaSounds.terraBlade);
             }
         }
     }
@@ -62,6 +64,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
             var burst = getBurst(player, (ToolStack) tool);
             if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
+                burst.playSound(BotaniaSounds.terraBlade);
             }
         }
     }
@@ -72,6 +75,7 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
             var burst = getBurst(player, (ToolStack) tool);
             if (ManaItemHandler.instance().requestManaExactForTool(((ToolStack) tool).createStack(),player,burst.getMana(),true)){
                 player.level().addFreshEntity(burst);
+                burst.playSound(BotaniaSounds.terraBlade);
             }
         }
         return knockback;

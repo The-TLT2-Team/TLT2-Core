@@ -4,6 +4,7 @@ import com.fg.tltmod.SomeModifiers.integration.botania.FartherSights;
 import com.fg.tltmod.content.hook.TltCoreModifierHook;
 import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
 import com.fg.tltmod.content.hook.modifier.LensProviderModifierHook;
+import com.fg.tltmod.util.mixin.IManaBurstMixin;
 import com.fg.tltmod.util.tinker.HarvestLogicExtra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,7 +43,7 @@ public class BurstMiningModifier extends Modifier implements LensProviderModifie
     }
 
     @Override
-    public void burstHitBlock(@Nullable IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst) {
+    public void burstHitBlock(@Nullable IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst,IManaBurstMixin burstExtra) {
         if (burst.entity().getTags().contains(FartherSights.KEY_TRIGGER_TOOL)&&tool!=null&&level instanceof ServerLevel&&owner instanceof Player player){
             ItemStack stack = ((ToolStack)tool).createStack();
             BlockState state = level.getBlockState(blockPos);
@@ -58,7 +59,7 @@ public class BurstMiningModifier extends Modifier implements LensProviderModifie
     }
 
     @Override
-    public List<ItemStack> getLens(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, ManaBurst burst) {
+    public List<ItemStack> getLens(IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, ManaBurst burst, IManaBurstMixin burstExtra) {
         return burst.entity().getTags().contains(FartherSights.KEY_TRIGGER_TOOL)?List.of():List.of(new ItemStack(BotaniaItems.lensMine));
     }
 }

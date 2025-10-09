@@ -1,14 +1,17 @@
 package com.fg.tltmod.content.hook.modifier;
 
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
+import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.util.AttackUtil;
 import com.fg.tltmod.SomeModifiers.integration.botania.FartherSights;
 import com.fg.tltmod.content.hook.TltCoreModifierHook;
 import com.fg.tltmod.util.mixin.IManaBurstMixin;
 import com.fg.tltmod.util.mixin.IToolProvider;
+import com.fg.tltmod.util.tinker.AttackLogicExtra;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,16 +36,17 @@ import java.util.Collection;
 import java.util.List;
 
 public interface BurstHitModifierHook {
-    default void burstHitBlock(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst ){}
+    default void burstHitBlock(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst,IManaBurstMixin burstExtra){}
 
-    default void beforeBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull Entity target, ManaBurst burst,float damage){}
+    default void beforeBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull Entity target, ManaBurst burst,IManaBurstMixin burstExtra,float damage){}
 
-    default void afterBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull LivingEntity target, ManaBurst burst ,float damage){}
+    default void afterBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull LivingEntity target, ManaBurst burst ,IManaBurstMixin burstExtra,float damage){}
 
     static boolean handleBurstHit(ManaBurst burst, HitResult result, boolean isManaBlock, boolean shouldKill, ItemStack stack){
         IToolStackView actualTool = ((IToolProvider)burst).tltmod$getTool();
         ToolStack tool = ToolStack.from(stack);
         List<ItemStack> list = LensProviderModifierHook.gatherLens(tool,burst);
+        var burstExtra = (IManaBurstMixin) burst;
         boolean didHitBlock = false;
         boolean didHitEntity = false;
         boolean b = switch (result.getType()){
@@ -57,7 +61,7 @@ public interface BurstHitModifierHook {
                 var modifierList = tool.getModifierList();
 
                 for (var entry:tool.getModifierList()){
-                    entry.getHook(TltCoreModifierHook.BURST_HIT).burstHitBlock(actualTool,entry,modifierList, burst.entity().getOwner(),level,pos,direction,isManaBlock,shouldKill,burst);
+                    entry.getHook(TltCoreModifierHook.BURST_HIT).burstHitBlock(actualTool,entry,modifierList, burst.entity().getOwner(),level,pos,direction, false,shouldKill,burst,(IManaBurstMixin) burst);
                 }
                 didHitBlock = true;
                 yield false;
@@ -65,33 +69,43 @@ public interface BurstHitModifierHook {
             case ENTITY -> {
                 EntityHitResult hitResult = (EntityHitResult) result;
                 Entity entity = hitResult.getEntity();
-                var hitList = ((IManaBurstMixin)burst.entity()).tltmod$getHitEntityIdList();
+                var hitList = burstExtra.tltmod$getHitEntityIdList();
                 hitList.add(entity.getId());
                 Entity owner = burst.entity().getOwner();
                 if (!(owner instanceof LivingEntity living)) yield false;
                 var modifierList = tool.getModifierList();
                 var burstEntity = burst.entity();
-                float baseDamage = ((IManaBurstMixin)burstEntity).tltmod$getBaseDamage();
-                if (baseDamage<=0||burst.getMana()<((IManaBurstMixin)burstEntity).tltmod$getPerConsumption()) yield false;
+                float baseDamage = burstExtra.tltmod$getBaseDamage();
+                if (baseDamage<=0||burst.getMana()<burstExtra.tltmod$getPerConsumption()) yield false;
                 float damage = baseDamage;
                 for (var entry:modifierList){
-                    damage = entry.getHook(TltCoreModifierHook.BURST_DAMAGE).getBurstDamage(actualTool,entry,modifierList,living,entity,burst,baseDamage,damage);
+                    damage = entry.getHook(TltCoreModifierHook.BURST_DAMAGE).getBurstDamage(actualTool,entry,modifierList,living,entity,burst,(IManaBurstMixin) burst,baseDamage,damage);
                 }
                 float finalDamage = damage;
-                modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).beforeBurstHitEntity(actualTool,entry,modifierList,living,entity,burst, finalDamage));
+                modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).beforeBurstHitEntity(actualTool,entry,modifierList,living,entity,burst,(IManaBurstMixin) burst, finalDamage));
                 float legacyHealth = entity instanceof LivingEntity target?target.getHealth():-1;
                 if (burstEntity.getTags().contains(FartherSights.KEY_TRIGGER_TOOL)&&actualTool!=null){
-                    if (AttackUtil.attackEntity(actualTool,living, InteractionHand.MAIN_HAND,entity,()->1,false, EquipmentSlot.MAINHAND,
-                            true, tool.getStats().get(ToolStats.ATTACK_DAMAGE)+1+finalDamage,true)){
+                    if (AttackLogicExtra.attackEntityWithDamageModifier(actualTool,living, InteractionHand.MAIN_HAND,entity,()->1,false, EquipmentSlot.MAINHAND,
+                            true, tool.getStats().get(ToolStats.ATTACK_DAMAGE)+1+finalDamage,burstExtra.tltmod$getDamageModifier(),true)){
                         didHitEntity = true;
                     }
                 }
-                else if (entity.hurt(LegacyDamageSource.mobAttack(living).setBypassArmor(),damage)){
-                    if (entity instanceof LivingEntity target){
-                        float damageDealt =Math.max( legacyHealth-target.getHealth(),0);
-                        modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).afterBurstHitEntity(actualTool,entry,modifierList,living,target,burst, damageDealt));
+                else{
+                    LegacyDamageSource source = LegacyDamageSource.mobAttack(living);
+                    for (var entry:tool.getModifierList()) source = entry.getHook(TltCoreModifierHook.MODIFY_BURST_DAMAGE_SOURCE).modifyBurstSource(tool,burst,burstExtra,owner,entity,source);
+                    if (entity.hurt(source,damage*burstExtra.tltmod$getDamageModifier())){
+                        didHitEntity = true;
                     }
-                    didHitEntity = true;
+                }
+                if (entity instanceof LivingEntity target) {
+                    if (didHitEntity) {
+                        float damageDealt = Math.max(legacyHealth - target.getHealth(), 0);
+                        modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).afterBurstHitEntity(actualTool, entry, modifierList, living, target, burst, (IManaBurstMixin) burst, damageDealt));
+                    } else {
+                        IManaBurstMixin burstMixin = (IManaBurstMixin)burst;
+                        float damageAttempt = burstMixin.tltmod$getBaseDamage()*burstMixin.tltmod$getDamageModifier();
+                        modifierList.forEach(entry -> entry.getHook(TltCoreModifierHook.BURST_HIT).afterBurstHitEntity(actualTool, entry, modifierList, living, target, burst, (IManaBurstMixin) burst, damageAttempt));
+                    }
                 }
                 yield false;
             }
@@ -106,12 +120,12 @@ public interface BurstHitModifierHook {
             switch (result.getType()){
                 case ENTITY -> {
                     if (didHitEntity){
-                        burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerConsumption());
+                        burst.setMana(burst.getMana()-burstExtra.tltmod$getPerConsumption());
                     }
                 }
                 case BLOCK -> {
                     if (didHitBlock){
-                        burst.setMana(burst.getMana()-((IManaBurstMixin) burst).tltmod$getPerBlockConsumption());
+                        burst.setMana(burst.getMana()-burstExtra.tltmod$getPerBlockConsumption());
                     }
                 }
                 default -> {}
@@ -123,18 +137,18 @@ public interface BurstHitModifierHook {
 
     record merger(Collection<BurstHitModifierHook> modules) implements BurstHitModifierHook {
         @Override
-        public void burstHitBlock(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst) {
-            this.modules.forEach(hook->hook.burstHitBlock(tool,modifier,modifierList,owner,level,blockPos,direction,isManaBlock,shouldKill,burst));
+        public void burstHitBlock(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, Level level, BlockPos blockPos, Direction direction, boolean isManaBlock, boolean shouldKill, ManaBurst burst,IManaBurstMixin burstExtra) {
+            this.modules.forEach(hook->hook.burstHitBlock(tool,modifier,modifierList,owner,level,blockPos,direction,isManaBlock,shouldKill,burst,(IManaBurstMixin) burst));
         }
 
         @Override
-        public void beforeBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull Entity target, ManaBurst burst, float damage) {
-            this.modules.forEach(hook->hook.beforeBurstHitEntity(tool,modifier,modifierList,owner,target,burst,damage));
+        public void beforeBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull Entity target, ManaBurst burst,IManaBurstMixin burstExtra, float damage) {
+            this.modules.forEach(hook->hook.beforeBurstHitEntity(tool,modifier,modifierList,owner,target,burst,(IManaBurstMixin) burst,damage));
         }
 
         @Override
-        public void afterBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull LivingEntity target, ManaBurst burst, float damage) {
-            this.modules.forEach(hook->hook.afterBurstHitEntity(tool,modifier,modifierList,owner,target,burst,damage));
+        public void afterBurstHitEntity(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull LivingEntity target, ManaBurst burst,IManaBurstMixin burstExtra, float damage) {
+            this.modules.forEach(hook->hook.afterBurstHitEntity(tool,modifier,modifierList,owner,target,burst,(IManaBurstMixin) burst,damage));
         }
     }
 }
