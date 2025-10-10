@@ -1,5 +1,6 @@
 package com.fg.tltmod.SomeModifiers.integration.botania.specialized;
 
+import com.c2h6s.etstlib.util.DynamicComponentUtil;
 import com.c2h6s.etstlib.util.EntityInRangeUtil;
 import com.c2h6s.etstlib.util.ProjectileUtil;
 import com.fg.tltmod.SomeModifiers.integration.botania.base.SpecializedBurstModifier;
@@ -7,11 +8,13 @@ import com.fg.tltmod.content.hook.TltCoreModifierHook;
 import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
 import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
 import com.fg.tltmod.util.mixin.IManaBurstMixin;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
@@ -43,6 +46,12 @@ public class ExcaliburBurst extends SpecializedBurstModifier implements ModifyBu
     public void updateBurst(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, ManaBurst burst,IManaBurstMixin burstExtra) {
         var entity = EntityInRangeUtil.getNearestLivingEntity(burst.entity(),8,((IManaBurstMixin)burst).tltmod$getHitEntityIdList(),entity1 -> canHitEntity(entity1, (ManaBurstEntity) burst));
         if (entity!=null) ProjectileUtil.homingToward(burst.entity(),entity,1,4);
+    }
+
+    @Override
+    public @NotNull Component getDisplayName(int level) {
+        return DynamicComponentUtil.ScrollColorfulText.getColorfulText(getTranslationKey(),null,
+                new int[]{0xFFBA43,0xFFFA71,0xFFFCB3},4,150,true);
     }
 
     protected static boolean canHitEntity(Entity pTarget, ManaBurstEntity entity) {

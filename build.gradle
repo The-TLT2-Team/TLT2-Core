@@ -197,7 +197,7 @@ dependencies {
     implementation fg.deobf("curse.maven:extrabotany-reburn-1271869:6818025")
     implementation fg.deobf("curse.maven:tinkers-ingenuity-1300480:7041355")
     implementation fg.deobf("curse.maven:alexs-caves-924854:5848216")
-
+    implementation fg.deobf("com.teamcofh:cofh_core:1.20.1-11.0.2.56+")
     implementation fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
     implementation fg.deobf("curse.maven:caelus-308989:5281700")
     implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")

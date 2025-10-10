@@ -91,7 +91,7 @@ public interface BurstHitModifierHook {
                     }
                 }
                 else{
-                    LegacyDamageSource source = LegacyDamageSource.mobAttack(living);
+                    LegacyDamageSource source = LegacyDamageSource.mobAttack(living).setMsgId("magic");
                     for (var entry:tool.getModifierList()) source = entry.getHook(TltCoreModifierHook.MODIFY_BURST_DAMAGE_SOURCE).modifyBurstSource(tool,burst,burstExtra,owner,entity,source);
                     if (entity.hurt(source,damage*burstExtra.tltmod$getDamageModifier())){
                         didHitEntity = true;

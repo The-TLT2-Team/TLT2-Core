@@ -108,6 +108,10 @@ public class LCManaBurstModifier extends Modifier implements LeftClickModifierHo
                     .append(""+((IManaBurstMixin)burst).tltmod$getPerConsumption()).withStyle(Style.EMPTY.withColor(0x71D7FF)));
             tooltip.add(Component.translatable("tooltip.tltmod.mana_per_block")
                     .append(""+((IManaBurstMixin)burst).tltmod$getPerBlockConsumption()).withStyle(Style.EMPTY.withColor(0x71B2FF)));
+            tooltip.add(Component.translatable("tooltip.tltmod.burst_time_before_loss")
+                    .append(""+burst.getMinManaLoss())
+                    .append(Component.translatable("tooltip.tltmod.burst_mana_loss"))
+                    .append(burst.getManaLossPerTick()+"mana").withStyle(s->s.withColor(0x4192FF)));
         }
     }
 }

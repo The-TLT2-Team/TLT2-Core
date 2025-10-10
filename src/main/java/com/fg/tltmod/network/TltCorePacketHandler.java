@@ -2,6 +2,7 @@ package com.fg.tltmod.network;
 
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.network.packets.PClientMessagePacket;
+import com.fg.tltmod.network.packets.PMagneticParticleS2C;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -17,6 +18,7 @@ public class TltCorePacketHandler {
     public static void init() {
         INSTANCE = NetworkRegistry.ChannelBuilder.named(ResourceLocation.fromNamespaceAndPath(TltCore.MODID, "tlt_tech_message")).networkProtocolVersion(() -> "1").clientAcceptedVersions(s -> true).serverAcceptedVersions(s -> true).simpleChannel();
         INSTANCE.messageBuilder(PClientMessagePacket.class, id++, NetworkDirection.PLAY_TO_CLIENT).decoder(PClientMessagePacket::new).encoder(PClientMessagePacket::toByte).consumerMainThread(PClientMessagePacket::handle).add();
+        INSTANCE.messageBuilder(PMagneticParticleS2C.class, id++, NetworkDirection.PLAY_TO_CLIENT).decoder(PMagneticParticleS2C::new).encoder(PMagneticParticleS2C::toByte).consumerMainThread(PMagneticParticleS2C::handle).add();
 
     }
 

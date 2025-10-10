@@ -30,4 +30,7 @@ public interface IManaBurstMixin{
     default void addGeneration(int amount){
         this.tltmod$setGeneration(this.tltmod$getGeneration()+amount);
     }
+    default void addDamageModifier(float amount){
+        this.tltmod$setDamageModifier(this.tltmod$getDamageModifier()+amount);
+    }
 }

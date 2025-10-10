@@ -36,6 +36,7 @@ public class TltCore
         TltCoreItems.BASIC_ITEM.register(modEventBus);
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         TltCoreEffects.EFFECT.register(modEventBus);
+        TltCoreEntityTickers.ENTITY_TICKERS.register(modEventBus);
         TltCoreHostilityTrait.register();
         TltCorePacketHandler.init();
         TltCoreTraitsGLMProvider.register(modEventBus);
@@ -49,6 +50,9 @@ public class TltCore
 
     @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(()->{
+           TltCoreSlots.init();
+        });
         //ToolCapabilityProvider.register(((stack, supplier) -> new ManaCurioCapability.Provider(supplier)));
         //ToolCapabilityProvider.register(((stack, supplier) -> new CastToolCapability.Provider(supplier)));
     }

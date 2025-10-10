@@ -2,27 +2,24 @@ package com.fg.tltmod.SomeModifiers.integration.botania.base;
 
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
-import com.c2h6s.etstlib.util.DynamicComponentUtil;
 import com.fg.tltmod.Register.TltCoreModifiers;
-import net.minecraft.network.chat.Component;
+import com.fg.tltmod.content.hook.TltCoreModifierHook;
+import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
+import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
+import com.fg.tltmod.content.hook.modifier.UpdateBurstModifierHook;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.Nullable;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
-import slimeknights.tconstruct.library.modifiers.ModifierHooks;
-import slimeknights.tconstruct.library.modifiers.hook.build.ValidateModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SpecializedBurstModifier extends EtSTBaseModifier implements ValidateModifierHook {
+public class BasicBurstModifier extends EtSTBaseModifier implements ModifyBurstModifierHook, BurstHitModifierHook, UpdateBurstModifierHook {
     @Override
-    public int getPriority() {
-        return -100;
+    protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
+        super.registerHooks(hookBuilder);
+        hookBuilder.addHook(this, TltCoreModifierHook.MODIFY_BURST,TltCoreModifierHook.BURST_HIT,TltCoreModifierHook.UPDATE_BURST);
     }
 
     @Override
@@ -35,35 +32,5 @@ public class SpecializedBurstModifier extends EtSTBaseModifier implements Valida
 
     public LegacyDamageSource modifySourceWhenTriggerTool(IToolStackView tool, ModifierEntry entry, LivingEntity attacker, InteractionHand hand, Entity target, EquipmentSlot sourceSlot, boolean isFullyCharged, boolean isExtraAttack, boolean isCritical, LegacyDamageSource source){
         return source;
-    }
-
-    @Override
-    public boolean isNoLevels() {
-        return true;
-    }
-
-    @Override
-    protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
-        super.registerHooks(hookBuilder);
-        hookBuilder.addHook(this, ModifierHooks.VALIDATE);
-    }
-
-    @Override
-    public @Nullable Component validate(IToolStackView tool, ModifierEntry modifier) {
-        int i = 0;
-        for (ModifierEntry entry:tool.getModifiers()){
-            if (entry.getModifier() instanceof SpecializedBurstModifier){
-                i++;
-            }
-            if (i>1) return Component.translatable("tooltip.tltmod.error.specialized_burst_modifier");
-        }
-        return null;
-    }
-
-    @Override
-    public List<Component> getDescriptionList() {
-        var list =new ArrayList<>(super.getDescriptionList());
-        list.add(Component.translatable("info.tltmod.specialized_burst_modifier"));
-        return list;
     }
 }

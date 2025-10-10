@@ -39,7 +39,7 @@ public class TltCoreEntityTypes {
                     .setCustomClientFactory((spawnEntity, world) -> TltCoreEntityTypes.MOON_SLIME_BOSS.get().create(world)), 0xCCBBB0, 0xFFEECC);
     public static final RegistryObject<EntityType<ManaBurstEntity>> THUNDER_BURST = ENTITY_TYPES.register("thunder_burst",()->
             EntityType.Builder.<ManaBurstEntity>of(ThunderBurstEntity::new, MobCategory.MISC)
-                    .sized(2f,2f)
+                    .sized(3f,3f)
                     .setCustomClientFactory(((spawnEntity, level) -> new ThunderBurstEntity(level)))
                     .setTrackingRange(8)
                     .setShouldReceiveVelocityUpdates(true)

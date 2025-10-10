@@ -5,8 +5,10 @@ import com.fg.tltmod.SomeModifiers.harvest.*;
 import com.fg.tltmod.SomeModifiers.hidden.*;
 import com.fg.tltmod.SomeModifiers.integration.arsnouveau.CasterToolModifier;
 import com.fg.tltmod.SomeModifiers.integration.botania.*;
+import com.fg.tltmod.SomeModifiers.integration.botania.base.AddManaSlotModifier;
 import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ExcaliburBurst;
+import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ParticleAccelerate;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.Thunderstorm;
 import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
@@ -50,4 +52,20 @@ public class TltCoreModifiers {
     public static final StaticModifier<ArrowThrowerRebalance> ARROW_THROWER_REBALANCE = MODIFIERS.register("arrow_thrower_rebalance",ArrowThrowerRebalance::new);
     public static final StaticModifier<DashRebalance> DASH_REBALANCE = MODIFIERS.register("dash_rebalance",DashRebalance::new);
     public static final StaticModifier<Thunderstorm> THUNDERSTORM = MODIFIERS.register("thunderstorm",Thunderstorm::new);
+    public static final StaticModifier<ParticleAccelerate> PARTICLE_ACCELERATE = MODIFIERS.register("particle_accelerate",ParticleAccelerate::new);
+    public static final StaticModifier<AddManaSlotModifier> LIGHT_ENGRAVE = MODIFIERS.register("light_engrave",AddManaSlotModifier::new);
+    public static final StaticModifier<AddManaSlotModifier> DARK_EROSION = MODIFIERS.register("dark_erosion",AddManaSlotModifier::new);
+    public static final StaticModifier<SourceObfuscate> SOURCE_OBFUSCATE = MODIFIERS.register("source_obfuscate",SourceObfuscate::new);
+    public static final StaticModifier<BurstPierce> BURST_PIERCE = MODIFIERS.register("burst_pierce", BurstPierce::new);
+    public static final StaticModifier<DestructionMagic> DESTRUCTION_MAGIC = MODIFIERS.register("destruction_magic",DestructionMagic::new);
+    public static final StaticModifier<ElasticMemory> ELASTIC_MEMORY = MODIFIERS.register("elastic_memory",ElasticMemory::new);
+    public static final StaticModifier<ExtraWarhead> EXTRA_WARHEAD = MODIFIERS.register("extra_warhead",ExtraWarhead::new);
+    public static final StaticModifier<MoreCapacity> MORE_CAPACITY = MODIFIERS.register("more_capacity",MoreCapacity::new);
+    public static final StaticModifier<OverCapacity> OVER_CAPACITY = MODIFIERS.register("over_capacity",OverCapacity::new);
+    public static final StaticModifier<Overclock> OVERCLOCK = MODIFIERS.register("overclock",Overclock::new);
+    public static final StaticModifier<PulseEngine> PULSE_ENGINE = MODIFIERS.register("pulse_engine",PulseEngine::new);
+    public static final StaticModifier<BurstAccelerate> BURST_ACCELERATE = MODIFIERS.register("burst_accelerate",BurstAccelerate::new);
+    public static final StaticModifier<BurstBypassCooldown> BURST_BYPASS_COOLDOWN = MODIFIERS.register("burst_bypass_cooldown",BurstBypassCooldown::new);
+    public static final StaticModifier<BurstMassEffect> BURST_MASS_EFFECT = MODIFIERS.register("burst_mass_effect",BurstMassEffect::new);
+
 }

@@ -48,6 +48,12 @@ public class Thunderstorm extends SpecializedBurstModifier implements BurstHitMo
     }
 
     @Override
+    public LegacyDamageSource modifySourceWhenTriggerTool(IToolStackView tool, ModifierEntry entry, LivingEntity attacker, InteractionHand hand, Entity target, EquipmentSlot sourceSlot, boolean isFullyCharged, boolean isExtraAttack, boolean isCritical, LegacyDamageSource source) {
+        source.setMsgId("tltmod.thunderstorm_"+RANDOM.nextInt(3)).setBypassArmor();
+        return source;
+    }
+
+    @Override
     public void afterBurstHitEntity(@Nullable IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @NotNull Entity owner, @NotNull LivingEntity target, ManaBurst burst,IManaBurstMixin burstExtra, float damage) {
         if (!(owner instanceof Player player))return;
         if (burstExtra.tltmod$getGeneration()>0) return;
@@ -57,12 +63,12 @@ public class Thunderstorm extends SpecializedBurstModifier implements BurstHitMo
         int i = 0;
         do {
             ThunderBurstEntity entity = new ThunderBurstEntity(player);
-            entity.setMana(burstExtra.tltmod$getPerConsumption()*2);
+            entity.setMana(burstExtra.tltmod$getPerConsumption());
             entity.setStartingMana(entity.getMana());
             entity.setGravity(properties.gravity);
             entity.setManaLossPerTick(properties.manaLossPerTick);
             entity.setMinManaLoss(properties.ticksBeforeManaLoss);
-            entity.setPos(target.position().add(RANDOM.nextFloat()*4-2,9,RANDOM.nextFloat()*4-2));
+            entity.setPos(target.position().add(RANDOM.nextFloat()*8-4,9,RANDOM.nextFloat()*8-4));
             entity.setDeltaMovement(0,-3,0);
             ItemStack dummyLens = DummyToolManaLens.getDummyLens((ToolStack) tool);
             entity.setSourceLens(dummyLens);
@@ -77,19 +83,15 @@ public class Thunderstorm extends SpecializedBurstModifier implements BurstHitMo
             extras.tltmod$setPerBlockConsumption(0);
             extras.tltmod$setDamageModifier(0.25f);
             owner.level().addFreshEntity(entity);
-            burst.setMana(burst.getMana()-burstExtra.tltmod$getPerConsumption()*2);
+            burst.setMana(burst.getMana()-burstExtra.tltmod$getPerConsumption());
             i++;
-        } while (burst.getMana()>=burstExtra.tltmod$getPerConsumption()*2&&i<8);
+        } while (burst.getMana()>=burstExtra.tltmod$getPerConsumption()&&i<8);
     }
 
     @Override
-    public Component getDisplayName() {
-        return DynamicComponentUtil.ScrollColorfulText.getColorfulText(getTranslationKey(),null,new int[]{
-                0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,
-                0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,
-                0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,
-                0x85C2FF,0x85C2FF,0x85C2FF,0x85C2FF,0xD5FFFE
-        },1,100,true);
+    public @NotNull Component getDisplayName(int level) {
+        return DynamicComponentUtil.ScrollColorfulText.getColorfulText(getTranslationKey(),null,
+                new int[]{0x85C2FF,0x85C2FF,0xD5FFFE},30,10,true);
     }
 
     @Override
