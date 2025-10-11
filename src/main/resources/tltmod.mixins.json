@@ -13,6 +13,7 @@
     "PlayerMixin",
     "ShulkerBulletMixin",
     "SlimeMoveControlInvoker",
+    "adAstra.PlanetHandlerMixin",
     "alexscaves.CommonEventMixin",
     "bot.GaiaGuardianEntityMixin",
     "bot.ManaBurstEntityMixin",

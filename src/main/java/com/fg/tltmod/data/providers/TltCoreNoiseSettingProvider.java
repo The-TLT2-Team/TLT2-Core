@@ -11,16 +11,33 @@ import net.minecraft.world.level.levelgen.SurfaceRules;
 import slimeknights.mantle.data.GenericDataProvider;
 
 import com.google.gson.JsonObject;
+
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TltCoreNoiseSettingProvider extends GenericDataProvider {
     public TltCoreNoiseSettingProvider(PackOutput output) {
         super(output, PackOutput.Target.DATA_PACK, "test");
     }
 
+    static List<SurfaceRules.RuleSource> getCitadelSurfaceRuleRegistry() {
+        try {
+            var cl = Class.forName("com.github.alexthe666.citadel.server.generation.SurfaceRulesManager");
+            var field = cl.getDeclaredField("OVERWORLD_REGISTRY");
+            field.setAccessible(true);
+            return (List<SurfaceRules.RuleSource>) field.get(null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public CompletableFuture<?> run(CachedOutput pOutput) {
-        return CompletableFuture.allOf(saveJson(pOutput, TltCore.getResource("magnetic"), createJson(SurfaceRules.ifTrue(SurfaceRules.isBiome(ACBiomeRegistry.MAGNETIC_CAVES) ,ACSurfaceRules.createMagneticCavesRules())) ));
+        ACSurfaceRules.setup();
+        AtomicInteger integer = new AtomicInteger(0);
+        return allOf(getCitadelSurfaceRuleRegistry().stream().map(rule-> saveJson(pOutput, TltCore.getResource("cave_rule_"+integer.addAndGet(1)), createJson(rule) )));
     }
 
     public JsonObject createJson(SurfaceRules.RuleSource ruleSource){

@@ -1,6 +1,7 @@
 package com.fg.tltmod;
 
 import com.fg.tltmod.Register.*;
+import com.fg.tltmod.client.event.TltCoreEnvironmentalEventHandler;
 import com.fg.tltmod.content.capability.CapabilitiesRegister;
 import com.fg.tltmod.content.capability.compat.ars.CastToolCapability;
 import com.fg.tltmod.content.capability.compat.botania.ManaCurioCapability;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -51,7 +53,10 @@ public class TltCore
     @SubscribeEvent
     public void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(()->{
-           TltCoreSlots.init();
+            TltCoreSlots.init();
+            if (ModList.get().isLoaded("ad_astra")) {
+                TltCoreEnvironmentalEventHandler.init();
+            }
         });
         //ToolCapabilityProvider.register(((stack, supplier) -> new ManaCurioCapability.Provider(supplier)));
         //ToolCapabilityProvider.register(((stack, supplier) -> new CastToolCapability.Provider(supplier)));
