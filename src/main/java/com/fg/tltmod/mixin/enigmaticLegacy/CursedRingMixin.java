@@ -22,4 +22,8 @@ public abstract class CursedRingMixin extends ItemBaseCurio {
     public void replaceCurse15(List<Component> comp, String s, ChatFormatting value, Object[] list){
         ItemLoreHelper.addLocalizedString(comp, "tooltip.tltmod.cursed_ring_replacement2");
     }
+    @Redirect(method = "appendHoverText",at = @At(value = "INVOKE", target = "Lcom/aizistral/enigmaticlegacy/helpers/ItemLoreHelper;addLocalizedString(Ljava/util/List;Ljava/lang/String;)V",ordinal = 3))
+    public void replaceCurse5(List<Component> list, String str){
+        ItemLoreHelper.addLocalizedString(list, "tooltip.tltmod.cursed_ring_replacement3");
+    }
 }

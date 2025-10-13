@@ -1,5 +1,6 @@
 package com.fg.tltmod.mixin;
 
+import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
 import com.fg.tltmod.util.TltmodHurtProcess;
 import com.fg.tltmod.util.mixin.ILivingEntityMixin;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -11,6 +12,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.CombatTracker;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +24,8 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntityMixin {
@@ -277,5 +281,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntityM
     @Override
     public void tltmod$die(DamageSource source) {
         tltmod$dieLogic(source);
+    }
+
+    @ModifyArg(method = "addEatEffect",at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z"))
+    private MobEffectInstance modifyEffect(MobEffectInstance pEffectInstance){
+        LivingEntity living = (LivingEntity) (Object) this;
+        if (living instanceof Player player&& SuperpositionHandler.isTheCursedOne(player)){
+            var effect = (MobEffectInstanceAccessor) pEffectInstance;
+            effect.setDuration(Math.max(effect.getDuration()/2,1));
+        }
+        return pEffectInstance;
     }
 }
