@@ -12,7 +12,7 @@ import slimeknights.tconstruct.library.materials.definition.MaterialId;
 
 public enum EnumMaterial {
     MYSTERIOUS_FOX(TltCoreMaterialIds.MYSTERIOUS_FOX,8,false,false,EnumMaterialStats.MYSTERIOUS_FOX,null,EnumMaterialModifier.MYSTERIOUS_FOX_MELEE,EnumMaterialModifier.MYSTERIOUS_FOX_ARMOR),
-
+    SEA_GLASS_SHARDS(TltCoreMaterialIds.SEA_GLASS_SHARDS,7,true,false,EnumMaterialStats.SEA_GLASS_SHARDS,null,EnumMaterialModifier.SEA_GLASS_SHARDS_MELEE,EnumMaterialModifier.SEA_GLASS_SHARDS_ARMOR,EnumMaterialModifier.SEA_GLASS_RANGED),
 
 
     ;

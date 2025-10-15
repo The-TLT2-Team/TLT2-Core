@@ -7,6 +7,7 @@ import slimeknights.tconstruct.library.materials.definition.MaterialId;
 
 public class TltCoreMaterialIds {
     public static MaterialId MYSTERIOUS_FOX = createMaterial("mysterious_fox");
+    public static MaterialId SEA_GLASS_SHARDS = createMaterial("sea_glass_shards");
 
     private static MaterialId createMaterial(String name) {
         return new MaterialId(TltCore.getResource(name));

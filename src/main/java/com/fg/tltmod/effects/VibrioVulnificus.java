@@ -33,7 +33,7 @@ public class VibrioVulnificus extends TltCoreEffect{
         ModDataNBT entitydata = ModDataNBT.readFromNBT(living.getPersistentData());
         MobEffectInstance effectInstance = living.getEffect(this);
         if (effectInstance != null && effectInstance.getDuration() <= 1) {
-            entitydata.putInt(vibrio_vulnificus,entitydata.getInt(vibrio_vulnificus)/2);
+            entitydata.putInt(vibrio_vulnificus,8);
         }
         if(living.tickCount%20==0){
             if (entitydata.getInt(vibrio_vulnificus)<=1)entitydata.putInt(vibrio_vulnificus,1);
