@@ -68,5 +68,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<BurstBypassCooldown> BURST_BYPASS_COOLDOWN = MODIFIERS.register("burst_bypass_cooldown",BurstBypassCooldown::new);
     public static final StaticModifier<BurstMassEffect> BURST_MASS_EFFECT = MODIFIERS.register("burst_mass_effect",BurstMassEffect::new);
     public static final StaticModifier<ManaTransmitter> MANA_TRANSMITTER = MODIFIERS.register("mana_transmitter",ManaTransmitter::new);
-
+    public static final StaticModifier<VibrioVulnificus> VIBRIO_VULNIFICUS = MODIFIERS.register("vibrio_vulnificus",VibrioVulnificus::new);
 }
