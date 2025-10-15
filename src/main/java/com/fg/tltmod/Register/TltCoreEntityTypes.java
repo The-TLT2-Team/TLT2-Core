@@ -1,6 +1,7 @@
 package com.fg.tltmod.Register;
 
 import com.fg.tltmod.TltCore;
+import com.fg.tltmod.content.entity.FoodEntity;
 import com.fg.tltmod.content.entity.LaserEntity;
 import com.fg.tltmod.content.entity.ThunderBurstEntity;
 import com.fg.tltmod.content.entity.WaveSlashEntity;
@@ -44,4 +45,11 @@ public class TltCoreEntityTypes {
                     .setTrackingRange(8)
                     .setShouldReceiveVelocityUpdates(true)
                     .setUpdateInterval(4));
+    public static final RegistryObject<EntityType<FoodEntity>> FOOD_ENTITY = ENTITY_TYPES.register("food_entity",()->
+            EntityType.Builder.<FoodEntity>of(FoodEntity::new, MobCategory.MISC)
+                    .sized(0.4f,0.4f)
+                    .setCustomClientFactory((spawnEntity, world) -> new FoodEntity(world))
+                    .setTrackingRange(4)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(1));
 }
