@@ -37,7 +37,6 @@ public class FoodEntity extends Projectile {
         this.entityData.define(DATA_FOOD, ItemStack.EMPTY);
     }
 
-
     private static final List<Item> FOOD = new ArrayList<>();
     private static final Random RANDOM = new Random();
     static {
@@ -59,7 +58,7 @@ public class FoodEntity extends Projectile {
     public ItemStack getFood() {
         if (this.stack == null||stack.isEmpty()||stack.getItem() == Items.AIR) {
             if (!this.level().isClientSide()) {
-                int maxAttempts = 10;
+                int maxAttempts = 30;
                 ItemStack item = Items.APPLE.getDefaultInstance();
                 for (int i = 0; i < maxAttempts; i++) {
                     item = getRandomFood().getDefaultInstance();
@@ -68,13 +67,11 @@ public class FoodEntity extends Projectile {
                     }
                 }
                 this.stack = item;
-                this.entityData.set(DATA_FOOD, this.stack);
+                this.entityData.set(DATA_FOOD, item);
             } else {
                 ItemStack syncedStack = this.entityData.get(DATA_FOOD);
                 if (!syncedStack.isEmpty()) {
-                    this.stack = syncedStack;
-                } else {
-                    this.stack = ItemStack.EMPTY;
+                    return syncedStack;
                 }
             }
         }
@@ -86,12 +83,18 @@ public class FoodEntity extends Projectile {
                 stack.getItem() != Items.AIR &&
                 stack.getItem().isEdible();
     }
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (this.level().isClientSide() && key.equals(DATA_FOOD)) {
+            this.stack = this.entityData.get(DATA_FOOD).getItem().getDefaultInstance();
+        }
+    }
     public ItemStack getItem() {
         if (this.level().isClientSide()) {
-            return this.entityData.get(DATA_FOOD);
+            return this.entityData.get(DATA_FOOD).getItem().getDefaultInstance();
         }
-        ItemStack itemStack=getFood();
-        return itemStack != null ? itemStack : ItemStack.EMPTY;
+        return getFood();
     }
 
     private void FoodSummon() {
@@ -101,13 +104,13 @@ public class FoodEntity extends Projectile {
             level.addFreshEntity(itemEntity);
         }
     }
+
     @Override
     public void tick() {
+        getItem();
         super.tick();
-        if (this.tickCount>120) this.discard();
-        if (this.getDeltaMovement().length() > 1) {
-            this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
-        }else {
+        if (this.tickCount>200) this.discard();
+        if (this.getDeltaMovement().length() < 1) {
             this.setDeltaMovement(this.getDeltaMovement().add(0, -0.05, 0));
         }
         HitResult hitresult = this.level().clip(new ClipContext(this.position(), this.position().add(this.getDeltaMovement()), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
@@ -126,7 +129,7 @@ public class FoodEntity extends Projectile {
 
     public void Explode(){
         if (!this.level().isClientSide) {
-            Explosion explosion =this.level().explode(this, this.getX(), this.getY(), this.getZ(), 2, false, Level.ExplosionInteraction.NONE);
+            Explosion explosion =this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1, false, Level.ExplosionInteraction.NONE);
             List<LivingEntity> lis = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8));
             for (LivingEntity entity : lis) {
                 if (entity != null) {
