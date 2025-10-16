@@ -66,15 +66,14 @@ public class ForgeEventHandler {
             if (level.dimension().location().toString().equals(s)) {
                 for (Player player : level.players()) {
                     if (!player.level().dimension().location().toString().equals(s)) return;
-                    if ( level.getGameTime() % 2 == 0) {
-                        Random random = new Random();
-                        Vec2 pos = new Vec2((float) (player.getX() + random.nextInt(40) - random.nextInt(40)), (float) (player.getZ() + random.nextInt(40) - random.nextInt(40)));
-//                        Vec2 pos = new Vec2((float) player.getX(), (float) player.getZ() );
-                        FoodEntity entity = new FoodEntity(TltCoreEntityTypes.FOOD_ENTITY.get(), level);
-                        entity.noPhysics = false;
-                        entity.setPos(pos.x, player.getY() + 100, pos.y);
-                        level.addFreshEntity(entity);
-                    }
+                    //if ( level.getGameTime() % 2 != 0) return;
+                    Random random = new Random();
+                    Vec2 pos = new Vec2((float) (player.getX() + random.nextInt(60) - random.nextInt(60)), (float) (player.getZ() + random.nextInt(60) - random.nextInt(60)));
+//                    Vec2 pos = new Vec2((float) player.getX(), (float) player.getZ() );
+                    FoodEntity entity = new FoodEntity(TltCoreEntityTypes.FOOD_ENTITY.get(), level);
+                    entity.noPhysics = false;
+                    entity.setPos(pos.x, player.getY() + 100, pos.y);
+                    level.addFreshEntity(entity);
                 }
             }
         }

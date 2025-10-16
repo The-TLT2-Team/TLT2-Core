@@ -1,20 +1,20 @@
 package com.fg.tltmod.content.entity;
 
 import com.fg.tltmod.Register.TltCoreEntityTypes;
+import com.fg.tltmod.Register.TltCoreTags;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -50,8 +50,10 @@ public class FoodEntity extends Projectile {
         return item != null &&
                 item != Items.AIR &&
                 item.isEdible() &&
-                item.getDefaultInstance().isEdible();
+                item.getDefaultInstance().isEdible()&&
+                !item.getDefaultInstance().getItemHolder().containsTag(TltCoreTags.Items.FOOD_ENTITY_BLACKLIST);
     }
+
     public static Item getRandomFood() {
         return FOOD.get(RANDOM.nextInt(FOOD.size()));
     }
@@ -97,14 +99,20 @@ public class FoodEntity extends Projectile {
         return getFood();
     }
 
-    private void FoodSummon() {
-        if (this.level() instanceof ServerLevel level) {
-            ItemEntity itemEntity = new ItemEntity(level, this.getX(), this.getY(), this.getZ(), getItem());
-            itemEntity.setPickUpDelay(40);
-            level.addFreshEntity(itemEntity);
+//    private void FoodSummon() {
+//        if (this.level() instanceof ServerLevel level) {
+//            ItemEntity itemEntity = new ItemEntity(level, this.getX(), this.getY(), this.getZ(), getItem());
+//            itemEntity.setPickUpDelay(40);
+//            level.addFreshEntity(itemEntity);
+//        }
+//    }
+
+    private void FoodEat(LivingEntity living) {
+        if (this.level() instanceof ServerLevel level&&living!=null) {
+            ItemStack item=getItem().getItem().getDefaultInstance();
+            living.eat(level,item);
         }
     }
-
     @Override
     public void tick() {
         getItem();
@@ -128,15 +136,15 @@ public class FoodEntity extends Projectile {
     }
 
     public void Explode(){
-        if (!this.level().isClientSide) {
-            Explosion explosion =this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1, false, Level.ExplosionInteraction.NONE);
-            List<LivingEntity> lis = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8));
+        if (this.level() instanceof ServerLevel level) {
+            List<LivingEntity> lis = level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5));
             for (LivingEntity entity : lis) {
                 if (entity != null) {
                     entity.invulnerableTime = 0;
-                    entity.hurt(this.level().damageSources().explosion(explosion),6);
+                    entity.hurt(level.damageSources().starve(),1);
                 }
             }
+            level.sendParticles(ParticleTypes.EXPLOSION,this.getX(),this.getY(),this.getZ(),1,0,0,0,1);
         }
     }
 
@@ -144,14 +152,17 @@ public class FoodEntity extends Projectile {
     protected void onHitBlock(BlockHitResult p_37258_) {
         super.onHitBlock(p_37258_);
         Explode();
-        FoodSummon();
+//        FoodSummon();
         this.discard();
     }
     @Override
-    protected void onHitEntity(EntityHitResult p_37259_) {
-        super.onHitEntity(p_37259_);
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
         Explode();
-        FoodSummon();
+//        FoodSummon();
+        if (result.getEntity() instanceof LivingEntity living) {
+            FoodEat(living);
+        }
         this.discard();
     }
 }
