@@ -68,5 +68,11 @@ public class TltCoreModifiers {
     public static final StaticModifier<BurstBypassCooldown> BURST_BYPASS_COOLDOWN = MODIFIERS.register("burst_bypass_cooldown",BurstBypassCooldown::new);
     public static final StaticModifier<BurstMassEffect> BURST_MASS_EFFECT = MODIFIERS.register("burst_mass_effect",BurstMassEffect::new);
     public static final StaticModifier<ManaTransmitter> MANA_TRANSMITTER = MODIFIERS.register("mana_transmitter",ManaTransmitter::new);
+    public static final StaticModifier<WarpAttack> WARP_ATTACK = MODIFIERS.register("warp_attack",WarpAttack::new);
+    public static final StaticModifier<MagneticFocus> MAGNETIC_FOCUS = MODIFIERS.register("magnetic_focus",MagneticFocus::new);
+    public static final StaticModifier<MagneticScatter> MAGNETIC_SCATTER = MODIFIERS.register("magnetic_scatter",MagneticScatter::new);
+    public static final StaticModifier<GravityInterrupt> GRAVITY_INTERRUPT = MODIFIERS.register("gravity_interrupt",GravityInterrupt::new);
+    public static final StaticModifier<DaysAndNights> DAYS_AND_NIGHTS = MODIFIERS.register("days_and_nights",DaysAndNights::new);
+    public static final StaticModifier<GravityManipulate> GRAVITY_MANIPULATE = MODIFIERS.register("gravity_manipulate",GravityManipulate::new);
 
 }

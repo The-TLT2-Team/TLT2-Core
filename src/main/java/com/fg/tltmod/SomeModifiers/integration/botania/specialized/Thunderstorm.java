@@ -1,5 +1,7 @@
 package com.fg.tltmod.SomeModifiers.integration.botania.specialized;
 
+import cofh.core.client.particle.options.CylindricalParticleOptions;
+import cofh.core.init.CoreParticles;
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.tool.hooks.ModifyDamageSourceModifierHook;
 import com.c2h6s.etstlib.util.DynamicComponentUtil;
@@ -10,8 +12,10 @@ import com.fg.tltmod.content.hook.modifier.BurstHitModifierHook;
 import com.fg.tltmod.content.hook.modifier.ModifyBurstDamageSourceModifierHook;
 import com.fg.tltmod.content.hook.modifier.ModifyBurstModifierHook;
 import com.fg.tltmod.content.item.DummyToolManaLens;
+import com.fg.tltmod.util.ParticleContext;
 import com.fg.tltmod.util.mixin.IManaBurstMixin;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -58,8 +62,13 @@ public class Thunderstorm extends SpecializedBurstModifier implements BurstHitMo
         if (!(owner instanceof Player player))return;
         if (burstExtra.tltmod$getGeneration()>0) return;
         if (burst.getMana()<burstExtra.tltmod$getPerConsumption()*2) return;
+        if (owner.level() instanceof ServerLevel serverLevel) ParticleContext
+                .buildParticle(new CylindricalParticleOptions(CoreParticles.SHOCKWAVE.get(),
+                        5,5,0,0xAEFFFAFF,2))
+                .setVelocity(0,0,0).setPos(target.getBoundingBox().getCenter()).build().sendToClient(serverLevel);
         burst.entity().playSound(SoundEvents.FIREWORK_ROCKET_TWINKLE);
-        BurstProperties properties = new BurstProperties(burst.getStartingMana(),burst.getMinManaLoss(),burst.getManaLossPerTick(),burst.getBurstGravity(),1,0xFFFFFF);
+        BurstProperties properties = new BurstProperties(burst.getStartingMana(),burst.getMinManaLoss(),
+                burst.getManaLossPerTick(),burst.getBurstGravity(),1,0xFFFFFF);
         int i = 0;
         do {
             ThunderBurstEntity entity = new ThunderBurstEntity(player);

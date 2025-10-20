@@ -1,5 +1,8 @@
 package com.fg.tltmod.util;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.Vec3;
+
 public class MathUtil {
     public MathUtil() {
     }
@@ -82,5 +85,12 @@ public class MathUtil {
             double var10000 = limitsNumber(number, limit + 2);
             return var10000 * (double)100.0F + "%";
         }
+    }
+
+    public static double includedAngleCos(Vec3 vec31,Vec3 vec32){
+        return vec31.dot(vec32)/(vec31.length()*vec32.length());
+    }
+    public static Vec3 getRandomVec3(RandomSource source,double length){
+        return new Vec3(source.nextDouble()*length*2-length,source.nextDouble()*length*2-length,source.nextDouble()*length*2-length);
     }
 }
