@@ -74,5 +74,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<GravityInterrupt> GRAVITY_INTERRUPT = MODIFIERS.register("gravity_interrupt",GravityInterrupt::new);
     public static final StaticModifier<DaysAndNights> DAYS_AND_NIGHTS = MODIFIERS.register("days_and_nights",DaysAndNights::new);
     public static final StaticModifier<GravityManipulate> GRAVITY_MANIPULATE = MODIFIERS.register("gravity_manipulate",GravityManipulate::new);
-
+    public static final StaticModifier<VibrioVulnificus> VIBRIO_VULNIFICUS = MODIFIERS.register("vibrio_vulnificus",VibrioVulnificus::new);
 }

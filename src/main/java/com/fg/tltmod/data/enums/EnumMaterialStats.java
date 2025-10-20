@@ -17,6 +17,15 @@ public enum EnumMaterialStats {
             new HandleMaterialStats(1.0f,0.5f,0.8f,1.4f),
             new HeadMaterialStats(5678,8f, Tiers.NETHERITE,20f)
     ),
+    SEA_GLASS_SHARDS(
+            StatlessMaterialStats.BINDING,
+            StatlessMaterialStats.SHIELD_CORE,
+            StatlessMaterialStats.REPAIR_KIT,
+            new HandleMaterialStats(-0.4f,1.7f,0.8f,1.4f),
+            new HeadMaterialStats(378,10f, Tiers.NETHERITE,20f),
+            new LimbMaterialStats(378,0.3f,0.4f,-0.4f),
+            new GripMaterialStats(-0.4f,-0.1f,30f)
+    )
 
     ;
     private final IMaterialStats[] stats;

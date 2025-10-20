@@ -41,6 +41,7 @@ public class TltCore
         TltCorePacketHandler.init();
         TltCoreTraitsGLMProvider.register(modEventBus);
         CapabilitiesRegister.init();
+        TltCoreTags.init();
 
         ToolStats.register(ManaCurioCapability.MAX_STAT);
 
