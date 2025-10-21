@@ -14,13 +14,13 @@ import java.util.Collection;
 import java.util.List;
 
 public interface BurstDamageModifierHook {
-    float getBurstDamage(@Nullable IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, @NotNull Entity target, ManaBurst burst, float baseDamage, float damage);
+    float getBurstDamage(@Nullable IToolStackView tool, ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, @NotNull Entity target, ManaBurst burst,IManaBurstMixin burstExtra, float baseDamage, float damage);
 
     record AllMerger(Collection<BurstDamageModifierHook> modules) implements BurstDamageModifierHook {
         @Override
-        public float getBurstDamage(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, @NotNull Entity target, ManaBurst burst, float baseDamage, float damage) {
+        public float getBurstDamage(@Nullable IToolStackView tool,ModifierEntry modifier, List<ModifierEntry> modifierList, @Nullable Entity owner, @NotNull Entity target, ManaBurst burst,IManaBurstMixin burstExtra, float baseDamage, float damage) {
             for (BurstDamageModifierHook hook:this.modules){
-                damage = hook.getBurstDamage(tool,modifier,modifierList,owner,target,burst,baseDamage,damage);
+                damage = hook.getBurstDamage(tool,modifier,modifierList,owner,target,burst,(IManaBurstMixin) burst,baseDamage,damage);
             }
             return damage;
         }

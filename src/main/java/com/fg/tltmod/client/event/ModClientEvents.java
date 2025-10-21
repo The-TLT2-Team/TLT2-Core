@@ -3,9 +3,11 @@ package com.fg.tltmod.client.event;
 import com.fg.tltmod.Register.TltCoreEntityTypes;
 import com.fg.tltmod.Register.TltCoreKeys;
 import com.fg.tltmod.TltCore;
+import com.fg.tltmod.client.renderer.entity.FoodEntityRenderer;
 import com.fg.tltmod.client.renderer.entity.LaserEntityRenderer;
 import com.fg.tltmod.client.renderer.entity.RenderWaveSlash;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -22,6 +24,8 @@ public class ModClientEvents {
         event.registerEntityRenderer(TltCoreEntityTypes.WAVE_SLASH.get(), RenderWaveSlash::new);
         event.registerEntityRenderer(TltCoreEntityTypes.LASER_A.get(), LaserEntityRenderer::new);
         event.registerEntityRenderer(TltCoreEntityTypes.MOON_SLIME_BOSS.get(), SlimeRenderer::new);
+        event.registerEntityRenderer(TltCoreEntityTypes.THUNDER_BURST.get(), NoopRenderer::new);
+        event.registerEntityRenderer(TltCoreEntityTypes.FOOD_ENTITY.get(), FoodEntityRenderer::new);
     }
 
     @SubscribeEvent

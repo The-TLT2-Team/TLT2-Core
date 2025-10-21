@@ -131,7 +131,7 @@ public class TltCoreHostilityTrait {
             register(
                     "broken_armor",
                     () -> new BrokenArmor(() -> 0x620591),
-                    rl -> new TraitConfig(rl, 20, 60, 5, 40),
+                    rl -> new TraitConfig(rl, 5, 60, 5, 40),
                     "Attacks apply %s-second armor-braking effect that reduces your armor value. " +
                             "Reapplying it will increase its level and extend its duration.",
                     "Broken Armor"

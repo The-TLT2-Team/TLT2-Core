@@ -36,22 +36,3 @@ public class ForgeEvents {
         }
 
     }
-
-//    @SubscribeEvent
-//    public void playerClone(PlayerEvent.Clone event) {
-//        Player newPlayer = event.getEntity();
-//        Player oldPlayer = event.getOriginal();
-//        if (newPlayer instanceof ServerPlayer && oldPlayer instanceof ServerPlayer) {
-//            oldPlayer.reviveCaps();
-//            oldPlayer.getCapability(EnigmaticCapabilities.PLAYTIME_COUNTER).ifPresent(oldCap -> {
-//                newPlayer.getCapability(EnigmaticCapabilities.PLAYTIME_COUNTER).ifPresent(newCap -> {
-//                    newCap.deserializeNBT(oldCap.serializeNBT());
-//                });
-//            });
-//
-//            oldPlayer.invalidateCaps();
-//        }
-//    }
-
-
-}

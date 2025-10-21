@@ -28,9 +28,40 @@ public abstract class ManaBurstEntityMixin extends ThrowableProjectile implement
     private int tltmod$perBlockConsumption=50;
     @Unique
     private IToolStackView tltmod$tool;
+    @Unique int tltmod$generation = 0;
+    @Unique float tltmod$damageModifier = 1;
 
     protected ManaBurstEntityMixin(EntityType<? extends ThrowableProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+
+    @Override
+    @Unique
+    public int tltmod$getGeneration() {
+        return tltmod$generation;
+    }
+    @Override
+    @Unique
+    public void tltmod$setGeneration(int i){
+        this.tltmod$generation = i;
+    }
+
+    @Unique
+    @Override
+    public void tltmod$clearHitList() {
+        this.tltmod$hitEntityIds.clear();
+    }
+
+
+    @Unique
+    @Override
+    public float tltmod$getDamageModifier(){
+        return tltmod$damageModifier;
+    }
+    @Unique
+    @Override
+    public void tltmod$setDamageModifier(float f){
+        tltmod$damageModifier = f;
     }
 
     @Override

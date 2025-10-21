@@ -14,6 +14,7 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ModDataNBT;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
+//吹箭筒重平衡，发射后根据拉弓速度的1.25次方施加冷却
 public class BlowPipeRebalance extends Modifier implements ProjectileLaunchModifierHook  {
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
