@@ -1,5 +1,6 @@
 package com.fg.tltmod.SomeModifiers.armor;
 
+import com.fg.tltmod.Register.TltCoreEffects;
 import com.fg.tltmod.TltCore;
 import dev.xkmc.l2complements.init.registrate.LCEffects;
 import dev.xkmc.l2hostility.init.registrate.LHEffects;
@@ -24,6 +25,7 @@ public class GravityManipulate extends NoLevelsModifier {
         hookBuilder.addModule(new ArmorLevelModule(KEY_GRAVITY_MANIPULATE,false,null));
         hookBuilder.addModule(new EffectImmunityModule(LHEffects.GRAVITY.get()));
         hookBuilder.addModule(new EffectImmunityModule(LHEffects.MOONWALK.get()));
+        hookBuilder.addModule(new EffectImmunityModule(TltCoreEffects.oscillation.get()));
     }
 
     @SubscribeEvent

@@ -30,6 +30,10 @@ public abstract class CursedRingMixin extends ItemBaseCurio {
     public void replaceCurse5(List<Component> list, String str){
         ItemLoreHelper.addLocalizedString(list, "tooltip.tltmod.cursed_ring_replacement3");
     }
+    @Redirect(method = "appendHoverText",at = @At(value = "INVOKE", target = "Lcom/aizistral/enigmaticlegacy/helpers/ItemLoreHelper;addLocalizedString(Ljava/util/List;Ljava/lang/String;Lnet/minecraft/ChatFormatting;[Ljava/lang/Object;)V",ordinal = 5))
+    public void replaceCurse14(List<Component> list, String comp, ChatFormatting value, Object[] objects){
+        ItemLoreHelper.addLocalizedString(list, "tooltip.tltmod.cursed_ring_replacement4");
+    }
     @Inject(method = "curioTick",at = @At("HEAD"),cancellable = true,remap = false)
     public void stopSettingTarget(SlotContext context, ItemStack stack, CallbackInfo ci){
         ci.cancel();

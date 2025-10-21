@@ -4,7 +4,9 @@ import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.util.ParticleContext;
+import com.fg.tltmod.util.tinker.ModifierModuleUtil;
 import com.github.alexmodguy.alexscaves.client.particle.ACParticleRegistry;
+import dev.xkmc.l2hostility.init.registrate.LHTraits;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,6 +31,9 @@ public class MagneticScatter extends EtSTBaseModifier {
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         super.registerHooks(hookBuilder);
         hookBuilder.addModule(new ArmorLevelModule(KEY_MAGNETIC_SCATTER,false,null));
+        hookBuilder.addModule(ModifierModuleUtil.getTraitImmuneModule(LHTraits.PULLING.get()));
+        hookBuilder.addModule(ModifierModuleUtil.getTraitImmuneModule(LHTraits.STRIKE.get()));
+        hookBuilder.addModule(ModifierModuleUtil.getTraitImmuneModule(LHTraits.REPELLING.get()));
     }
 
     @SubscribeEvent
