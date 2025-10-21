@@ -2,9 +2,7 @@ package com.fg.tltmod;
 
 import com.fg.tltmod.Register.*;
 import com.fg.tltmod.content.capability.CapabilitiesRegister;
-import com.fg.tltmod.content.capability.compat.ars.CastToolCapability;
 import com.fg.tltmod.content.capability.compat.botania.ManaCurioCapability;
-import com.fg.tltmod.content.capability.compat.botania.ManaCurioCapabilityProvider;
 import com.fg.tltmod.data.providers.TltCoreTraitsGLMProvider;
 import com.fg.tltmod.network.TltCorePacketHandler;
 import net.minecraft.resources.ResourceLocation;

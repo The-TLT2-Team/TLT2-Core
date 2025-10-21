@@ -206,6 +206,7 @@ dependencies {
     implementation fg.deobf("curse.maven:sophisticated-core-618298:7051013")
     implementation fg.deobf("curse.maven:geckolib-388172:7025129")
     implementation fg.deobf("curse.maven:ars-nouveau-401955:6688854")
+    implementation fg.deobf("curse.maven:goety-586095:7073504")
 
     compileOnly fg.deobf(jarJar("com.tterrag.registrate:Registrate:MC1.20-1.3.11")) {
         transitive = false

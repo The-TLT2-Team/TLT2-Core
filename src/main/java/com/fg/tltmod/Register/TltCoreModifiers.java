@@ -43,4 +43,7 @@ public class TltCoreModifiers {
     public static final StaticModifier<ManaRefactorModifier> MANA_REFACTOR = MODIFIERS.register("mana_refactor", ManaRefactorModifier::new);
     public static final StaticModifier<BlowPipeRebalance> BLOW_PIPE_REBALANCE = MODIFIERS.register("blowpipe_rebalance", BlowPipeRebalance::new);
     public static final StaticModifier<CasterToolModifier> CASTER_TOOL = MODIFIERS.register("caster_tool",CasterToolModifier::new);
+    public static final StaticModifier<VenomModifier> VENOM = MODIFIERS.register("venom",VenomModifier::new);
+    public static final StaticModifier<ToxicOutbreakModifier> TOXIC_OUTBREAK = MODIFIERS.register("toxic_outbreak",ToxicOutbreakModifier::new);
+
 }
