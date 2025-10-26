@@ -80,5 +80,7 @@ public class TltCoreModifiers {
     public static final StaticModifier<ValkyrieBless> VALKYRIE_BLESS = MODIFIERS.register("valkyrie_bless",ValkyrieBless::new);
     public static final StaticModifier<VenomModifier> VENOM = MODIFIERS.register("venom",VenomModifier::new);
     public static final StaticModifier<ToxicOutbreakModifier> TOXIC_OUTBREAK = MODIFIERS.register("toxic_outbreak",ToxicOutbreakModifier::new);
-    public static final StaticModifier<HeatBulge> HEAT_BULGE = MODIFIERS.register("heat_bulge",HeatBulge::new);
+    public static final StaticModifier<HeatBulge> HEAT_BULGE = MODIFIERS.register("heat_bulge", HeatBulge::new);
+    public static final StaticModifier<ThunderFire> THUNDER_FIRE = MODIFIERS.register("thunder_fire", ThunderFire::new);
+
 }
