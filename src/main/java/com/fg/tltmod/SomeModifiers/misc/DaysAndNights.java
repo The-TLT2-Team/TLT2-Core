@@ -22,6 +22,7 @@ public class DaysAndNights extends EtSTBaseModifier {
                 target.hurt(LegacyDamageSource.any(attacker.damageSources().freeze().typeHolder(),attacker)
                         .setBypassArmor().setBypassInvulnerableTime(),damageDealt*0.33f*modifier.getLevel());
                 target.setSecondsOnFire(0);
+                target.setSharedFlagOnFire(false);
                 target.setTicksFrozen(262144);
             } else if (target.getTicksFrozen()>0){
                 target.hurt(LegacyDamageSource.any(attacker.damageSources().inFire().typeHolder(),attacker)

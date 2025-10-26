@@ -5,6 +5,7 @@ import com.fg.tltmod.Register.TltCoreKeys;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.client.renderer.entity.FoodEntityRenderer;
 import com.fg.tltmod.client.renderer.entity.LaserEntityRenderer;
+import com.fg.tltmod.client.renderer.entity.RenderIonizedArrow;
 import com.fg.tltmod.client.renderer.entity.RenderWaveSlash;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -26,6 +27,7 @@ public class ModClientEvents {
         event.registerEntityRenderer(TltCoreEntityTypes.MOON_SLIME_BOSS.get(), SlimeRenderer::new);
         event.registerEntityRenderer(TltCoreEntityTypes.THUNDER_BURST.get(), NoopRenderer::new);
         event.registerEntityRenderer(TltCoreEntityTypes.FOOD_ENTITY.get(), FoodEntityRenderer::new);
+        event.registerEntityRenderer(TltCoreEntityTypes.IONIZED_ARROW.get(), pContext -> new RenderIonizedArrow(pContext,0xFFFFFF,0x6549FF,1,0.4f));
     }
 
     @SubscribeEvent

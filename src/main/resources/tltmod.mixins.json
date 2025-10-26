@@ -10,6 +10,7 @@
     "FallingBlockEntityMixin",
     "FoodDataMixin",
     "FoodPropertyMixin",
+    "LightningBoltMixin",
     "LivingEntityMixin",
     "MobEffectInstanceAccessor",
     "PlayerMixin",
@@ -28,9 +29,9 @@
     "l2.HostilityOrbMixin",
     "l2.LHAttackListenerMixin",
     "l2.MobEventsMixin",
+    "l2.PushPullTraitMixin",
     "l2.RagnarokMixin",
     "l2.ReflectMixin",
-    "l2.PushPullTraitMixin",
     "sophisticated.FeedingUpgradeWrapperMixin",
     "tconstruct.RandomizedMixin",
     "tconstruct.ToolStackMixin"
