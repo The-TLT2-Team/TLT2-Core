@@ -115,6 +115,8 @@ public class ThunderFire extends Modifier implements MeleeHitModifierHook {
                 if (attacker.getCommandSenderWorld() instanceof ServerLevel serverLevel){
                     serverLevel.sendParticles(ParticleTypes.EXPLOSION,attacker.getX(),attacker.getY()+0.5*attacker.getBbHeight(),attacker.getZ(),1 ,0,0,0,0);
                 }
+                nbt.remove(CommonUtil.KEY_ATTACKER);
+                entitydata.remove(heatbombdamage);
             }
         } else if (event.getSource().getEntity() instanceof Projectile projectile) {
             Entity attacker = projectile.getOwner();
@@ -139,6 +141,8 @@ public class ThunderFire extends Modifier implements MeleeHitModifierHook {
                     if (attacker.getCommandSenderWorld() instanceof ServerLevel serverLevel){
                         serverLevel.sendParticles(ParticleTypes.EXPLOSION,attacker.getX(),attacker.getY()+0.5*attacker.getBbHeight(),attacker.getZ(),1 ,0,0,0,0);
                     }
+                    nbt.remove(CommonUtil.KEY_ATTACKER);
+                    entitydata.remove(heatbombdamage);
                 }
             }
         }
