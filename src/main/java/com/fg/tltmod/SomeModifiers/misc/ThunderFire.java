@@ -59,7 +59,7 @@ public class ThunderFire extends Modifier implements MeleeHitModifierHook {
     public void afterMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damageDealt) {
         ModDataNBT tooldata = tool.getPersistentData();
         int sum=1;
-        if (context.getLivingTarget()!=null&&context.getLivingTarget()!= context.getAttacker()){
+        if (context.getLivingTarget()!=null&&context.getLivingTarget()!= context.getAttacker()&& context.isFullyCharged()){
             ModDataNBT entitydata = ModDataNBT.readFromNBT(context.getLivingTarget().getPersistentData());
             tooldata.putInt(heatbomb, tooldata.getInt(heatbomb)+1);
             if (ToolEnergyUtil.extractEnergy(tool,250,true)>=250){
