@@ -1,16 +1,16 @@
 package com.fg.tltmod.content.event;
 
+import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.fg.tltmod.Register.TltCoreEntityTypes;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.content.entity.FoodEntity;
+import com.fg.tltmod.util.TltcoreConstants;
 import com.fg.tltmod.util.mixin.IFallingBlockEntityMixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -21,9 +21,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -75,6 +79,22 @@ public class ForgeEventHandler {
                     entity.setPos(pos.x, player.getY() + 100, pos.y);
                     level.addFreshEntity(entity);
                 }
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void onLightningStrike(EntityStruckByLightningEvent event){
+        Entity target = event.getEntity();
+        LightningBolt bolt = event.getLightning();
+        if (bolt.getCause()!=null){
+            event.setCanceled(!TltcoreConstants.projectileShouldHit(target));
+            if (!event.isCanceled()){
+                if (bolt.getTags().contains(TltcoreConstants.NbtLocations.KEY_EXTRA_PLAYER_DAMAGE))
+                    target.hurt(LegacyDamageSource.playerAttack(bolt.getCause()).setBypassInvulnerableTime(),bolt.getDamage());
+                if (bolt.getTags().contains(TltcoreConstants.NbtLocations.KEY_IGNORE_COOLDOWN))
+                    target.invulnerableTime = 0;
+                if (bolt.getTags().contains(TltcoreConstants.NbtLocations.KEY_TOOL_LIGHTNING_BOLT)&&target==bolt.getCause())
+                    event.setCanceled(true);
             }
         }
     }

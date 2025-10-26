@@ -76,4 +76,7 @@ public class TltCoreModifiers {
     public static final StaticModifier<GravityManipulate> GRAVITY_MANIPULATE = MODIFIERS.register("gravity_manipulate",GravityManipulate::new);
     public static final StaticModifier<VibrioVulnificus> VIBRIO_VULNIFICUS = MODIFIERS.register("vibrio_vulnificus",VibrioVulnificus::new);
     public static final StaticModifier<EnvironmentalProtection> ENVIRONMENTAL_PROTECTION = MODIFIERS.register("environmental_protection",EnvironmentalProtection::new);
+    public static final StaticModifier<IonizedArrowModifier> IONIZED_ARROW = MODIFIERS.register("ionized_arrow",IonizedArrowModifier::new);
+    public static final StaticModifier<ValkyrieBless> VALKYRIE_BLESS = MODIFIERS.register("valkyrie_bless",ValkyrieBless::new);
+
 }

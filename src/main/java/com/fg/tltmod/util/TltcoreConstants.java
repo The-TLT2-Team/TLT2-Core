@@ -6,6 +6,9 @@ import com.ssakura49.sakuratinker.library.tinkering.tools.STToolStats;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import slimeknights.tconstruct.library.tools.capability.TinkerDataCapability;
 import slimeknights.tconstruct.library.tools.stat.INumericToolStat;
@@ -19,6 +22,13 @@ public class TltcoreConstants {
         public static final ResourceLocation KEY_ANTI_RAGNAROK = TltCore.getResource("anti_ragnarok");
         //决定工具是否添加被诅咒者词条的路径
         public static final ResourceLocation KEY_IS_THE_CURSED_ONE = TltCore.getResource("is_the_cursed_one");
+        //闪电的额外标签
+        //工具召唤的闪电
+        public static final String KEY_TOOL_LIGHTNING_BOLT = "tool_lightning";
+        //闪电无视无敌帧
+        public static final String KEY_IGNORE_COOLDOWN = "ignore_cooldown";
+        //造成额外的玩家伤害
+        public static final String KEY_EXTRA_PLAYER_DAMAGE = "deal_player_damage";
     }
     public static class TinkerDataKeys{
         //实体带有这个data后全身物品都不会被封印，用ArmorLevelingModule来添加。
@@ -52,4 +62,8 @@ public class TltcoreConstants {
             STToolStats.DEFENCE_BUFF_TIME,
             STToolStats.MAX_HEALTH
     );
+
+    public static boolean projectileShouldHit(Entity target){
+        return !(target instanceof ItemEntity)&&!(target instanceof ExperienceOrb);
+    }
 }

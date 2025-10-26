@@ -1,10 +1,7 @@
 package com.fg.tltmod.Register;
 
 import com.fg.tltmod.TltCore;
-import com.fg.tltmod.content.entity.FoodEntity;
-import com.fg.tltmod.content.entity.LaserEntity;
-import com.fg.tltmod.content.entity.ThunderBurstEntity;
-import com.fg.tltmod.content.entity.WaveSlashEntity;
+import com.fg.tltmod.content.entity.*;
 import com.fg.tltmod.content.entity.living.MoonSlimeBoss;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -52,4 +49,11 @@ public class TltCoreEntityTypes {
                     .setTrackingRange(4)
                     .setShouldReceiveVelocityUpdates(true)
                     .setUpdateInterval(1));
+    public static final RegistryObject<EntityType<IonizedArrowEntity>> IONIZED_ARROW = ENTITY_TYPES.register("ionized_arrow",()->
+            EntityType.Builder.<IonizedArrowEntity>of(((pEntityType, pLevel) -> new IonizedArrowEntity(pLevel)), MobCategory.MISC)
+                    .sized(0.5f,0.5f)
+                    .setCustomClientFactory(((spawnEntity, level) -> new IonizedArrowEntity(level)))
+                    .setTrackingRange(8)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(4));
 }
