@@ -78,5 +78,5 @@ public class TltCoreModifiers {
     public static final StaticModifier<EnvironmentalProtection> ENVIRONMENTAL_PROTECTION = MODIFIERS.register("environmental_protection",EnvironmentalProtection::new);
     public static final StaticModifier<VenomModifier> VENOM = MODIFIERS.register("venom",VenomModifier::new);
     public static final StaticModifier<ToxicOutbreakModifier> TOXIC_OUTBREAK = MODIFIERS.register("toxic_outbreak",ToxicOutbreakModifier::new);
-
+    public static final StaticModifier<HeatBulge> HEAT_BULGE = MODIFIERS.register("heat_bulge",HeatBulge::new);
 }
