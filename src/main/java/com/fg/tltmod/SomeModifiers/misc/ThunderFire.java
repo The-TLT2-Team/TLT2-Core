@@ -89,6 +89,7 @@ public class ThunderFire extends Modifier implements MeleeHitModifierHook {
                 }
                 entitydata.putFloat(heatbombdamage, (float) (damageDealt*0.5*modifier.getLevel()));
                 context.getLivingTarget().getPersistentData().putInt(CommonUtil.KEY_ATTACKER,context.getAttacker().getId());
+                tooldata.putInt(heatbomb, tooldata.getInt(heatbomb)-(4 / sum));
             }
         }
     }
