@@ -38,7 +38,7 @@ public class HarvestSharingTrait extends MobTrait {
                     int a = MobTraitCap.HOLDER.get(mob).getTraitLevel(this);
                     if (a >= 1&&mob.getHealth()<mob.getMaxHealth()) {
                         float b = event.getAmount()*a*0.2f;
-                        if (MobTraitCap.HOLDER.get(living).getTraitLevel(this)>=1){
+                        if (MobTraitCap.HOLDER.isProper(living)&&MobTraitCap.HOLDER.get(living).getTraitLevel(this)>=1){
                             float c = mob.getHealth()+b;
                             if (c>mob.getMaxHealth())c=mob.getMaxHealth();
                             if (mob.hasEffect(LCEffects.CURSE.get()))continue;

@@ -24,7 +24,7 @@ public class TitanBloodlineTrait extends MobTrait {
         super((color));
     }
     public static String titan_bloodline_value = TltCore.getResource("titan_bloodline_value").toString();
-    public static final UUID titan_bloodline_UUID = UUID.fromString("1E6FBD81-01B2-3151-F02C-F04623958205");
+    public static final UUID titan_bloodline_UUID = UUID.fromString("0A825DF7-410A-4E95-08E5-0F9A7F3FEE93");
     @Override
     public void onHurtTarget(int a, LivingEntity attacker, AttackCache cache, TraitEffectCache traitCache) {
         float b = attacker.getMaxHealth()*0.05f;
@@ -32,24 +32,29 @@ public class TitanBloodlineTrait extends MobTrait {
     }
     @Override
     public void onHurtByOthers(int a, LivingEntity entity, LivingHurtEvent event) {
-        if (entity.getPersistentData().getInt(titan_bloodline_value)<10){
-            entity.getPersistentData().putInt(titan_bloodline_value,entity.getPersistentData().getInt(titan_bloodline_value)+1);
-            addMaxHealth(entity, entity.getMaxHealth() * 0.05f * a);
+        int currentLevel = entity.getPersistentData().getInt(titan_bloodline_value);
+        if (currentLevel < 10) {
+            entity.getPersistentData().putInt(titan_bloodline_value, currentLevel + 1);
+
+            applyMultiplicativeHealthBonus(entity, a);
             entity.heal(entity.getMaxHealth() * 0.06f * a);
         }
     }
-    private static void addMaxHealth(LivingEntity entity, float reductionAmount) {
+
+    private static void applyMultiplicativeHealthBonus(LivingEntity entity, int a) {
         AttributeInstance maxHealthAttr = entity.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealthAttr == null) return;
-        AttributeModifier existingModifier = maxHealthAttr.getModifier(titan_bloodline_UUID);
-        double currentReduction = (existingModifier != null) ? existingModifier.getAmount() : 0.0;
-        double newTotalReduction = currentReduction + reductionAmount;
+
         maxHealthAttr.removeModifier(titan_bloodline_UUID);
+
+        int currentLevel = entity.getPersistentData().getInt(titan_bloodline_value);
+        float totalMultiplier = 0.05f * currentLevel * a;
+
         AttributeModifier newModifier = new AttributeModifier(
                 titan_bloodline_UUID,
                 Attributes.MAX_HEALTH.getDescriptionId(),
-                newTotalReduction,
-                AttributeModifier.Operation.ADDITION
+                totalMultiplier,
+                AttributeModifier.Operation.MULTIPLY_TOTAL
         );
         maxHealthAttr.addPermanentModifier(newModifier);
     }
