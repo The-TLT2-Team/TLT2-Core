@@ -22,6 +22,8 @@ public class TltcoreConstants {
         public static final ResourceLocation KEY_ANTI_RAGNAROK = TltCore.getResource("anti_ragnarok");
         //决定工具是否添加被诅咒者词条的路径
         public static final ResourceLocation KEY_IS_THE_CURSED_ONE = TltCore.getResource("is_the_cursed_one");
+        //是额外箭矢
+        public static final ResourceLocation KEY_NOT_PRIMARY = TltCore.getResource("not_primary");
         //闪电的额外标签
         //工具召唤的闪电
         public static final String KEY_TOOL_LIGHTNING_BOLT = "tool_lightning";
@@ -62,8 +64,4 @@ public class TltcoreConstants {
             STToolStats.DEFENCE_BUFF_TIME,
             STToolStats.MAX_HEALTH
     );
-
-    public static boolean projectileShouldHit(Entity target){
-        return !(target instanceof ItemEntity)&&!(target instanceof ExperienceOrb);
-    }
 }

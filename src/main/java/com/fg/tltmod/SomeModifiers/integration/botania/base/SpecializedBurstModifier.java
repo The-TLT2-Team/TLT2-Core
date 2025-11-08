@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.hook.build.ValidateModifierHook;
@@ -51,11 +52,20 @@ public class SpecializedBurstModifier extends EtSTBaseModifier implements Valida
     @Override
     public @Nullable Component validate(IToolStackView tool, ModifierEntry modifier) {
         int i = 0;
+        List<Modifier> unsupported = new ArrayList<>();
         for (ModifierEntry entry:tool.getModifiers()){
             if (entry.getModifier() instanceof SpecializedBurstModifier){
+                unsupported.add(entry.getModifier());
                 i++;
             }
-            if (i>1) return Component.translatable("tooltip.tltmod.error.specialized_burst_modifier");
+            if (i>1){
+                var comp =Component.translatable("tooltip.tltmod.error.specialized_burst_modifier");
+                for (int j=0;j<unsupported.size();j++){
+                    if (j!=0) comp.append("、");
+                    comp.append(unsupported.get(j).getDisplayName());
+                }
+                return comp;
+            }
         }
         return null;
     }

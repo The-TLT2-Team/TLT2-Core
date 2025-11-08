@@ -2,6 +2,7 @@ package com.fg.tltmod.SomeModifiers.misc;
 
 import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +41,7 @@ public class DaysAndNights extends EtSTBaseModifier {
     @Override
     public void afterArrowHit(ModDataNBT persistentData, ModifierEntry entry, ModifierNBT modifiers, AbstractArrow arrow, @Nullable LivingEntity attacker, @NotNull LivingEntity target, float damageDealt) {
         if (attacker!=null){
+            attacker.sendSystemMessage(Component.literal(damageDealt+""));
             if (target.isOnFire()) {
                 target.hurt(LegacyDamageSource.any(attacker.damageSources().freeze().typeHolder(),attacker)
                         .setBypassArmor().setBypassInvulnerableTime(),damageDealt*0.33f*entry.getLevel());

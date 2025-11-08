@@ -16,6 +16,11 @@ import java.util.List;
 
 public class DestructionMagic extends BasicBurstModifier {
     @Override
+    public boolean isNoLevels() {
+        return true;
+    }
+
+    @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         super.registerHooks(hookBuilder);
         hookBuilder.addModule(new ModifierTraitModule(TltCoreModifiers.BURST_MINING.getId(),1,true));

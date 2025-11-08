@@ -1,10 +1,11 @@
-package com.fg.tltmod.SomeModifiers.misc;
+package com.fg.tltmod.SomeModifiers.ranged;
 
 import com.c2h6s.etstlib.register.EtSTLibHooks;
 import com.c2h6s.etstlib.tool.hooks.CustomBarDisplayModifierHook;
 import com.c2h6s.etstlib.tool.modifiers.base.EtSTBaseModifier;
 import com.fg.tltmod.Register.TltCoreItems;
 import com.fg.tltmod.Register.TltCoreModifiers;
+import com.fg.tltmod.SomeModifiers.ranged.base.SpecializedRangedModifier;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.content.entity.IonizedArrowEntity;
 import net.minecraft.network.chat.Component;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +27,8 @@ import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.hook.build.ConditionalStatModifierHook;
 import slimeknights.tconstruct.library.modifiers.hook.ranged.BowAmmoModifierHook;
+import slimeknights.tconstruct.library.modifiers.impl.NoLevelsModifier;
+import slimeknights.tconstruct.library.modifiers.modules.build.ModifierTraitModule;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.item.IModifiable;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
@@ -35,11 +37,10 @@ import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.FloatToolStat;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
-import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber
-public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoModifierHook, CustomBarDisplayModifierHook,ConditionalStatModifierHook {
+public class IonizedArrowModifier extends SpecializedRangedModifier implements BowAmmoModifierHook, CustomBarDisplayModifierHook,ConditionalStatModifierHook {
     @Override
     public boolean isNoLevels() {
         return true;
@@ -47,10 +48,14 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
 
     public static final ResourceLocation KEY_COOLDOWN = TltCore.getResource("ionized_arrow_cooldown");
     public static final ResourceLocation KEY_ARROW_SHOT = TltCore.getResource("ionized_arrow_shot");
+    public static final ResourceLocation KEY_MAX_CD = TltCore.getResource("ionized_arrow_cooldown_max");
+    public static final int TOTAL_AMMO = 10;
+
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         super.registerHooks(hookBuilder);
         hookBuilder.addHook(this, ModifierHooks.BOW_AMMO,ModifierHooks.CONDITIONAL_STAT, EtSTLibHooks.CUSTOM_BAR);
+        hookBuilder.addModule(new ModifierTraitModule(new ModifierEntry(TltCoreModifiers.IONIZED_ARROW_CD.getId(),1), true));
     }
 
     @Override
@@ -58,42 +63,36 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
         var nbt = tool.getPersistentData();
         nbt.remove(KEY_COOLDOWN);
         nbt.remove(KEY_ARROW_SHOT);
+        nbt.remove(KEY_MAX_CD);
         return null;
     }
 
     @Override
     public ItemStack findAmmo(IToolStackView tool, ModifierEntry modifier, LivingEntity shooter, ItemStack standardAmmo, Predicate<ItemStack> ammoPredicate) {
-        if (tool.getPersistentData().getInt(KEY_ARROW_SHOT)>=10) return ItemStack.EMPTY;
-        return new ItemStack(TltCoreItems.IONIZED_ARROW.get(),10-tool.getPersistentData().getInt(KEY_ARROW_SHOT));
+        if (tool.getPersistentData().getInt(KEY_ARROW_SHOT)>=TOTAL_AMMO) return ItemStack.EMPTY;
+        return new ItemStack(TltCoreItems.IONIZED_ARROW.get(),TOTAL_AMMO-tool.getPersistentData().getInt(KEY_ARROW_SHOT));
     }
 
     @Override
     public String barId(IToolStackView iToolStackView, ModifierEntry modifierEntry, int i) {
-        return "ionized_arrow_cooldown";
+        return "ionized_arrow_count";
     }
 
     @Override
     public boolean showBar(IToolStackView iToolStackView, ModifierEntry modifierEntry, int i) {
-        return true;
+        return iToolStackView.getPersistentData().getInt(KEY_ARROW_SHOT)<TOTAL_AMMO;
     }
 
     @Override
     public Vec2 getBarXYSize(IToolStackView tool, ModifierEntry entry, int barsHadBeenShown) {
-        if (tool.getPersistentData().getInt(KEY_ARROW_SHOT)>=10) {
-            int total = getTotalCooldown(tool, null);
-            int progress =Math.max(total - tool.getPersistentData().getInt(KEY_COOLDOWN),0);
-            return new Vec2(Math.min(13.0F, 13.0F * (float) progress / (float) total), 1.0F);
-        }
-        else {
-            int total = 10;
-            int progress =Math.max(total - tool.getPersistentData().getInt(KEY_ARROW_SHOT),0);
-            return new Vec2(Math.min(13.0F, 13.0F * (float) progress / (float) total), 1.0F);
-        }
+        int total = TOTAL_AMMO;
+        int progress = Math.max(total - tool.getPersistentData().getInt(KEY_ARROW_SHOT), 0);
+        return new Vec2(Math.min(13.0F, 13.0F * (float) progress / (float) total), 1.0F);
     }
 
     @Override
     public int getBarRGB(IToolStackView iToolStackView, ModifierEntry modifierEntry, int i) {
-        return iToolStackView.getPersistentData().getInt(KEY_ARROW_SHOT)>=10? 0xFFFF9000 : 0xFF6866FF;
+        return 0xFF6866FF;
     }
 
     @Override
@@ -103,7 +102,7 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
         if (arrow instanceof IonizedArrowEntity entity){
             existing++;
             if (!primary) {
-                if (existing > 10) {
+                if (existing > TOTAL_AMMO) {
                     entity.discard();
                     return;
                 }
@@ -111,12 +110,14 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
             nbt.putInt(KEY_ARROW_SHOT,existing);
             entity.setOffhand(shooter.getUsedItemHand()== InteractionHand.OFF_HAND);
         }
-        nbt.putInt(KEY_COOLDOWN,getTotalCooldown(tool,shooter));
+        int cd = getTotalCooldown(tool,shooter);
+        nbt.putInt(KEY_COOLDOWN,cd);
+        nbt.putInt(KEY_MAX_CD,cd);
     }
 
     @Override
     public void modifierOnInventoryTick(IToolStackView tool, ModifierEntry modifier, Level world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
-        if (world.getGameTime()%4==0&&!world.isClientSide){
+        if (isCorrectSlot&&world.getGameTime()%4==0&&!world.isClientSide){
             var nbt = tool.getPersistentData();
             int cd = nbt.getInt(KEY_COOLDOWN);
             if (cd>0){
@@ -136,7 +137,7 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
             ToolStack toolStack = ToolStack.from(stack);
             if (toolStack.getModifierLevel(TltCoreModifiers.IONIZED_ARROW.get())>0){
                 var nbt = toolStack.getPersistentData();
-                if (nbt.getInt(KEY_ARROW_SHOT)>=10) event.setDuration(-1);
+                if (nbt.getInt(KEY_ARROW_SHOT)>=TOTAL_AMMO) event.setDuration(-1);
             }
         }
     }
@@ -148,18 +149,57 @@ public class IonizedArrowModifier extends EtSTBaseModifier implements BowAmmoMod
             ToolStack toolStack = ToolStack.from(stack);
             if (toolStack.getModifierLevel(TltCoreModifiers.IONIZED_ARROW.get())>0){
                 var nbt = toolStack.getPersistentData();
-                if (nbt.getInt(KEY_ARROW_SHOT)>=10) event.setAction(InteractionResultHolder.pass(stack));
+                if (nbt.getInt(KEY_ARROW_SHOT)>=TOTAL_AMMO) event.setAction(InteractionResultHolder.pass(stack));
             }
         }
     }
 
-    public static int getTotalCooldown(IToolStackView tool, @Nullable LivingEntity living){
-        return (int) Math.max( living==null? 50f/tool.getStats().get(ToolStats.DRAW_SPEED) : 50f/ ConditionalStatModifierHook.getModifiedStat(tool,living,ToolStats.DRAW_SPEED),5);
+    public static int getTotalCooldown(IToolStackView tool,LivingEntity living){
+        return (int) Math.max(50f/ ConditionalStatModifierHook.getModifiedStat(tool,living,ToolStats.DRAW_SPEED),5);
+    }
+    public static int getToolMaxCD(IToolStackView tool){
+        return tool.getPersistentData().getInt(KEY_MAX_CD);
     }
 
     @Override
     public float modifyStat(IToolStackView tool, ModifierEntry modifier, LivingEntity living, FloatToolStat stat, float baseValue, float multiplier) {
-        if (stat==ToolStats.DRAW_SPEED&&tool.getPersistentData().getInt(KEY_ARROW_SHOT)<10) return baseValue*20;
+        if (stat==ToolStats.DRAW_SPEED&&!living.isUsingItem()&&tool.getPersistentData().getInt(KEY_ARROW_SHOT)<TOTAL_AMMO) return baseValue*200;
         return baseValue;
+    }
+
+    public static class IonizedArrowCooldownBar extends NoLevelsModifier implements CustomBarDisplayModifierHook{
+        @Override
+        protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
+            super.registerHooks(hookBuilder);
+            hookBuilder.addHook(this,EtSTLibHooks.CUSTOM_BAR);
+        }
+
+        @Override
+        public boolean shouldDisplay(boolean advanced) {
+            return false;
+        }
+
+        @Override
+        public String barId(IToolStackView iToolStackView, ModifierEntry modifierEntry, int i) {
+            return "ionized_arrow_cooldown";
+        }
+
+        @Override
+        public boolean showBar(IToolStackView tool, ModifierEntry modifierEntry, int i) {
+            return tool.getPersistentData().getInt(KEY_ARROW_SHOT)>=TOTAL_AMMO||
+                    (tool.getPersistentData().getInt(KEY_COOLDOWN)<0.75f*getToolMaxCD(tool)&&tool.getPersistentData().getInt(KEY_COOLDOWN)>0);
+        }
+
+        @Override
+        public Vec2 getBarXYSize(IToolStackView tool, ModifierEntry modifierEntry, int i) {
+            int total = getToolMaxCD(tool);
+            int progress =Math.max(total - tool.getPersistentData().getInt(KEY_COOLDOWN),0);
+            return new Vec2(Math.min(13.0F, 13.0F * (float) progress / (float) total), 1.0F);
+        }
+
+        @Override
+        public int getBarRGB(IToolStackView iToolStackView, ModifierEntry modifierEntry, int i) {
+            return 0xFFFF9000;
+        }
     }
 }

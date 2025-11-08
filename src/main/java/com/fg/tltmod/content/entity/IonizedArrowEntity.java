@@ -2,6 +2,7 @@ package com.fg.tltmod.content.entity;
 
 import cofh.core.client.particle.options.BiColorParticleOptions;
 import cofh.core.init.CoreParticles;
+import com.c2h6s.etstlib.entity.specialDamageSources.LegacyDamageSource;
 import com.fg.tltmod.Register.TltCoreEntityTypes;
 import com.github.alexthe666.iceandfire.misc.IafDamageRegistry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,10 +25,15 @@ import org.jetbrains.annotations.NotNull;
 public class IonizedArrowEntity extends AbstractArrow {
     public boolean initSpeed = true;
     boolean critical = false;
+    public float maxLife = 200;
     private static final EntityDataAccessor<Float> DATA_VELOCITY = SynchedEntityData.defineId(IonizedArrowEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_OFFHAND = SynchedEntityData.defineId(IonizedArrowEntity.class,EntityDataSerializers.BOOLEAN);
+    public IonizedArrowEntity(EntityType<? extends AbstractArrow> entityType,Level level){
+        super(entityType,level);
+        this.setBaseDamage(8);
+    }
     public IonizedArrowEntity(Level pLevel) {
-        super(TltCoreEntityTypes.IONIZED_ARROW.get(), pLevel);
+        this(TltCoreEntityTypes.IONIZED_ARROW.get(), pLevel);
     }
 
     @Override
@@ -67,12 +73,14 @@ public class IonizedArrowEntity extends AbstractArrow {
             this.critical = this.isCritArrow();
             this.setCritArrow(false);
         }
-        if (++this.tickCount>200){
+        if (++this.tickCount>maxLife){
             this.discard();
             return;
         }
         boolean b = this.firstTick;
         Vec3 vec3 = this.getDeltaMovement();
+        var xRot = getXRot();
+        var yRot = getYRot();
         if (!b){
             initSpeed = true;
             setDeltaMovement(vec3.scale(getVelocity()));
@@ -82,6 +90,8 @@ public class IonizedArrowEntity extends AbstractArrow {
         if (!b){
             initSpeed = true;
             setDeltaMovement(vec3);
+            setXRot(xRot);
+            setYRot(yRot);
             initSpeed = false;
         }
     }
@@ -134,7 +144,7 @@ public class IonizedArrowEntity extends AbstractArrow {
         }
         this.level().getEntitiesOfClass(LivingEntity.class,aabb,
                 living -> living!=this.getOwner()&&!(living instanceof Player)).forEach(living ->
-                living.hurt(IafDamageRegistry.causeIndirectDragonLightningDamage(this,this.getOwner()), (float) (this.getVelocity()*this.getBaseDamage())));
+                living.hurt(LegacyDamageSource.any( IafDamageRegistry.causeIndirectDragonLightningDamage(this,this.getOwner())).setBypassInvulnerableTime().setBypassMagic(), (float) (this.getVelocity()*this.getBaseDamage())));
         if (this.level() instanceof ServerLevel serverLevel){
             for (int i=0;i<random.nextInt(4)+4;i++){
                 serverLevel.sendParticles(new BiColorParticleOptions(CoreParticles.STRAIGHT_ARC.get(), 0.3F, 5.0F, 0.0F, -1, 0xAC5FFFFF),vec3.x,vec3.y,vec3.z,0,vec3.x+random.nextFloat()*4-2,vec3.y+random.nextFloat()*4-2,vec3.z+random.nextFloat()*4-2,1);

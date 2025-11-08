@@ -10,10 +10,15 @@ import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ExcaliburBurst;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ParticleAccelerate;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.Thunderstorm;
+import com.fg.tltmod.SomeModifiers.integration.mekanism.ChemicalStorageModifier;
+import com.fg.tltmod.SomeModifiers.integration.mekanism.GammaRay;
+import com.fg.tltmod.SomeModifiers.ranged.IonizedArrowModifier;
+import com.fg.tltmod.SomeModifiers.ranged.NeutronArrowModifier;
 import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
 import com.fg.tltmod.SomeModifiers.misc.*;
 import com.fg.tltmod.SomeModifiers.integration.sevenCurse.*;
+import com.fg.tltmod.SomeModifiers.ranged.RedstoneBeam;
 import com.fg.tltmod.SomeModifiers.rebalance.ArrowThrowerRebalance;
 import com.fg.tltmod.SomeModifiers.rebalance.BlowPipeRebalance;
 import com.fg.tltmod.SomeModifiers.rebalance.DashRebalance;
@@ -80,5 +85,14 @@ public class TltCoreModifiers {
     public static final StaticModifier<ValkyrieBless> VALKYRIE_BLESS = MODIFIERS.register("valkyrie_bless",ValkyrieBless::new);
     public static final StaticModifier<VenomModifier> VENOM = MODIFIERS.register("venom",VenomModifier::new);
     public static final StaticModifier<ToxicOutbreakModifier> TOXIC_OUTBREAK = MODIFIERS.register("toxic_outbreak",ToxicOutbreakModifier::new);
+    public static final StaticModifier<IonizedArrowModifier.IonizedArrowCooldownBar> IONIZED_ARROW_CD = MODIFIERS.register("ionized_arrow_cd", IonizedArrowModifier.IonizedArrowCooldownBar::new);
+    public static final StaticModifier<BurningSky> BURNING_SKY = MODIFIERS.register("burning_sky", BurningSky::new);
+    public static final StaticModifier<DevourerOfDragons> DEVOURER_OF_DRAGONS = MODIFIERS.register("devourer_of_dragons", DevourerOfDragons::new);
+    public static final StaticModifier<ChemicalStorageModifier> CHEMICAL_STORAGE = MODIFIERS.register("chemical_storage", ChemicalStorageModifier::new);
+    public static final StaticModifier<NeutronArrowModifier> NEUTRON_ARROW = MODIFIERS.register("neutron_arrow", NeutronArrowModifier::new);
+    public static final StaticModifier<GammaRay> GAMMA_RAY = MODIFIERS.register("gamma_ray", GammaRay::new);
+    public static final StaticModifier<Chainsaw> CHAINSAW = MODIFIERS.register("chainsaw", Chainsaw::new);
+    public static final StaticModifier<RedstoneBeam> REDSTONE_BEAM = MODIFIERS.register("redstone_beam", RedstoneBeam::new);
+    public static final StaticModifier<RedstoneForce> REDSTONE_FORCE = MODIFIERS.register("redstone_force", RedstoneForce::new);
 
 }

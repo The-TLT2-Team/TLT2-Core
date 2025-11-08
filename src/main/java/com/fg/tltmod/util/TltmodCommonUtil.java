@@ -1,6 +1,10 @@
 package com.fg.tltmod.util;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -25,5 +29,11 @@ public class TltmodCommonUtil {
 
     public static @NotNull Optional<Item> parseItemOptional(ResourceLocation name){
         return Optional.ofNullable(ForgeRegistries.ITEMS.getValue(name));
+    }
+    public static boolean projectileShouldHit(Entity target){
+        return !(target instanceof ItemEntity)&&!(target instanceof ExperienceOrb);
+    }
+    public static String makeAttributeDesc(Attribute attribute){
+        return "desc.tltmod."+attribute.getDescriptionId();
     }
 }

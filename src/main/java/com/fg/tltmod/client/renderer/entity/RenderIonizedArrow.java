@@ -3,6 +3,7 @@ package com.fg.tltmod.client.renderer.entity;
 import com.c2h6s.tinkers_advanced.TinkersAdvanced;
 import com.c2h6s.tinkers_advanced.util.RenderUtil;
 import com.fg.tltmod.content.entity.IonizedArrowEntity;
+import com.fg.tltmod.content.entity.NeutronArrowEntity;
 import com.fg.tltmod.content.entity.WaveSlashEntity;
 import com.fg.tltmod.util.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -46,8 +47,10 @@ public class RenderIonizedArrow extends EntityRenderer<IonizedArrowEntity> {
             float velocity = pEntity.getVelocity();
             pPoseStack.pushPose();
             if (pEntity.tickCount<=10&&pEntity.getOwner() instanceof LivingEntity living) {
-                Vec3 offset = living.getLookAngle().cross(new Vec3(0, 1, 0)).normalize().scale(0.5-0.05*pEntity.tickCount);
-                if (pEntity.isOffhand()) offset.reverse();
+                Vec3 offset = living.getLookAngle().cross(new Vec3(0.01, 1, 0.01));
+                if (pEntity instanceof NeutronArrowEntity) offset = offset.cross(living.getLookAngle()).normalize().scale(-0.4);
+                else offset = offset.normalize().scale(0.5-0.05*pEntity.tickCount);
+                if (pEntity.isOffhand()) offset = offset.reverse();
                 pPoseStack.translate(offset.x,offset.y,offset.z);
             }
             pPoseStack.mulPose(Axis.YP.rotationDegrees(pEntity.getYRot()));

@@ -29,24 +29,27 @@ public class HarvestSharingTrait extends MobTrait {
         MinecraftForge.EVENT_BUS.addListener(this::OnLivingHeal);
     }
     private void OnLivingHeal(LivingHealEvent event) {
+        if (event.isCanceled()||event.getAmount()<=0) return;
         LivingEntity living = event.getEntity();
         if (living!=null&&!living.level().isClientSide) {
             List<LivingEntity> ls0 = living.level().getEntitiesOfClass(LivingEntity.class, living.getBoundingBox().inflate(20));
             for (LivingEntity mob : ls0) {
-                if (mob != living && mob != null&&MobTraitCap.HOLDER.isProper(mob)) {
+                if (mob != living && mob != null) {
                     if (!validTarget(mob)) continue;
-                    int a = MobTraitCap.HOLDER.get(mob).getTraitLevel(this);
-                    if (a >= 1&&mob.getHealth()<mob.getMaxHealth()) {
-                        float b = event.getAmount()*a*0.2f;
-                        if (MobTraitCap.HOLDER.get(living).getTraitLevel(this)>=1){
-                            float c = mob.getHealth()+b;
-                            if (c>mob.getMaxHealth())c=mob.getMaxHealth();
-                            if (mob.hasEffect(LCEffects.CURSE.get()))continue;
-                            mob.setHealth(c);
-                        } else {
-                            mob.heal(b);
+                    if (mob.hasEffect(LCEffects.CURSE.get()))continue;
+                    mob.getCapability(MobTraitCap.CAPABILITY).ifPresent(cap->{
+                        int a =cap.getTraitLevel(this);
+                        if (a >= 1&&mob.getHealth()<mob.getMaxHealth()) {
+                            float b = event.getAmount()*a*0.2f;
+                            if (cap.getTraitLevel(this)>=1){
+                                float c = mob.getHealth()+b;
+                                if (c>mob.getMaxHealth())c=mob.getMaxHealth();
+                                mob.setHealth(c);
+                            } else {
+                                mob.heal(b);
+                            }
                         }
-                    }
+                    });
                 }
             }
         }

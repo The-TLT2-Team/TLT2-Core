@@ -5,12 +5,9 @@ import com.fg.tltmod.content.entity.*;
 import com.fg.tltmod.content.entity.living.MoonSlimeBoss;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraftforge.registries.RegistryObject;
 import slimeknights.mantle.registration.deferred.EntityTypeDeferredRegister;
 import slimeknights.mantle.registration.object.EntityObject;
-import slimeknights.tconstruct.world.TinkerWorld;
-import slimeknights.tconstruct.world.entity.EnderSlimeEntity;
 import vazkii.botania.common.entity.ManaBurstEntity;
 
 public class TltCoreEntityTypes {
@@ -53,6 +50,27 @@ public class TltCoreEntityTypes {
             EntityType.Builder.<IonizedArrowEntity>of(((pEntityType, pLevel) -> new IonizedArrowEntity(pLevel)), MobCategory.MISC)
                     .sized(0.5f,0.5f)
                     .setCustomClientFactory(((spawnEntity, level) -> new IonizedArrowEntity(level)))
+                    .setTrackingRange(8)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(4));
+    public static final RegistryObject<EntityType<BurningSkyProjectile>> BURNING_SKY_PROJ = ENTITY_TYPES.register("burning_sky_proj",()->
+            EntityType.Builder.<BurningSkyProjectile>of(((pEntityType, pLevel) -> new BurningSkyProjectile(pLevel)), MobCategory.MISC)
+                    .sized(1.5f,1.5f)
+                    .setCustomClientFactory(((spawnEntity, level) -> new BurningSkyProjectile(level)))
+                    .setTrackingRange(8)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(4));
+    public static final RegistryObject<EntityType<NeutronArrowEntity>> NEUTRON_ARROW = ENTITY_TYPES.register("neutron_arrow",()->
+            EntityType.Builder.<NeutronArrowEntity>of(((pEntityType, pLevel) -> new NeutronArrowEntity(pLevel)), MobCategory.MISC)
+                    .sized(0.5f,0.5f)
+                    .setCustomClientFactory(((spawnEntity, level) -> new NeutronArrowEntity(level)))
+                    .setTrackingRange(8)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .setUpdateInterval(4));
+    public static final RegistryObject<EntityType<LaserBeamArrowEntity>> LASER_BEAM_ARROW = ENTITY_TYPES.register("laser_beam_arrow",()->
+            EntityType.Builder.<LaserBeamArrowEntity>of((LaserBeamArrowEntity::new), MobCategory.MISC)
+                    .sized(0.5f,0.5f)
+                    .setCustomClientFactory(((spawnEntity, level) -> new LaserBeamArrowEntity(level)))
                     .setTrackingRange(8)
                     .setShouldReceiveVelocityUpdates(true)
                     .setUpdateInterval(4));

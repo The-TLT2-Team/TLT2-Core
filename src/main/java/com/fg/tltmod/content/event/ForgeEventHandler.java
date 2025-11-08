@@ -5,6 +5,7 @@ import com.fg.tltmod.Register.TltCoreEntityTypes;
 import com.fg.tltmod.TltCore;
 import com.fg.tltmod.content.entity.FoodEntity;
 import com.fg.tltmod.util.TltcoreConstants;
+import com.fg.tltmod.util.TltmodCommonUtil;
 import com.fg.tltmod.util.mixin.IFallingBlockEntityMixin;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -87,7 +88,7 @@ public class ForgeEventHandler {
         Entity target = event.getEntity();
         LightningBolt bolt = event.getLightning();
         if (bolt.getCause()!=null){
-            event.setCanceled(!TltcoreConstants.projectileShouldHit(target));
+            event.setCanceled(!TltmodCommonUtil.projectileShouldHit(target));
             if (!event.isCanceled()){
                 if (bolt.getTags().contains(TltcoreConstants.NbtLocations.KEY_EXTRA_PLAYER_DAMAGE))
                     target.hurt(LegacyDamageSource.playerAttack(bolt.getCause()).setBypassInvulnerableTime(),bolt.getDamage());
