@@ -10,15 +10,12 @@ import com.fg.tltmod.SomeModifiers.integration.botania.mana.ManaRefactorModifier
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ExcaliburBurst;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.ParticleAccelerate;
 import com.fg.tltmod.SomeModifiers.integration.botania.specialized.Thunderstorm;
-import com.fg.tltmod.SomeModifiers.integration.mekanism.ChemicalStorageModifier;
-import com.fg.tltmod.SomeModifiers.integration.mekanism.GammaRay;
-import com.fg.tltmod.SomeModifiers.ranged.IonizedArrowModifier;
-import com.fg.tltmod.SomeModifiers.ranged.NeutronArrowModifier;
+import com.fg.tltmod.SomeModifiers.integration.mekanism.*;
 import com.fg.tltmod.SomeModifiers.interaction.*;
 import com.fg.tltmod.SomeModifiers.melee.*;
 import com.fg.tltmod.SomeModifiers.misc.*;
 import com.fg.tltmod.SomeModifiers.integration.sevenCurse.*;
-import com.fg.tltmod.SomeModifiers.ranged.RedstoneBeam;
+import com.fg.tltmod.SomeModifiers.ranged.*;
 import com.fg.tltmod.SomeModifiers.rebalance.ArrowThrowerRebalance;
 import com.fg.tltmod.SomeModifiers.rebalance.BlowPipeRebalance;
 import com.fg.tltmod.SomeModifiers.rebalance.DashRebalance;
@@ -94,5 +91,7 @@ public class TltCoreModifiers {
     public static final StaticModifier<Chainsaw> CHAINSAW = MODIFIERS.register("chainsaw", Chainsaw::new);
     public static final StaticModifier<RedstoneBeam> REDSTONE_BEAM = MODIFIERS.register("redstone_beam", RedstoneBeam::new);
     public static final StaticModifier<RedstoneForce> REDSTONE_FORCE = MODIFIERS.register("redstone_force", RedstoneForce::new);
+    public static final StaticModifier<HeatBulge> HEAT_BULGE = MODIFIERS.register("heat_bulge", HeatBulge::new);
+    public static final StaticModifier<ThunderFire> THUNDER_FIRE = MODIFIERS.register("thunder_fire", ThunderFire::new);
 
 }
