@@ -93,5 +93,6 @@ public class TltCoreModifiers {
     public static final StaticModifier<RedstoneForce> REDSTONE_FORCE = MODIFIERS.register("redstone_force", RedstoneForce::new);
     public static final StaticModifier<HeatBulge> HEAT_BULGE = MODIFIERS.register("heat_bulge", HeatBulge::new);
     public static final StaticModifier<ThunderFire> THUNDER_FIRE = MODIFIERS.register("thunder_fire", ThunderFire::new);
-
+    public static final StaticModifier<Mushroomgicprotect> mushroomgicprotect=MODIFIERS.register("mushroomgicprotect", Mushroomgicprotect::new);
+    public static final StaticModifier<Hardarmor> hardarmor=MODIFIERS.register("hardarmor", Hardarmor::new);
 }
