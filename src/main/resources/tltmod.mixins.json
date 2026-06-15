@@ -20,6 +20,7 @@
     "alexscaves.CommonEventMixin",
     "bot.GaiaGuardianEntityMixin",
     "bot.ManaBurstEntityMixin",
+    "cloudertinker.BloodlustMixin",
     "enigmaticLegacy.CursedRingMixin",
     "exbot.GaiaIIIMixin",
     "exbot.GaiaMixin",
